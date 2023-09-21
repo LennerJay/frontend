@@ -3,8 +3,7 @@
        <div class="header">
             Cordova Public College
             <p>2023</p>
-            <p>department </p>
-            <Select></Select>
+            <Select @selectValue="selectedValue"  :course="course" @option="option" :open="open"></Select>
        </div>
     
        <div class="min-h-screen bg-blue-50">
@@ -18,12 +17,25 @@
 
 <script setup>
 import { useInstructorStore } from "../stores/instructor"
-import { onMounted ,ref} from 'vue'
+import { onMounted ,ref,computed} from 'vue'
 import ProfileCard from "../components/ProfileCard.vue";
 import Select from "../components/Select.vue";
 
+
 const store = useInstructorStore()
 const instructors = ref([]);
+let open = ref(false)
+let course = ref('Course')
+
+const selectedValue = (val)=>{
+    instructors.value = store.filterDepartment(val)
+    course.value= val
+    open.value = false
+}
+const option = (val)=>{
+    open.value = val
+}
+
 onMounted(async ()=>{
     await store.fetchAllInstructors();
     instructors.value = store.instructors

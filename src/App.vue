@@ -1,13 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
-  import SideBar from '@/components/SideBar.vue'
-  // import { onMounted } from 'vue';
-  // import { allInstructors } from './http/instructor-api';
+import SideBar from '@/components/SideBar.vue'
 
-  // onMounted(async ()=>{
-  //   const {data} = await allInstructors();
-  //   console.log(data);
-  // });
 </script>
 
 <template>
