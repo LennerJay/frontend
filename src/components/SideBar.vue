@@ -29,6 +29,12 @@
                     <span class="text-[15px] ml-4 text-gray-200">Profile</span>
                 </div>
             </router-link>
+            <router-link to="/test">
+                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600">
+                    <i class="bi bi-gear-fill"></i>
+                    <span class="text-[15px] ml-4 text-gray-200">test</span>
+                </div>
+            </router-link>
             <div class="text-left text-sm font-thin mt-2 w-4/5 mx-auto text-white" id="submenu">
                 <h1 class="cursor-pointer p-2 hover:bg-blue-700 rounded-md mt-1 hidden" id="profile"><i class="bi bi-person-circle pr-2"></i>Profile</h1>           
             </div>
