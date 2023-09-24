@@ -3,7 +3,9 @@
        <div class="header">
             Cordova Public College
             <p>2023</p>
-            <Select @selectValue="selectedValue"  :course="course" @option="option" :open="open"></Select>
+            <div ref="selectRef">
+                <SelectTag  @selectValue="selectedValue"  :course="course" @option="option" :open="open" @closeTag="closeTag"></SelectTag>
+            </div>
        </div>
     
        <div class="min-h-screen bg-blue-50">
@@ -17,16 +19,24 @@
 
 <script setup>
 import { useInstructorStore } from "../stores/instructor"
-import { onMounted ,ref,computed} from 'vue'
+import { onMounted ,ref,onUnmounted} from 'vue'
 import ProfileCard from "../components/ProfileCard.vue";
-import Select from "../components/Select.vue";
+import SelectTag from "../components/SelectTag.vue";
 
 
 const store = useInstructorStore()
+const selectRef = ref(null)
 const instructors = ref([]);
 let open = ref(false)
 let course = ref('Course')
 
+const handleSelectTag = (event)=>{
+    if(!selectRef.value.contains(event.target)){
+        open.value = false
+    }else{
+        open.value = true
+    }
+}
 const selectedValue = (val)=>{
     instructors.value = store.filterDepartment(val)
     course.value= val
@@ -35,12 +45,17 @@ const selectedValue = (val)=>{
 const option = (val)=>{
     open.value = val
 }
-
+const closeTag= ()=>{
+    open.value = false
+}
 onMounted(async ()=>{
     await store.fetchAllInstructors();
     instructors.value = store.instructors
-    
+    document.addEventListener('click', handleSelectTag);
 });
+
+
+
 </script>
 
 
