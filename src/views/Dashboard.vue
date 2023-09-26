@@ -20,7 +20,7 @@
 <script setup>
 import { useInstructorStore } from "../stores/instructor"
 import { onMounted ,ref,onUnmounted} from 'vue'
-import ProfileCard from "../components/ProfileCard.vue";
+import ProfileCard from "../components/Profilecard.vue";
 import SelectTag from "../components/SelectTag.vue";
 
 
@@ -31,10 +31,11 @@ let open = ref(false)
 let course = ref('Course')
 
 const handleSelectTag = (event)=>{
-    if(!selectRef.value.contains(event.target)){
+    if (selectRef.value == null) {
+        return; // Exit early if event.target is null
+    }
+    if(!selectRef || !selectRef.value.contains(event.target)){
         open.value = false
-    }else{
-        open.value = true
     }
 }
 const selectedValue = (val)=>{

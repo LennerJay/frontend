@@ -1,26 +1,53 @@
 <template>
-    <div class="content">
-      <testButtons :radioButtonStates="radioButtonStates" />
+  <div class="content">
+    <Question
+      v-for="(question, index) in questions"
+      :key="index"
+      :questionId="`question_${index}`"
+      :question="question.questionText"
+      :options="question.options"
+      @option-selected="updateSelectedOptions"
+    ></Question>
+
+    <div>
+      <p>Selected Options:</p>
+      <ul>
+        <li v-for="(option, index) in selectedOptions" :key="index">
+          {{ option.questionId }}: {{ option.selectedOption }}
+        </li>
+      </ul>
     </div>
-    <h1>asd</h1>
-  </template>
-  
-  <script >
-  import testButtons from '../components/testButtons.vue';
-  
-  export default {
-    components: {
-        testButtons,
-    },
-    data() {
-      return {
-        radioButtonStates: {
-          option1: true,  // Set these conditions based on your logic
-          option2: false,
-          option3: false,
-          // Add more options as needed
+  </div>
+</template>
+
+<script>
+import Question from "../components/Question.vue";
+
+export default {
+  components: {
+    Question,
+  },
+  data() {
+    return {
+      questions: [
+        {
+          questionText: "What is your favorite color?",
+          options: ["Red", "Blue", "Green"],
         },
-      };
+        {
+          questionText: "What is your favorite animal?",
+          options: ["Dog", "Cat", "Bird"],
+        },
+        // Add more questions as needed
+      ],
+      selectedOptions: [],
+    };
+  },
+  methods: {
+    updateSelectedOptions(questionId, selectedOption) {
+      // Update the selectedOptions array when a radio button is selected
+      this.selectedOptions.push({ questionId, selectedOption });
     },
-  };
-  </script>
+  },
+};
+</script>
