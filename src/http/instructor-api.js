@@ -1,5 +1,6 @@
 import api from "./api";
 
-const resource = "/instructors"
+const apiPath = import.meta.env.VITE_API_PATH
+const resource = apiPath +  "/instructors"
 
 export const allInstructors = () => api.get(resource)

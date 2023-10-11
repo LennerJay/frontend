@@ -40,7 +40,12 @@ onMounted(async ()=>{
     questionaire.value = data
     for (let i = 0; i < sessionStorage.length; i++) {
         const id = sessionStorage.key(i);
-        selectedRatings.push({id:Number(id),rating:Number(sessionStorage.getItem(id))})
+        const rating = sessionStorage.getItem(id)
+        if(rating > 5){
+            sessionStorage.removeItem(id)
+        }else{
+            selectedRatings.push({id:Number(id),rating:Number(sessionStorage.getItem(id))})
+        }
     }
 
 });

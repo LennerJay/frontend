@@ -1,44 +1,27 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Dashboard from '../views/Dashboard.vue'
+import routes from './routes';
+import { useAuthStore } from '../stores/auth';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'dashboard',
-      component: Dashboard
-    },
-    {
-      path: '/evaluation',
-      name: 'evaluation',
-      component: () => import('../views/Evaluation.vue'),
-    },
-    {
-      path:'/profile',
-      name: 'profile',
-      component: () => import('../views/Profile.vue'),
-    },
-    {
-      path:'/test',
-      name: 'test',
-      component: () => import('../views/test.vue'),
-    }
-  ]
+  routes
 })
 
-export default router
+router.beforeEach(async (to,from)=>{
+  const store = useAuthStore()
+  await store.fetchUser();
+  if(to.meta.auth && !store.isLoggedIn){
+      return{
+          name:'login',
+          query:{
+              redirect:to.fullPath
+          }
+      }
+  }else if (to.meta.guest && store.isLoggedIn) {
 
-// {
-//   path: '/',
-//   name: 'home',
-//   component: ''
-// },
-// {
-//   path: '/about',
-//   name: 'about',
-//   // route level code-splitting
-//   // this generates a separate chunk (About.[hash].js) for this route
-//   // which is lazy-loaded when the route is visited.
-//   component: () => import('../views/AboutView.vue')
-// }
+      return { name: "dashboard" };
+  }
+});
+
+export default router

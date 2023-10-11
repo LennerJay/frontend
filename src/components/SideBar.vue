@@ -38,11 +38,9 @@
             <div class="text-left text-sm font-thin mt-2 w-4/5 mx-auto text-white" id="submenu">
                 <h1 class="cursor-pointer p-2 hover:bg-blue-700 rounded-md mt-1 hidden" id="profile"><i class="bi bi-person-circle pr-2"></i>Profile</h1>           
             </div>
-            <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600">
-                <!-- <router-link to='/'> -->
+            <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600" @click="handleLogout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span class="text-[15px] ml-4 text-gray-200">Logout</span>
-                <!-- </router-link> -->
             </div>
         </div>
     </aside>
@@ -50,5 +48,22 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
+
+const router = useRouter()
+const store = useAuthStore()
+
+
+const handleLogout = async() =>{
+    await store.handleLogout()
+    router.push({ name: 'login' })
+};
 </script>
+
+
+<style scoped>
+    .router-link-active{
+        font-size: x-large;
+    }
+</style>

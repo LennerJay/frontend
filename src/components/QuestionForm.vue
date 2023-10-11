@@ -15,7 +15,7 @@
                             :id="'criteria'+ criteria.id +'question' + question.id + 'rating'+ value"
                             :checked="value == getValue(question.id)"
                             :value="value"
-                            @input="ratingSelected(question.id,value,criteria.id )"
+                            @input="ratingSelected(question.id,value,`criteria`.id )"
                             />
                         <label
                             class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"
@@ -46,8 +46,7 @@ const ratingSelected =  (id,rating) => {
     emit('ratingSelected',{id:id,rating:rating})
 };
 const getValue = (id)=>{
-    const value = sessionStorage.getItem(id)
-    return value
+    return sessionStorage.getItem(id)
 };
 </script>
 

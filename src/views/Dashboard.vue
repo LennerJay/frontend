@@ -18,10 +18,11 @@
 
 
 <script setup>
-import { useInstructorStore } from "../stores/instructor"
-import { onMounted ,ref,onUnmounted} from 'vue'
+import { useInstructorStore } from "../stores/instructor";
+import { onMounted ,ref} from 'vue';
 import ProfileCard from "../components/Profilecard.vue";
 import SelectTag from "../components/SelectTag.vue";
+
 
 
 const store = useInstructorStore()
@@ -53,6 +54,7 @@ onMounted(async ()=>{
     await store.fetchAllInstructors();
     instructors.value = store.instructors
     document.addEventListener('click', handleSelectTag);
+ 
 });
 
 
