@@ -1,12 +1,11 @@
 <template>
-   <div>
-        <hr class="h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700">
+   <div class="pl-1 content-center text-center pt-5 pb-5">
         <h1 class="font-bold"> {{ criteria.description }}</h1>
-        <form :id="criteria.id">
+        <form :id="criteria.id" class="content-center">
             <input type="hidden" name="criteria_id" :value="criteria.id">
             <div v-for="(question,key) in criteria.questions" :key="key">
-                <p>{{  key+1}}. {{ question.question }}</p>
-                <div class="mb-2" >
+                <p>{{  key+1 }}. {{ question.question }}</p>
+                <div class="mb-2">
                     <div class="mb-[0.125rem] mr-4 inline-block min-h-[1.5rem] pl-[1.5rem]" v-for="value in values">
                         <!-- @click="handleClick(question.id,value,criteria.id)" -->
                         <input
@@ -15,7 +14,7 @@
                             :id="'criteria'+ criteria.id +'question' + question.id + 'rating'+ value"
                             :checked="value == getValue(question.id)"
                             :value="value"
-                            @input="ratingSelected(question.id,value,`criteria`.id )"
+                            @input="ratingSelected(question.id,value,criteria.id )"
                             />
                         <label
                             class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"
@@ -25,8 +24,10 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" @click.prevent="$emit('handleSubmit')">Submit</button>
+            
+            <button type="submit" @click.prevent="$emit('handleSubmit')" v-if="hide">Submit</button>
         </form>
+        <hr class="h-1 my-8 bg-gray-500 border-0 rounded dark:bg-gray-700">
    </div>
 </template>
 
