@@ -11,6 +11,10 @@ module.exports = {
       animation: {
         'spin-slow': 'spin 1s linear infinite',
       },
+      screens:{
+        'xs': '475px',
+        'md': '768px',
+      }
     },
   },
   plugins: [],
