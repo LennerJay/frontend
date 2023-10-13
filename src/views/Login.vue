@@ -1,5 +1,5 @@
 <template>
-    <main class="w-full flex items-center justify-center h-screen min-h-screen bg-sky-950 mix-blend-darken">
+    <main class="flex items-center justify-center h-screen min-h-screen bg-sky-950 mix-blend-darken">
       <form @submit.prevent="handleSubmit">
           <div class="bg-sky-900 w-96 p-10 rounded-md shadow-sm">
                 <div class="flex items-center justify-center mb-6">

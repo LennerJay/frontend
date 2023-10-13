@@ -5,16 +5,13 @@ import SideBar from '@/components/SideBar.vue'
 </script>
 
 <template>
-  <div class="flex">
-    <SideBar/>
-  <router-view/>
-  </div>
-  <!-- <SideBar/>
-    <router-view v-slot="{Component}">
+  <SideBar/>
+  <router-view v-slot="{Component}">
     <Transition name="fade" mode="out-in">
       <component :is="Component"/>
     </Transition>
-  </router-view> -->
+  </router-view>
+
 </template>
 
 <style scoped>
