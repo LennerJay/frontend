@@ -6,6 +6,7 @@ import SideBar from '@/components/SideBar.vue'
 
 <template>
   <SideBar/>
+  <!-- <router-view/> -->
   <router-view v-slot="{Component}">
     <Transition name="fade" mode="out-in">
       <component :is="Component"/>

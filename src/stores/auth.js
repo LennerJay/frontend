@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-import {  login, register, logout, getUser } from '../http/auth-api';
+import {  csrfCookie, login, register, logout, getUser } from '../http/auth-api';
 
 
 export const useAuthStore = defineStore('authStore', ()=>{
@@ -20,10 +20,10 @@ export const useAuthStore = defineStore('authStore', ()=>{
     }
 
     const handleLogin = async (credentials) => {
+      await csrfCookie();
         try {
-            const response = await login(credentials)
-            localStorage.setItem('jwt_token', response.data.token)
-            await fetchUser()
+            await login(credentials);
+            await fetchUser();
             errors.value= {};
         } catch (error) {
            if(error.response.status === 422){

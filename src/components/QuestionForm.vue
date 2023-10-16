@@ -7,7 +7,7 @@
             <div v-for="(question,key) in criteria.questions" :key="key">
                 <p>{{  key+1}}. {{ question.question }}</p>
                 <div class="mb-2" >
-                    <div class="mb-[0.125rem] mr-4 inline-block min-h-[1.5rem] pl-[1.5rem]" v-for="value in values">
+                    <div class="mb-[0.125rem] mr-4 inline-block min-h-[1.5rem] pl-[1.5rem]" v-for="value in values" :key="value">
                         <!-- @click="handleClick(question.id,value,criteria.id)" -->
                         <input
                             type="radio"

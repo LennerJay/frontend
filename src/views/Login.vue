@@ -39,9 +39,8 @@ const handleSubmit = async () =>{
             name:'dashboard'
         })
     }
-    console.log(errors.value)
-    // console.log(errors.value.id_number)
-    // console.log(errors.value.password)
+    console.log(store.user)
+
 
   
 };

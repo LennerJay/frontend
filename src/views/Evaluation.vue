@@ -3,7 +3,8 @@
 
 
         Evaluation
-        <div>
+
+        <div class="questions">
             <h1 class="font-bold">Title: {{ questionaire.title }}</h1>
             <p>description: {{ questionaire.description }}</p>
             <QuestionForm v-for="(criteria,key) in questionaire.criterias" :criteria="criteria" :key="key" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit"/>
