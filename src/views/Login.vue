@@ -20,9 +20,10 @@
 <script setup>
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
+import { useRouter,useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth'
 
+const route = useRoute()
 const router = useRouter()
 const store = useAuthStore()
 const { errors } = storeToRefs(store)
@@ -35,14 +36,8 @@ const form = ref({
 const handleSubmit = async () =>{
     await handleLogin(form.value)
     if(store.isLoggedIn){
-        router.push({
-            name:'dashboard'
-        })
+        router.push(route.query.redirect ?? {name:'dashboard'})
     }
-    console.log(store.user)
-
-
-  
 };
 
 </script>

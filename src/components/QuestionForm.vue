@@ -16,6 +16,7 @@
                             :checked="value == getValue(question.id)"
                             :value="value"
                             @input="ratingSelected(question.id,value,`criteria`.id )"
+                      
                             />
                         <label
                             class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"
@@ -42,11 +43,11 @@ const values = [1,2,3,4,5]
 const store = useLocalStorageStore()
 const emit = defineEmits(['ratingSelected','handleSubmit'])
 const ratingSelected =  (id,rating) => {
-    sessionStorage.setItem(id,rating)
+    localStorage.setItem(id,rating)
     emit('ratingSelected',{id:id,rating:rating})
 };
 const getValue = (id)=>{
-    return sessionStorage.getItem(id)
+    return localStorage.getItem(id)
 };
 </script>
 
