@@ -44,7 +44,7 @@ const store = useLocalStorageStore()
 const emit = defineEmits(['ratingSelected','handleSubmit'])
 const ratingSelected =  (id,rating) => {
     localStorage.setItem(id,rating)
-    emit('ratingSelected',{id:id,rating:rating})
+    emit('ratingSelected',{question_id:id,rating:rating})
 };
 const getValue = (id)=>{
     return localStorage.getItem(id)

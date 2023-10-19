@@ -1,5 +1,8 @@
 import Dashboard from '../views/Dashboard.vue'
 import NotFoundErrorPage from '../views/NotFoundErrorPage.vue'
+import Login from '../views/Login.vue'
+import Evaluation from '../views/Evaluation.vue'
+import Profile from '../views/Profile.vue'
 
 
 const routes = [
@@ -17,20 +20,12 @@ const routes = [
         meta:{
           guest:true
         },
-        component: () => import('../views/Login.vue'),
+        component: Login,
       },
-      // {
-      //   path:'/register',
-      //   name: 'register',
-          // meta:{
-          //   guest:true
-          // },
-      //   component: () => import('../views/Register.vue'),
-      // },
       {
         path: '/evaluation',
         name: 'evaluation',
-        component: () => import('../views/Evaluation.vue'),
+        component: Evaluation,
         meta:{
           auth:true
         }
@@ -38,7 +33,7 @@ const routes = [
       {
         path:'/profile',
         name: 'profile',
-        component: () => import('../views/Profile.vue'),
+        component: Profile,
         meta:{
           auth:true
         }
