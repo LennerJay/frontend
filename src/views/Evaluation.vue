@@ -41,6 +41,7 @@ const questionaire  = ref([]);
 const show = ref(true)
 const name = ref('')
 
+
 const selectInstructor = (id)=>{
     const instructor = instructors.value.find(obj => obj.id === id)
     selectedInstructor.value = instructor
@@ -52,26 +53,28 @@ const selectInstructor = (id)=>{
 
 
 const handleSubmit = async ()=>{
-        selectedRatings.value.map( val => {
-            val.evaluator_id = user.id_number
-        })
-        const value = {
-            instructorId : selectedInstructor.value.id,
-            // evaluatorId: user.id_number,
-            val: [...selectedRatings.value]
-            
-        }
-    console.log(value)
+    selectedRatings.value.map( val => {
+        val.evaluator_id = user.id_number
+    })
+    const value = {
+        instructorId : selectedInstructor.value.id,
+        // evaluatorId: user.id_number,
+        val: [...selectedRatings.value]
+        
+    }
     await rating.save(value)
-    console.log(rating.response)
-    console.log(rating.error)
     if(rating.response.data.code === 201){
-        localStorage.clear()
+        const keys = Object.keys(localStorage);
+        const keepKeys = ["instructors","questionaires"];
+        for (const key of keys) {
+            if(keepKeys.includes(key)){
+                continue;
+            }
+            localStorage.removeItem(key)
+        }
         selectedRatings.value = []
         router.go(0)
     }
-
- 
 }
 
 
@@ -86,23 +89,33 @@ const updateSelectedRatings = (val) => {
 
 
 onMounted(async ()=>{
-    await store.fetchQuestionaire()
-    await instructorStore.fetchAllInstructors()
+    if(!localStorage.getItem('instructors')){
+        await instructorStore.fetchAllInstructors()
+    }
+    if(!localStorage.getItem('questionaires')){
+        await store.fetchQuestionaire()
+    }
     const { data } = store.questionaires
     questionaire.value = data
-    for (let i = 0; i < localStorage.length; i++) {
-        const id = localStorage.key(i);
-        if(Number(id)){
-            const rating = localStorage.getItem(id)
-            if(rating > 5){
-                localStorage.removeItem(id)
-            }else{
-                selectedRatings.value.push({question_id:Number(id),rating:Number(localStorage.getItem(id))})
+    let qId = []
+    questionaire.value.criterias.forEach(criteria => {
+        criteria.questions.forEach(question => {
+            qId.push(question.id)
+        })
+    });
+    if(localStorage.length > 0){
+        for (let i = 0; i < localStorage.length; i++) {
+            const id = localStorage.key(i);
+            if(qId.includes(Number(id))){
+                const rating = localStorage.getItem(id)
+                if(rating > 5){
+                    localStorage.removeItem(id)
+                }else{
+                    selectedRatings.value.push({question_id:Number(id),rating:Number(localStorage.getItem(id))})
+                }
             }
         }
-
     }
-    // console.log(selectedRatings.value)
     selectedInstructor.value = JSON.parse(localStorage.getItem('selectedInstructor'))
     if(selectedInstructor.value){
         name.value = selectedInstructor.value.name

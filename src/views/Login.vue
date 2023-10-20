@@ -36,7 +36,7 @@ const form = ref({
 const handleSubmit = async () =>{
     await handleLogin(form.value)
     if(store.isLoggedIn){
-        router.push(route.query.redirect ?? {name:'dashboard'})
+        router.push(route.query.redirect ?? {name:'evaluation'})
     }
 };
 

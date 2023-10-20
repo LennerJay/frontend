@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { allQuestionaires } from "../http/questionaire-api";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     const questionaires = ref([]);
@@ -10,7 +10,20 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
       
     }
 
+    if(localStorage.getItem('questionaires')){
+        questionaires.value = JSON.parse(localStorage.getItem('questionaires'))
+    }
 
+    watch(
+        questionaires,
+        (questionairesVal)=>{
+            localStorage.setItem('questionaires',JSON.stringify(questionairesVal))
+        },
+        {
+            deep:true
+        }
+
+    );
 
 
 

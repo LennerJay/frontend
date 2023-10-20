@@ -51,7 +51,9 @@ const closeTag= ()=>{
     open.value = false
 }
 onMounted(async ()=>{
-    await store.fetchAllInstructors();
+    if(!localStorage.getItem('instructors')){
+        await store.fetchAllInstructors()
+    }
     instructors.value = store.instructors
     document.addEventListener('click', handleSelectTag);
  

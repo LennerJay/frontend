@@ -11,36 +11,36 @@
                 <hr class="my-2 text-gray-600">
             </div>
             <router-link to='/'>
-                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600">
+                <div class="router">
                     <i class="bi bi-filter-circle-fill"></i>
-                    <span class="text-[15px] ml-4 text-gray-200">Dashboard</span>
+                    <span class="router-name">Dashboard</span>
                 </div>
             </router-link>
             <router-link to="/evaluation">
-                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600" >
+                <div class="router" >
                     <i class="bi bi-clipboard-data-fill"></i>
-                    <span class="text-[15px] ml-4 text-gray-200">Evaluation</span>
+                    <span class="router-name">Evaluation</span>
                 </div>
             </router-link>
             <hr class="my-4 text-gray-600">
             <router-link to="/profile">
-                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600">
+                <div class="router">
                     <i class="bi bi-gear-fill"></i>
-                    <span class="text-[15px] ml-4 text-gray-200">Profile</span>
+                    <span class="router-name">Profile</span>
                 </div>
             </router-link>
             <router-link to="/test">
-                <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600">
+                <div class="router">
                     <i class="bi bi-gear-fill"></i>
-                    <span class="text-[15px] ml-4 text-gray-200">test</span>
+                    <span class="router-name">test</span>
                 </div>
             </router-link>
             <div class="text-left text-sm font-thin mt-2 w-4/5 mx-auto text-white" id="submenu">
                 <h1 class="cursor-pointer p-2 hover:bg-blue-700 rounded-md mt-1 hidden" id="profile"><i class="bi bi-person-circle pr-2"></i>Profile</h1>           
             </div>
-            <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600" @click="handleLogout">
+            <div class="router" @click="handleLogout">
                 <i class="bi bi-box-arrow-right"></i>
-                <span class="text-[15px] ml-4 text-gray-200">Logout</span>
+                <span class="router-name">Logout</span>
             </div>
         </div>
     </aside>
@@ -65,5 +65,11 @@ const handleLogout = async() =>{
 <style scoped>
     .router-link-active{
         font-size: x-large;
+    }
+    .router{
+        @apply p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600
+    }
+    .router-name{
+        @apply text-[15px] ml-4 text-gray-200
     }
 </style>
