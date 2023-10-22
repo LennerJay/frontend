@@ -1,12 +1,30 @@
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView,useRoute } from 'vue-router'
+import { ref,watch} from 'vue';
 import SideBar from '@/components/SideBar.vue'
 
+const route = useRoute() 
+const showSideBar = ref()
+
+
+watch(
+  route,
+  (to)=>{
+    if(to.path === '/login'){
+      showSideBar.value = false
+    }else{
+      showSideBar.value = true
+    }
+    
+  }
+
+)
 </script>
 
 <template>
-  <SideBar/>
-  <!-- <router-view/> -->
+
+  <SideBar v-if="showSideBar" />
+
   <router-view v-slot="{Component}">
     <Transition name="fade" mode="out-in">
       <component :is="Component"/>
