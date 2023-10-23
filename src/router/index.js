@@ -11,13 +11,7 @@ const router = createRouter({
 router.beforeEach(async (to,from)=>{
   const store = useAuthStore()
   await store.fetchUser();
-  if(to.path === '/login'){
-    localStorage.setItem('showSideBar',false)
-  }else{
-    localStorage.setItem('showSideBar',true)
-  }
   if(to.meta.auth && !store.isLoggedIn){
-
       return{
           name:'login',
           query:{
@@ -25,8 +19,7 @@ router.beforeEach(async (to,from)=>{
           }
       }
   }else if (to.meta.guest && store.isLoggedIn) {
-
-      return { name: "dashboard" };
+      return { name: "evaluation" };
   }
 });
 

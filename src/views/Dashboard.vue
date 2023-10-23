@@ -4,7 +4,7 @@
             Cordova Public College
             <p>2023</p>
             <div ref="selectRef">
-                <SelectTag  @selectValue="selectedValue"  :course="course" @option="option" :open="open" @closeTag="closeTag"></SelectTag>
+                <SelectTag   @selectValue="selectedValue"  :course="course" @option="option" :open="open" @closeTag="closeTag"></SelectTag>
             </div>
        </div>
     
@@ -38,6 +38,7 @@ const handleSelectTag = (event)=>{
     if(!selectRef || !selectRef.value.contains(event.target)){
         open.value = false
     }
+
 }
 const selectedValue = (val)=>{
     instructors.value = store.filterDepartment(val)

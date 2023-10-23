@@ -10,55 +10,92 @@
                 </div>
                 <hr class="my-2 text-gray-600">
             </div>
-            <router-link to='/'>
+            <router-link v-for="(component,index) in components" :key="index" :to="component.path">
+                <hr v-if="index === 2" class="my-2 text-gray-600">
                 <div class="router">
-                    <i class="bi bi-filter-circle-fill"></i>
-                    <span class="router-name">Dashboard</span>
+                    <i :class="component.icon"></i>
+                    <span class="router-name">{{ component.name }}</span>
                 </div>
             </router-link>
-            <router-link to="/evaluation">
-                <div class="router" >
-                    <i class="bi bi-clipboard-data-fill"></i>
-                    <span class="router-name">Evaluation</span>
-                </div>
-            </router-link>
-            <hr class="my-4 text-gray-600">
-            <router-link to="/profile">
-                <div class="router">
-                    <i class="bi bi-gear-fill"></i>
-                    <span class="router-name">Profile</span>
-                </div>
-            </router-link>
-            <router-link to="/test">
-                <div class="router">
-                    <i class="bi bi-gear-fill"></i>
-                    <span class="router-name">test</span>
-                </div>
-            </router-link>
-            <div class="text-left text-sm font-thin mt-2 w-4/5 mx-auto text-white" id="submenu">
-                <h1 class="cursor-pointer p-2 hover:bg-blue-700 rounded-md mt-1 hidden" id="profile"><i class="bi bi-person-circle pr-2"></i>Profile</h1>           
-            </div>
+           
             <div class="router" @click="handleLogout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span class="router-name">Logout</span>
             </div>
         </div>
     </aside>
-    <slot></slot>
 </template>
 
 <script setup>
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { onMounted,ref } from "vue";
 
 const router = useRouter()
 const store = useAuthStore()
+const {isAdminStaff,user} = store
 
+const components = ref();
+const userComponent = [
+    {
+        name: "Dashboard",
+        icon: "bi bi-filter-circle-fill",
+        path: "/"
+    },
+    {
+        name: "Evaluation",
+        icon: "bi bi-clipboard-data-fill",
+        path: "/evaluation"
+    },
+    {
+        name: "Profile",
+        icon: "bi bi-gear-fill",
+        path: "/profile"
+    },
+    {
+        name: "History",
+        icon: "bi bi-gear-fill",
+        path: "/history"
+    }
+];
+const adminStaffComponent = [
+    {
+        name: "Dashboard",
+        icon: "bi bi-filter-circle-fill",
+        path: "/"
+    },
+    {
+        name: "Ratings",
+        icon: "bi bi-clipboard-data-fill",
+        path: "/ratings"
+    },
+    {
+        name: "Question Form",
+        icon: "bi bi-gear-fill",
+        path: "/question-form"
+    },
+    {
+        name: "Students List",
+        icon: "bi bi-gear-fill",
+        path: "/students"
+    }
+];
 
 const handleLogout = async() =>{
     await store.handleLogout()
     router.push({ name: 'login' })
 };
+
+
+onMounted(() => {
+    if(store.isAdminStaff){
+        components.value = adminStaffComponent
+    }else{
+        components.value = userComponent
+    }
+    // console.log(components.value)
+})
+
 </script>
 
 

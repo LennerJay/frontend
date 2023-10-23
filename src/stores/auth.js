@@ -7,12 +7,17 @@ import {  csrfCookie, login, register, logout, getUser } from '../http/auth-api'
 export const useAuthStore = defineStore('authStore', ()=>{
     const user = ref({})
     const errors = ref({})
+
+    const adminStaffDepartment = ['ADMIN', 'STAFF'];
+    const isAdminStaff = ref()
     const isLoggedIn = computed(()=> !!user.value)
+
     
     const fetchUser = async ()=>{
       try{
           const {data}  = await getUser();
           user.value =  data
+          isAdminStaff.value = user.value.departments.some(department => adminStaffDepartment.includes(department))
       }catch(error){
         user.value = null
         errors.value =  error.response
@@ -51,11 +56,10 @@ export const useAuthStore = defineStore('authStore', ()=>{
 
     const handleLogout = async() => {
         await logout()
-        localStorage.removeItem('jwt_token');
         user.value = null
     };
 
     return{
-        user, errors, isLoggedIn, fetchUser, handleLogin, handleRegister, handleLogout
+        user, errors, isLoggedIn, isAdminStaff,fetchUser, handleLogin, handleRegister, handleLogout
     }
 });

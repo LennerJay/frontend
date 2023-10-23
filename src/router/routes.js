@@ -3,6 +3,8 @@ import NotFoundErrorPage from '../views/NotFoundErrorPage.vue'
 import Login from '../views/Login.vue'
 import Evaluation from '../views/Evaluation.vue'
 import Profile from '../views/Profile.vue'
+import History from '../views/History.vue'
+import AdminDashboard from '../views/AdminDashboard.vue'
 
 
 const routes = [
@@ -39,9 +41,44 @@ const routes = [
         }
       },
       {
-        path:'/test',
-        name: 'test',
-        component: () => import('../views/test.vue'),
+        path:'/history',
+        name: 'history',
+        component: History,
+        meta:{
+          auth:true
+        }
+      },
+      {
+        path:'/admin',
+        name: 'admin',
+        component: AdminDashboard,
+        meta:{
+          auth:true
+        }
+      },
+      {
+        path:'/ratings',
+        name: 'ratings',
+        component: ()=> import('../views/Ratings.vue'),
+        meta:{
+          auth:true
+        }
+      },
+      {
+        path:'/question-form',
+        name: 'question-form',
+        component: ()=> import('../views/QuestionForm.vue'),
+        meta:{
+          auth:true
+        }
+      },
+      {
+        path:'/students',
+        name: 'students',
+        component: ()=> import('../views/StudentList.vue'),
+        meta:{
+          auth:true
+        }
       },
 
       {

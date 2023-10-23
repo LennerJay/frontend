@@ -33,7 +33,7 @@ const instructorStore = useInstructorStore()
 const store = useQuestionaireStore();
 const router = useRouter()
 const { instructors } = storeToRefs(instructorStore)
-const { user } = userStore
+const { user,errors } = userStore
 const rating = useRatingStore()
 const selectedInstructor = ref('')
 const selectedRatings = ref([]);
@@ -121,6 +121,7 @@ onMounted(async ()=>{
         name.value = selectedInstructor.value.name
         show.value = false
     }
+
 });
 
 </script>

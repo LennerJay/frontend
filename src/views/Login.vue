@@ -23,24 +23,33 @@ import { storeToRefs } from 'pinia';
 import { useRouter,useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth'
 
+
 const route = useRoute()
 const router = useRouter()
 const store = useAuthStore()
 const { errors } = storeToRefs(store)
-const { handleLogin} = store
+const { handleLogin } = store
 const form = ref({
     id_number : null,
     password : '',
 });
 
+
 const handleSubmit = async () =>{
     await handleLogin(form.value)
     if(store.isLoggedIn){
-        router.push(route.query.redirect ?? {name:'evaluation'})
+        if(store.isAdminStaff){
+            router.push({name: 'admin'});
+        }
+        else{
+            router.push(route.query.redirect ?? {name:'evaluation'})
+        }
     }
 };
 
+
 </script>
+
 
 <style scoped>
 input::-webkit-outer-spin-button,
