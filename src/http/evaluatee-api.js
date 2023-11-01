@@ -1,0 +1,6 @@
+import api from "./api";
+
+const apiPath = import.meta.env.VITE_API_PATH
+const resource = apiPath +  "/evaluatees"
+
+export const getAllEvaluatees = () => api.get(resource)

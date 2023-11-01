@@ -17,15 +17,15 @@
 </template>
 
 <script setup>
-import QuestionForm from '../components/QuestionForm.vue';
-import ProfileCard from '../components/ProfileCard.vue';
-import { useAuthStore } from '../stores/auth'
+import QuestionForm from '../../components/QuestionForm.vue';
+import ProfileCard from '../../components/ProfileCard.vue';
+import { useAuthStore } from '../../stores/auth';
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
-import { useInstructorStore } from '../stores/instructor';
-import { useQuestionaireStore } from '../stores/questionaire';
+import { useRouter } from 'vue-router'
+import { useInstructorStore } from '../../stores/instructor';
+import { useQuestionaireStore } from '../../stores/questionaire';
 import { onMounted, ref } from 'vue';
-import { useRatingStore } from '../stores/rating'
+import { useRatingStore } from '../../stores/rating'
 
 
 const userStore  = useAuthStore()
@@ -95,8 +95,10 @@ onMounted(async ()=>{
     if(!localStorage.getItem('questionaires')){
         await store.fetchQuestionaire()
     }
+
     const { data } = store.questionaires
     questionaire.value = data
+    console.log(instructorStore.instructors)
     let qId = []
     questionaire.value.criterias.forEach(criteria => {
         criteria.questions.forEach(question => {
@@ -121,7 +123,7 @@ onMounted(async ()=>{
         name.value = selectedInstructor.value.name
         show.value = false
     }
-
+  
 });
 
 </script>

@@ -1,10 +1,10 @@
-import Dashboard from '../views/Dashboard.vue'
+import Dashboard from '../views/user/Dashboard.vue'
 import NotFoundErrorPage from '../views/NotFoundErrorPage.vue'
 import Login from '../views/Login.vue'
-import Evaluation from '../views/Evaluation.vue'
-import Profile from '../views/Profile.vue'
-import History from '../views/History.vue'
-import AdminDashboard from '../views/AdminDashboard.vue'
+import Evaluation from '../views/user/Evaluation.vue'
+import Profile from '../views/user/Profile.vue'
+import History from '../views/user/History.vue'
+import AdminDashboard from '../views/admin/AdminDashboard.vue'
 
 
 const routes = [
@@ -53,34 +53,54 @@ const routes = [
         name: 'admin',
         component: AdminDashboard,
         meta:{
-          auth:true
+          auth:true,
+          admin:true
         }
       },
       {
         path:'/ratings',
         name: 'ratings',
-        component: ()=> import('../views/Ratings.vue'),
+        component: ()=> import('../views/admin/Ratings.vue'),
         meta:{
-          auth:true
+          auth:true,
+          admin:true
         }
       },
       {
         path:'/question-form',
         name: 'question-form',
-        component: ()=> import('../views/QuestionForm.vue'),
+        component: ()=> import('../views/admin/QuestionForm.vue'),
+        meta:{
+          auth:true,
+          admin:true
+        }
+      },
+      {
+        path:'/students-list',
+        name: 'students',
+        component: ()=> import('../views/admin/StudentList.vue'),
+        meta:{
+          auth:true,
+          admin:true
+        }
+      },
+      {
+        path:'/instructors',
+        name: 'instructors',
+        component: ()=> import('../views/user/Instructors.vue'),
         meta:{
           auth:true
         }
       },
       {
-        path:'/students',
-        name: 'students',
-        component: ()=> import('../views/StudentList.vue'),
+        path:'/instructors-list',
+        name: 'instructors-list',
+        component: ()=> import('../views/admin/InstructorsList.vue'),
         meta:{
-          auth:true
+          auth:true,
+          admin:true
         }
       },
-
       {
         path:'/:notFound(.*)',
         name:'error.404',

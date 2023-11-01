@@ -18,8 +18,8 @@
 
 
 <script setup>
-import { useInstructorStore } from "../stores/instructor";
-import { onMounted ,ref} from 'vue';
+import { useInstructorStore } from "../../stores/instructor";
+import { onMounted ,ref } from 'vue';
 import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
 
@@ -41,7 +41,7 @@ const handleSelectTag = (event)=>{
 
 }
 const selectedValue = (val)=>{
-    instructors.value = store.filterDepartment(val)
+   instructors.value =  store.filterDepartment(val)
     course.value= val
     open.value = false
 }
@@ -56,6 +56,7 @@ onMounted(async ()=>{
         await store.fetchAllInstructors()
     }
     instructors.value = store.instructors
+    console.log(instructors.value)
     document.addEventListener('click', handleSelectTag);
  
 });

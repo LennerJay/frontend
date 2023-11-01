@@ -7,17 +7,14 @@ import {  csrfCookie, login, register, logout, getUser } from '../http/auth-api'
 export const useAuthStore = defineStore('authStore', ()=>{
     const user = ref({})
     const errors = ref({})
-
-    const adminStaffDepartment = ['ADMIN', 'STAFF'];
     const isAdminStaff = ref()
     const isLoggedIn = computed(()=> !!user.value)
-
     
     const fetchUser = async ()=>{
       try{
           const {data}  = await getUser();
           user.value =  data
-          isAdminStaff.value = user.value.departments.some(department => adminStaffDepartment.includes(department))
+          isAdminStaff.value =  user.value.roles.some(role => role.name === 'admin' || role.name ==='staff')
       }catch(error){
         user.value = null
         errors.value =  error.response
@@ -60,6 +57,6 @@ export const useAuthStore = defineStore('authStore', ()=>{
     };
 
     return{
-        user, errors, isLoggedIn, isAdminStaff,fetchUser, handleLogin, handleRegister, handleLogout
+        user, errors, isAdminStaff,isLoggedIn,fetchUser, handleLogin, handleRegister, handleLogout
     }
 });

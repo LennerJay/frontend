@@ -5,9 +5,9 @@
             <i class="fas fa-chevron-down text-xl"></i>
         </button>
         <ul class="z-2 absolute mt-1 w-full rounded bg-gray-50 ring-1 ring-gray-300" v-if="open">
-            <li class="cursor-pointer select-none p-2 hover:bg-gray-200" @click="$emit('selectValue','BSIT')">BSIT</li>
-            <li class="cursor-pointer select-none p-2 hover:bg-gray-200" @click="$emit('selectValue','BEED')">BEED</li>
-            <li class="cursor-pointer select-none p-2 hover:bg-gray-200" @click="$emit('selectValue','BSHRM')">BSHRM</li>
+            <li class="list" @click="$emit('selectValue','BSIT')">BSIT</li>
+            <li class="list" @click="$emit('selectValue','BEED')">BEED</li>
+            <li class="list" @click="$emit('selectValue','BSHRM')">BSHRM</li>
         </ul>
     </div>
 </template>
@@ -25,6 +25,8 @@ defineExpose({
 });
 </script>
 
-<style lang="scss" scoped>
-
+<style  scoped>
+.list{
+    @apply cursor-pointer select-none p-2 hover:bg-gray-200
+}
 </style>

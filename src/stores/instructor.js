@@ -1,13 +1,14 @@
 import {  defineStore } from "pinia";
 import { ref, watch } from "vue";
-import { allInstructors } from "../http/instructor-api"
+import { getAllEvaluatees } from "../http/evaluatee-api"
 
 
 export const useInstructorStore = defineStore('instructionStore',() =>{
     const instructors = ref([]);
 
     const fetchAllInstructors = async () =>{
-        const { data } = await allInstructors();
+        const { data } = await getAllEvaluatees();
+        console.log(data)
         instructors.value = data
     }
 
@@ -25,7 +26,11 @@ export const useInstructorStore = defineStore('instructionStore',() =>{
         }
     );
 
-    const filterDepartment = course => instructors.value.filter(e =>e.department === course)
+    const filterDepartment = (course)=>{
+        return instructors.value.filter((instructor)=>{
+            return instructor.departments.some(department => department.department === course)
+        })
+    }
     
 
     return {

@@ -28,7 +28,7 @@ const route = useRoute()
 const router = useRouter()
 const store = useAuthStore()
 const { errors } = storeToRefs(store)
-const { handleLogin } = store
+const { handleLogin} = store
 const form = ref({
     id_number : null,
     password : '',
