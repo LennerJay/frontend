@@ -4,13 +4,13 @@
             Cordova Public College
             <p>2023</p>
             <div ref="selectRef">
-                <SelectTag   @selectValue="selectedValue"  :course="course" @option="option" :open="open" @closeTag="closeTag"></SelectTag>
+                <SelectTag   @selectValue="selectedValue"  :course="department" @option="option" :open="open" @closeTag="closeTag"></SelectTag>
             </div>
        </div>
     
        <div class="min-h-screen bg-blue-50">
             <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
-                <ProfileCard v-for="instructor in instructors" :instructor="instructor" :key="instructor.id"/>
+                <ProfileCard v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id"/>
             </div>
          </div>
     </div>
@@ -18,18 +18,18 @@
 
 
 <script setup>
-import { useInstructorStore } from "../../stores/instructor";
+import { useEvaluateeStore } from "../../stores/evaluatee";
 import { onMounted ,ref } from 'vue';
 import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
 
 
 
-const store = useInstructorStore()
+const store = useEvaluateeStore()
 const selectRef = ref(null)
-const instructors = ref([]);
+const  evaluatees = ref([]);
 let open = ref(false)
-let course = ref('Course')
+let department = ref('Department')
 
 const handleSelectTag = (event)=>{
     if (selectRef.value == null) {
@@ -41,8 +41,8 @@ const handleSelectTag = (event)=>{
 
 }
 const selectedValue = (val)=>{
-   instructors.value =  store.filterDepartment(val)
-    course.value= val
+    evaluatees.value =  store.filterDepartment(val)
+   department.value= val
     open.value = false
 }
 const option = (val)=>{
@@ -52,11 +52,11 @@ const closeTag= ()=>{
     open.value = false
 }
 onMounted(async ()=>{
-    if(!localStorage.getItem('instructors')){
-        await store.fetchAllInstructors()
+    if(!localStorage.getItem('evaluatees')){
+        await store.fetchAllEvaluatees()
     }
-    instructors.value = store.instructors
-    console.log(instructors.value)
+     evaluatees.value = store.evaluatees
+    console.log( evaluatees.value)
     document.addEventListener('click', handleSelectTag);
  
 });

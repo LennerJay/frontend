@@ -5,7 +5,7 @@
         </div>
 
         <div v-if="show" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer">
-            <ProfileCard v-for="(instructor,index) in instructors" :instructor="instructor" :key="index" @click="selectInstructor(instructor.id)"/>
+            <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index" @click="selectEvaluatee(evaluatee.id)"/>
         </div>
         <div v-else class="questions">
             <h1 class="font-bold">Title: {{ questionaire.title }}</h1>
@@ -22,46 +22,48 @@ import ProfileCard from '../../components/ProfileCard.vue';
 import { useAuthStore } from '../../stores/auth';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
-import { useInstructorStore } from '../../stores/instructor';
+import { useEvaluateeStore } from '../../stores/evaluatee';
 import { useQuestionaireStore } from '../../stores/questionaire';
 import { onMounted, ref } from 'vue';
 import { useRatingStore } from '../../stores/rating'
 
 
 const userStore  = useAuthStore()
-const instructorStore = useInstructorStore()
+const evaluateeStore = useEvaluateeStore()
 const store = useQuestionaireStore();
 const router = useRouter()
-const { instructors } = storeToRefs(instructorStore)
+const { evaluatees } = storeToRefs(evaluateeStore)
 const { user,errors } = userStore
 const rating = useRatingStore()
-const selectedInstructor = ref('')
+const selectedevaluatee = ref('')
 const selectedRatings = ref([]);
 const questionaire  = ref([]);
 const show = ref(true)
 const name = ref('')
 
 
-const selectInstructor = (id)=>{
-    const instructor = instructors.value.find(obj => obj.id === id)
-    selectedInstructor.value = instructor
-    localStorage.setItem('selectedInstructor', JSON.stringify(instructor))
-    name.value = instructor.name
+const selectEvaluatee = (id)=>{
+    const evaluatee = evaluatees.value.find(obj => obj.id === id)
+    selectedevaluatee.value = evaluatee
+    localStorage.setItem('selectedevaluatee', JSON.stringify(evaluatee))
+    name.value = evaluatee.name
     show.value = false
 
 }
 
 
 const handleSubmit = async ()=>{
+   
     selectedRatings.value.map( val => {
         val.evaluator_id = user.id_number
     })
     const value = {
-        instructorId : selectedInstructor.value.id,
+        instructorId : selectedevaluatee.value.id,
         // evaluatorId: user.id_number,
         val: [...selectedRatings.value]
         
     }
+    console.log(value)
     await rating.save(value)
     if(rating.response.data.code === 201){
         const keys = Object.keys(localStorage);
@@ -89,8 +91,8 @@ const updateSelectedRatings = (val) => {
 
 
 onMounted(async ()=>{
-    if(!localStorage.getItem('instructors')){
-        await instructorStore.fetchAllInstructors()
+    if(!localStorage.getItem('evaluatees')){
+        await evaluateeStore.fetchAllEvaluatees()
     }
     if(!localStorage.getItem('questionaires')){
         await store.fetchQuestionaire()
@@ -98,7 +100,6 @@ onMounted(async ()=>{
 
     const { data } = store.questionaires
     questionaire.value = data
-    console.log(instructorStore.instructors)
     let qId = []
     questionaire.value.criterias.forEach(criteria => {
         criteria.questions.forEach(question => {
@@ -118,9 +119,9 @@ onMounted(async ()=>{
             }
         }
     }
-    selectedInstructor.value = JSON.parse(localStorage.getItem('selectedInstructor'))
-    if(selectedInstructor.value){
-        name.value = selectedInstructor.value.name
+    selectedevaluatee.value = JSON.parse(localStorage.getItem('selectedevaluatee'))
+    if(selectedevaluatee.value){
+        name.value = selectedevaluatee.value.name
         show.value = false
     }
   

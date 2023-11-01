@@ -5,16 +5,21 @@
             <i class="fas fa-chevron-down text-xl"></i>
         </button>
         <ul class="z-2 absolute mt-1 w-full rounded bg-gray-50 ring-1 ring-gray-300" v-if="open">
-            <li class="list" @click="$emit('selectValue','BSIT')">BSIT</li>
-            <li class="list" @click="$emit('selectValue','BEED')">BEED</li>
-            <li class="list" @click="$emit('selectValue','BSHRM')">BSHRM</li>
+            <li class="list" v-for="department in departments"  @click="$emit('selectValue',`${department.department}` )">{{ department.department }}</li>
+         
         </ul>
     </div>
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import { ref, onMounted } from 'vue'
+import { useDepartmentStore } from '../stores/department';
+
+const store = useDepartmentStore();
+const departments = ref([]);
 const divRef = ref(null)
+
+
 defineProps({
     course: String,
     open: Boolean,
@@ -23,6 +28,14 @@ defineProps({
 defineExpose({
     divRef
 });
+
+onMounted(async()=>{
+    await store.getDepartments()
+    departments.value = store.departments
+    console.log(departments.value)
+})
+
+
 </script>
 
 <style  scoped>
