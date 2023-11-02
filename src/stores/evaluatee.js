@@ -44,6 +44,6 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     
 
     return {
-        fetchAllEvaluated,fetchAllEvaluatees, evaluatees,filterDepartment
+        fetchAllEvaluated,fetchAllEvaluatees, evaluatees,filterDepartment, evaluated
     }
 })
