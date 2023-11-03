@@ -76,26 +76,26 @@ const routes = [
         }
       },
       {
-        path:'/students-list',
-        name: 'students',
-        component: ()=> import('../views/admin/StudentList.vue'),
+        path:'/users-list',
+        name: 'users-list',
+        component: ()=> import('../views/admin/UserList.vue'),
         meta:{
           auth:true,
           admin:true
         }
       },
       {
-        path:'/instructors',
-        name: 'instructors',
-        component: ()=> import('../views/user/Instructors.vue'),
+        path:'/evaluatees',
+        name: 'evaluatees',
+        component: ()=> import('../views/user/Evaluatees.vue'),
         meta:{
           auth:true
         }
       },
       {
-        path:'/instructors-list',
-        name: 'instructors-list',
-        component: ()=> import('../views/admin/InstructorsList.vue'),
+        path:'/evaluatees-list',
+        name: 'evaluatees-list',
+        component: ()=> import('../views/admin/EvaluateesList.vue'),
         meta:{
           auth:true,
           admin:true

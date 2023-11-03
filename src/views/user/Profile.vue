@@ -13,10 +13,13 @@
 
 <script setup>
 import { useAuthStore } from '../../stores/auth';
+import{ onMounted } from 'vue';
 
 const userStore = useAuthStore();
 
 const user = userStore.user;
 
-
+onMounted(()=>{
+    console.log(user);
+})
 </script>

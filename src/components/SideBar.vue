@@ -41,9 +41,9 @@ const userComponent = [
         path: "/"
     },
     {
-        name: "Instructors",
+        name: "Evaluatees",
         icon: "bi bi-filter-circle-fill",
-        path: "/instructors"
+        path: "/evaluatees"
     },
     {
         name: "Evaluation",
@@ -51,15 +51,16 @@ const userComponent = [
         path: "/evaluation"
     },
     {
-        name: "Profile",
-        icon: "bi bi-gear-fill",
-        path: "/profile"
-    },
-    {
         name: "History",
         icon: "bi bi-gear-fill",
         path: "/history"
+    },
+    {
+        name: "Profile",
+        icon: "bi bi-gear-fill",
+        path: "/profile"
     }
+
 ];
 const adminStaffComponent = [
     {
@@ -78,21 +79,22 @@ const adminStaffComponent = [
         path: "/question-form"
     },
     {
-        name: "Instructor List",
+        name: "Evaluatees List",
         icon: "bi bi-gear-fill",
-        path: "/instructors-list"
+        path: "/evaluatees-list"
     },
     {
-        name: "Students List",
+        name: "Users List",
         icon: "bi bi-gear-fill",
-        path: "/students-list"
+        path: "/users-list"
     }
 ];
 
 const handleLogout = async() =>{
-    // await store.fetchUser();
     await store.handleLogout()
     router.push({ name: 'login' })
+
+
 };
 
 
@@ -102,7 +104,6 @@ onMounted(() => {
     }else{
         components.value = userComponent
     }
-    // console.log(components.value)
 })
 
 </script>

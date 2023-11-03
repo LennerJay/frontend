@@ -40,8 +40,7 @@ const handleSubmit = async () =>{
     if(store.isLoggedIn){
         if(store.isAdminStaff){
             router.push({name: 'admin'});
-        }
-        else{
+        }else{
             router.push(route.query.redirect ?? {name:'evaluation'})
         }
     }

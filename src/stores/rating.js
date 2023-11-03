@@ -12,7 +12,7 @@ export const useRatingStore = defineStore('ratingStore',()=>{
         try{
             response.value = await saveRatings(value)
         } catch(e){
-            error.value = e
+            error.value = e.response
         }
     }
 

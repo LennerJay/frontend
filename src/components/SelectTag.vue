@@ -1,11 +1,13 @@
 <template>
      <div class="relative w-[30rem]" ref="divRef">
-        <button @click="$emit('option',true)" @keydown.escape="$emit('option',false)" :class="open && 'ring-blue-600'" class="flex w-full items-center justify-between rounded bg-white p-2 ring-1 ring-gray-300">
+        <button @click="$emit('show',true)" @keydown.escape="$emit('show',false)" :class="open && 'ring-blue-600'" class="flex w-full items-center justify-between rounded bg-white p-2 ring-1 ring-gray-300">
             <span>{{ course }}</span>
             <i class="fas fa-chevron-down text-xl"></i>
         </button>
         <ul class="z-2 absolute mt-1 w-full rounded bg-gray-50 ring-1 ring-gray-300" v-if="open">
-            <li class="list" v-for="department in departments"  @click="$emit('selectValue',`${department.department}` )">{{ department.department }}</li>
+            <li v-if="showRole" class="list" v-for="role in roles"  @click="$emit('selectValue',`${role.name}` )">{{ role.name}}</li>
+            <li v-else class="list" v-for="department in departments"  @click="$emit('selectValue',`${department.department}` )">{{ department.department }}</li>
+          
          
         </ul>
     </div>
@@ -14,25 +16,37 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useDepartmentStore } from '../stores/department';
+import { useRoleStore } from '../stores/role';
 
 const store = useDepartmentStore();
+const roleStore = useRoleStore();
 const departments = ref([]);
+const roles = ref([]);
 const divRef = ref(null)
+const showRole = ref(false);
 
-
-defineProps({
+const props = defineProps({
     course: String,
     open: Boolean,
-    selectedValue: String
+    selectedValue: String,
+    option:String
 });
 defineExpose({
     divRef
 });
 
 onMounted(async()=>{
-    await store.getDepartments()
-    departments.value = store.departments
-    console.log(departments.value)
+    if(props.option === 'roles'){
+        await roleStore.fetchAllRoles();
+        roles.value = roleStore.roles;
+        showRole.value = true;
+    } else{
+        await store.getDepartments()
+        departments.value = store.departments
+        showRole.value = false;
+    }
+
+ 
 })
 
 

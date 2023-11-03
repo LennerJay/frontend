@@ -43,6 +43,7 @@ const name = ref('')
 
 
 const selectEvaluatee = (id)=>{
+  console.log(id)
     const evaluatee = evaluatees.value.find(obj => obj.id === id)
     selectedevaluatee.value = evaluatee
     localStorage.setItem('selectedevaluatee', JSON.stringify(evaluatee))
@@ -94,12 +95,12 @@ onMounted(async ()=>{
     if(!localStorage.getItem('evaluatees')){
         await evaluateeStore.fetchAllEvaluatees()
     }
-    if(!localStorage.getItem('questionaires')){
-        await store.fetchQuestionaire()
+    if(!localStorage.getItem('latest-questionaires')){
+        await store.fetchLatestQuestionaire()
     }
 
-    const { data } = store.questionaires
-    questionaire.value = data
+    questionaire.value = store.latestQuestionaire
+
     let qId = []
     questionaire.value.criterias.forEach(criteria => {
         criteria.questions.forEach(question => {
@@ -124,7 +125,6 @@ onMounted(async ()=>{
         name.value = selectedevaluatee.value.name
         show.value = false
     }
-  
 });
 
 </script>

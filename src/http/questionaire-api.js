@@ -1,7 +1,8 @@
 import api from "./api";
 
 const apiPath = import.meta.env.VITE_API_PATH
-const resource = apiPath+  '/questionaire'
+const resource = apiPath + "/questionaire"
 
 export const allQuestionaires = () => api.get(resource)
 
+export const getLatestQuestionaire = ()=> api.get(resource + '/latest')

@@ -4,7 +4,7 @@
             Cordova Public College
             <p>2023</p>
             <div ref="selectRef">
-                <SelectTag   @selectValue="selectedValue"  :course="department" @option="option" :open="open" @closeTag="closeTag"></SelectTag>
+                <SelectTag   @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
             </div>
        </div>
     
@@ -45,7 +45,7 @@ const selectedValue = (val)=>{
    department.value= val
     open.value = false
 }
-const option = (val)=>{
+const show = (val)=>{
     open.value = val
 }
 const closeTag= ()=>{

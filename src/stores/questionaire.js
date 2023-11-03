@@ -1,17 +1,39 @@
 import { defineStore } from "pinia";
-import { allQuestionaires } from "../http/questionaire-api";
+import { allQuestionaires,getLatestQuestionaire } from "../http/questionaire-api";
 import { ref, watch } from "vue";
 
 export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     const questionaires = ref([]);
-
+    const latestQuestionaire = ref([]);
+    const errors = ref({});
     const fetchQuestionaire = async ()=>{
-        questionaires.value = await allQuestionaires();
+        try{
+            const {data}  = await allQuestionaires();
+            questionaires.value =  data
+        }catch(e){
+            questionaires.value = null;
+            errors.value = e.response
+            console.log(errors.value)
+        }
+      
+    }
+
+    const fetchLatestQuestionaire = async ()=>{
+        try{
+            const {data}  = await getLatestQuestionaire();
+            latestQuestionaire.value =  data
+        }catch(e){
+            latestQuestionaire.value = null;
+            errors.value = e.response
+        }
       
     }
 
     if(localStorage.getItem('questionaires')){
         questionaires.value = JSON.parse(localStorage.getItem('questionaires'))
+    }
+    if(localStorage.getItem('latest-questionaires')){
+        latestQuestionaire.value = JSON.parse(localStorage.getItem('latest-questionaires'))
     }
 
     watch(
@@ -24,11 +46,24 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         }
 
     );
+    watch(
+        latestQuestionaire,
+        (latestQuestionaireVal)=>{
+            localStorage.setItem('latest-questionaires',JSON.stringify(latestQuestionaireVal))
+        },
+        {
+            deep:true
+        }
+
+    );
 
 
 
 
     return {
-        questionaires,fetchQuestionaire
+        questionaires,
+        fetchQuestionaire,
+        latestQuestionaire,
+        fetchLatestQuestionaire
     }
 })
