@@ -41,7 +41,6 @@ defineProps({
 
 const values = [1,2,3,4,5]
 const store = useLocalStorageStore()
-
 const emit = defineEmits(['ratingSelected','handleSubmit'])
 const ratingSelected =  (id,rating) => {
     localStorage.setItem(id,rating)
