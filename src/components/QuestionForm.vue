@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" @click.prevent="$emit('handleSubmit')">Submit</button>
+            <!-- <button type="submit" @click.prevent="$emit('handleSubmit')">Submit</button> -->
         </form>
    </div>
 </template>
@@ -41,6 +41,7 @@ defineProps({
 
 const values = [1,2,3,4,5]
 const store = useLocalStorageStore()
+
 const emit = defineEmits(['ratingSelected','handleSubmit'])
 const ratingSelected =  (id,rating) => {
     localStorage.setItem(id,rating)
