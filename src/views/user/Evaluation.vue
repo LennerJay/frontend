@@ -12,6 +12,9 @@
             <p>description: {{ questionaire.description }}</p>
             <QuestionForm v-for="(criteria,key) in questionaire.criterias" :criteria="criteria" :key="key" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit"/>
             <hr class="h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700">
+            <div class="flex justify-between">
+                <button @click="handleSubmit" :disabled="!isSubmitButtonEnabled">Submit</button>
+            </div>
         </div>
     </div>
 </template>
@@ -24,7 +27,7 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
 import { useEvaluateeStore } from '../../stores/evaluatee';
 import { useQuestionaireStore } from '../../stores/questionaire';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRatingStore } from '../../stores/rating'
 
 
@@ -43,7 +46,6 @@ const name = ref('')
 
 
 const selectEvaluatee = (id)=>{
-  console.log(id)
     const evaluatee = evaluatees.value.find(obj => obj.id === id)
     selectedevaluatee.value = evaluatee
     localStorage.setItem('selectedevaluatee', JSON.stringify(evaluatee))
@@ -52,6 +54,26 @@ const selectEvaluatee = (id)=>{
 
 }
 
+const isSubmitButtonEnabled = computed(() => {
+  if (!questionaire.value || !questionaire.value.criterias) {
+    return false;
+  }
+
+  for (const criteria of questionaire.value.criterias) {
+    for (const question of criteria.questions) {
+      const foundObj = selectedRatings.value.find(
+        (obj) => obj['question_id'] === question.id
+      );
+
+      // If any question is not rated or rated as undefined, return false
+      if (!foundObj || foundObj.rating === undefined || foundObj.rating === null) {
+        return false;
+      }
+    }
+
+  // If all questions have been rated, return true
+  return true;
+}});
 
 const handleSubmit = async ()=>{
    
@@ -95,12 +117,12 @@ onMounted(async ()=>{
     if(!localStorage.getItem('evaluatees')){
         await evaluateeStore.fetchAllEvaluatees()
     }
-    if(!localStorage.getItem('latest-questionaires')){
-        await store.fetchLatestQuestionaire()
+    if(!localStorage.getItem('questionaires')){
+        await store.fetchQuestionaire()
     }
 
-    questionaire.value = store.latestQuestionaire
-
+    const { data } = store.questionaires
+    questionaire.value = data
     let qId = []
     questionaire.value.criterias.forEach(criteria => {
         criteria.questions.forEach(question => {
@@ -125,6 +147,6 @@ onMounted(async ()=>{
         name.value = selectedevaluatee.value.name
         show.value = false
     }
+  
 });
-
 </script>
