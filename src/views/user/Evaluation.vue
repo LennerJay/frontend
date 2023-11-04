@@ -76,7 +76,6 @@ const isSubmitButtonEnabled = computed(() => {
 }});
 
 const handleSubmit = async ()=>{
-   
     selectedRatings.value.map( val => {
         val.evaluator_id = user.id_number
     })
@@ -118,11 +117,11 @@ onMounted(async ()=>{
         await evaluateeStore.fetchAllEvaluatees()
     }
     if(!localStorage.getItem('questionaires')){
-        await store.fetchQuestionaire()
+        await store.fetchLatestQuestionaire()
     }
 
-    const { data } = store.questionaires
-    questionaire.value = data
+    questionaire.value= store.latestQuestionaire
+    console.log( questionaire.value)
     let qId = []
     questionaire.value.criterias.forEach(criteria => {
         criteria.questions.forEach(question => {
@@ -142,11 +141,11 @@ onMounted(async ()=>{
             }
         }
     }
-    selectedevaluatee.value = JSON.parse(localStorage.getItem('selectedevaluatee'))
-    if(selectedevaluatee.value){
+    if(localStorage.getItem('selectedevaluatee')){
+        selectedevaluatee.value = JSON.parse(localStorage.getItem('selectedevaluatee'))
         name.value = selectedevaluatee.value.name
         show.value = false
     }
-  
+
 });
 </script>
