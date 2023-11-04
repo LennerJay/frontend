@@ -8,8 +8,16 @@ module.exports = {
       fontFamily: {
         sans: ["Inter", "sans-serif"]
       },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+          overflow: 'hidden'
+        },
+      },
       animation: {
         'spin-slow': 'spin 1s linear infinite',
+        "marquee": "marquee 8s linear infinite",
       },
     },
   },

@@ -42,7 +42,7 @@ const userComponent = [
     },
     {
         name: "Evaluatees",
-        icon: "bi bi-filter-circle-fill",
+        icon: "bi bi-people-fill",
         path: "/evaluatees"
     },
     {
@@ -52,12 +52,12 @@ const userComponent = [
     },
     {
         name: "History",
-        icon: "bi bi-gear-fill",
+        icon: "bi bi-arrow-counterclockwise",
         path: "/history"
     },
     {
         name: "Profile",
-        icon: "bi bi-gear-fill",
+        icon: "bi bi-person-bounding-box",
         path: "/profile"
     }
 
@@ -80,12 +80,12 @@ const adminStaffComponent = [
     },
     {
         name: "Evaluatees List",
-        icon: "bi bi-gear-fill",
+        icon: "bi bi-people-fill",
         path: "/evaluatees-list"
     },
     {
         name: "Users List",
-        icon: "bi bi-gear-fill",
+        icon: "bi bi-people-fill",
         path: "/users-list"
     }
 ];
