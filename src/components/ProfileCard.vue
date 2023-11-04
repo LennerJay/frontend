@@ -5,7 +5,6 @@
             <div class="pt-1">
                 <div class="text-[15px] ml-2">{{ evaluatee.name }}</div>
                 <div v-for="departments in evaluatee.departments" class="text-[15px] ml-2">{{ departments.department }}</div>
-
             </div>
         </div>
     </div>

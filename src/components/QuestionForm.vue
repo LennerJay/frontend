@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" @click.prevent="$emit('handleSubmit')">Submit</button>
+            <!-- <button type="submit" @click.prevent="$emit('handleSubmit')">Submit</button> -->
         </form>
    </div>
 </template>
