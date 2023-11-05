@@ -19,6 +19,10 @@ module.exports = {
         'spin-slow': 'spin 1s linear infinite',
         "marquee": "marquee 8s linear infinite",
       },
+      screens:{
+        'xs': '475px',
+        'md': '768px',
+      }
     },
   },
   plugins: [],

@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="md:ml-[250px] ml-0  font-serif px-0 w-full text-center">
     <h1>These are the people you evaluated</h1>
 
     <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"/>

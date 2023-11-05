@@ -1,7 +1,12 @@
 <template>
-    <div class="content">
-        <div>
-                <h1 class="font-bold"> Evaluation for: {{ name }}</h1>
+    <div class="md:ml-[250px] ml-0  font-serif px-0 w-full text-center">
+        <div class="header pl-2 pt-2 bg-indigo-900 text-white text-center">
+            <div class="font-bold p-1 text-[20px]">
+              <span class="inline-block md:hidden" @click="drawer.toggle">
+                <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md cursor-pointer"></i>
+              </span>
+                <h1 class="font-bold">Evaluation for: {{ name }}</h1>
+            </div>    
         </div>
 
         <div v-if="show" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer">
@@ -29,8 +34,9 @@ import { useEvaluateeStore } from '../../stores/evaluatee';
 import { useQuestionaireStore } from '../../stores/questionaire';
 import { onMounted, ref, computed } from 'vue';
 import { useRatingStore } from '../../stores/rating'
+import { useDrawerStore } from '../../stores/drawerStore';
 
-
+const drawer = useDrawerStore()
 const userStore  = useAuthStore()
 const evaluateeStore = useEvaluateeStore()
 const store = useQuestionaireStore();
