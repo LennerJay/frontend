@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="md:ml-[250px] ml-0  font-serif px-0 w-full">
        <div class="header">
             Cordova Public College
             <p>2023</p>

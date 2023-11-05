@@ -1,7 +1,12 @@
 <template>
-    <div class="content bg-sky-900 pl-1 h-full">
-        <div class="header pl-2 pt-2 text-white">
-            <div class="font-bold p-1 text-[30px]">Student Profile</div>
+    <div class="md:ml-[250px] ml-0 bg-violet-900 font-serif px-0 w-full">
+        <div class="header pl-2 pt-2 text-white text-center">
+            <div class="font-bold p-1 text-[30px]">
+                <span class="inline-block md:hidden" @click="drawer.toggle">
+                    <i class="bi bi-filter-left px-5 bg-blue-700 rounded-md cursor-pointer"></i>
+                </span>
+                <h1 class="font-bold">Student Profile</h1>
+            </div>
         </div>
         <div class="bg-stone-200 h-[42.9rem]">
             <div class="px-2 py-4 mt-16 flex flex-col justify-center items-center text-center pt-16">
@@ -29,7 +34,9 @@
 
 <script setup>
 import { useAuthStore } from '../../stores/auth';
+import { useDrawerStore } from '../../stores/drawerStore';
 
+const drawer = useDrawerStore()
 const userStore = useAuthStore();
 const user = userStore.user.info;
 
