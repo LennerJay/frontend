@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const fetchUser = async ()=>{
       try{
           const {data}  = await getUser();
+          console.log(data)
           user.value =  data
           // console.log(user.value)
           isAdminStaff.value =  user.value.roles.some(role => role.name === 'admin' || role.name ==='staff')

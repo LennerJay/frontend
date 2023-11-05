@@ -12,7 +12,6 @@ router.beforeEach(async (to,from)=>{
   if(to.path !== '/login'){
 
     const store = useAuthStore()
-
     if( from.path !== '/login'){
       await store.fetchUser();
     }
