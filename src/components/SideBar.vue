@@ -1,12 +1,11 @@
 <template>
-    <aside class="w-[250px]">
-        <span class="absolute text-white text-4x1 top-5 left-4 cursor-pointer" >
-            <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md"></i>
-        </span>
-        <div class="sidebar fixed top-0 bottom-0 lg:left-0 left-[-250px] p-2 w-[250px] overflow-y-auto text-center bg-sky-900">
+    <aside class="w-0 z-50">
+        <div class="sidebar min-h-screen fixed top-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center bg-sky-900"
+            :class="{ 'left-0': !drawer.drawerState, 'left-[-250px]': drawer.drawerState }">
             <div class="text-gray-100 text-x1">
-                <div class="p-2 mt-1 flex items-center">
+                <div class="p-2 mt-1 flex items-center justify-between">
                     <img src="../assets/cpc_logo.png" class="h-32 pb-2 animate-bounce hover:animate-spin">
+                    <i class="bi bi-x text-[50px] pb-20 cursor-pointer lg:hidden" @click="drawer.toggle"></i>
                 </div>
                 <hr class="my-2 text-gray-600">
             </div>
@@ -29,11 +28,14 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { useDrawerStore } from '../stores/drawerStore';
 import { onMounted,ref } from "vue";
 
 const router = useRouter()
 const store = useAuthStore()
 const components = ref();
+const toggleShow = ref(false)
+const drawer = useDrawerStore()
 const userComponent = [
     {
         name: "Dashboard",
@@ -98,6 +100,10 @@ const handleLogout = async() =>{
 
 };
 
+const showToggle = () => {
+    toggleShow.value = !toggleShow.value;
+    console.log('toggleShow:', toggleShow.value);
+}
 
 onMounted(() => {
     if(store.isAdminStaff){
