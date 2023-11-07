@@ -21,7 +21,7 @@
 
 
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter,useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth'
@@ -49,6 +49,10 @@ const handleSubmit = async () =>{
     }
 };
 
+onMounted(async()=>{
+    const res  =await store.testApi()
+    console.log(res)
+})
 
 </script>
 

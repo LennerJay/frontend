@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-import {  csrfCookie, login, register, logout, getUser } from '../http/auth-api';
+import {  csrfCookie, login, register, logout, getUser ,test} from '../http/auth-api';
 
 
 export const useAuthStore = defineStore('authStore', ()=>{
@@ -61,7 +61,11 @@ export const useAuthStore = defineStore('authStore', ()=>{
         // isLoggedIn.value = false;
     };
 
+    const testApi = async () => {
+      const {data}  = await test();
+      return data;  
+    }
     return{
-        user, errors, isAdminStaff,isLoggedIn,fetchUser, handleLogin, handleRegister, handleLogout
+      testApi,user, errors, isAdminStaff,isLoggedIn,fetchUser, handleLogin, handleRegister, handleLogout
     }
 });

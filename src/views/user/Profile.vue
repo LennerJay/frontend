@@ -1,5 +1,5 @@
 <template>
-    <div class="md:ml-[250px] ml-0 bg-violet-900 font-serif px-0 w-full">
+    <!-- <div class="md:ml-[250px] ml-0 bg-violet-900 font-serif px-0 w-full">
         <div class="header pl-2 pt-2 text-white text-center">
             <div class="font-bold p-1 text-[30px]">
                 <span class="inline-block md:hidden" @click="drawer.toggle">
@@ -29,11 +29,16 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { useAuthStore } from '../../stores/auth';
+import { useDrawerStore } from '../../stores/drawerStore';
+
+
+
 
 const drawer = useDrawerStore()
 const userStore = useAuthStore();
