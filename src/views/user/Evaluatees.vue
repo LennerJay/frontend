@@ -1,5 +1,5 @@
 <template>
-    <div class="md:ml-[250px] ml-0  font-serif px-0 w-full">
+    <div class="md:ml-[250px] ml-0  font-Times New Roman px-0 w-full">
        <div class="header">
             Cordova Public College
             <p>2023</p>
@@ -12,7 +12,8 @@
             <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
                 <ProfileCard v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id"/>
             </div>
-         </div>
+        </div>
+        <FooterCard/>
     </div>
 </template>
 
@@ -22,7 +23,7 @@ import { useEvaluateeStore } from "../../stores/evaluatee";
 import { onMounted ,ref } from 'vue';
 import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
-
+import FooterCard from '../../components/FooterCard.vue'
 
 
 const store = useEvaluateeStore()

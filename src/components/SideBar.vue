@@ -1,5 +1,5 @@
 <template>
-    <aside class="w-0 z-50">
+    <aside class="w-0 z-50 font-Times New Roman">
         <div class="sidebar min-h-screen fixed top-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center bg-sky-900"
             :class="{ 'left-0': !drawer.drawerState, 'left-[-250px]': drawer.drawerState }">
             <div class="text-gray-100 text-x1">

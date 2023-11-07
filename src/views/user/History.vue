@@ -1,9 +1,9 @@
 <template>
-  <div class="md:ml-[250px] ml-0  font-serif px-0 w-full text-center">
+  <div class="md:ml-[250px] ml-0  font-Times New Roman px-0 w-full text-center">
     <h1>These are the people you evaluated</h1>
 
     <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"/>
-    
+    <FooterCard/>
   </div>
 </template>
 
@@ -12,6 +12,7 @@ import ProfileCard from "../../components/ProfileCard.vue";
 import { ref,onMounted } from "vue"
 import { useAuthStore } from "../../stores/auth";
 import { useEvaluateeStore } from "../../stores/evaluatee";
+import FooterCard from '../../components/FooterCard.vue'
 
 const evaluatees = ref([]);
 const userStore = useAuthStore();

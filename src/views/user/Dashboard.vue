@@ -1,9 +1,9 @@
 <template>
-    <div class="md:ml-[250px] ml-0 bg-indigo-900 font-serif px-0 w-full">
-       <div class="header pl-2 pt-2 text-white text-center">
+    <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
+       <div class="header py-3 text-white text-center">
             <div class="font-bold p-1 text-[30px]">
-              <span class="inline-block md:hidden" @click="drawer.toggle">
-                <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md cursor-pointer"></i>
+              <span class="md:hidden pr-5" @click="drawer.toggle">
+                <i class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"></i>
               </span>
                 Cordova Public College
                 <p class="text-lg">2023</p>
@@ -44,11 +44,13 @@
                 </div>
             </div>
        </div>
+       <FooterCard/>
     </div>
 </template>
 <script setup>
 import { useRouter } from "vue-router";
 import { useDrawerStore } from '../../stores/drawerStore';
+import FooterCard from '../../components/FooterCard.vue'
 
 const drawer = useDrawerStore()
 </script>
