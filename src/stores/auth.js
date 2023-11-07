@@ -9,14 +9,11 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const errors = ref({})
     const isAdminStaff = ref()
     const isLoggedIn = computed(()=> !!user.value)
-    // const isLoggedIn = ref(false)
-    console.log('the store is used');
     const fetchUser = async ()=>{
       try{
           const {data}  = await getUser();
           console.log(data)
           user.value =  data
-          // console.log(user.value)
           isAdminStaff.value =  user.value.roles.some(role => role.name === 'admin' || role.name ==='staff')
       }catch(error){
         user.value = null
@@ -29,7 +26,6 @@ export const useAuthStore = defineStore('authStore', ()=>{
         try {
             await login(credentials);
             await fetchUser();
-            // isLoggedIn.value = true;
             errors.value= {};
         } catch (error) {
            if(error.response.status === 422){
@@ -37,6 +33,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
            }else{
             errors.value =  error.response
            }
+          //  await fetchUser();
         }
 
     };

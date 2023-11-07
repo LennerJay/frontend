@@ -40,19 +40,18 @@ const form = ref({
 
 const handleSubmit = async () =>{
     await handleLogin(form.value)
-    if(store.isLoggedIn){
-        if(store.isAdminStaff){
-            router.push({name: 'admin'});
-        }else{
-            router.push(route.query.redirect ?? {name:'evaluation'})
+        if(Object.keys(store.errors).length === 0){
+            if(store.isLoggedIn){
+                if(store.isAdminStaff){
+                    router.push({name: 'admin'});
+                }else{
+                    router.push(route.query.redirect ?? {name:'evaluation'})
+                }
+            }
         }
-    }
 };
 
-onMounted(async()=>{
-    const res  =await store.testApi()
-    console.log(res)
-})
+
 
 </script>
 
