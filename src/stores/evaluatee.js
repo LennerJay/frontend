@@ -1,46 +1,35 @@
 import {  defineStore } from "pinia";
 import { ref, watch } from "vue";
-import { getAllEvaluatees, getAllEvaluated ,getAllNotYetEvaluated} from "../http/evaluatee-api"
+import { getAllEvaluatees} from "../http/evaluatee-api"
 
 
 export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const error = ref([]);
-    const evaluatees = ref([]);
-    const evaluated = ref([]);
-    const notYetEvaluated = ref([]);
+    const allEvaluatees = ref([]);
+    const allEvaluated = ref([]);
 
-    const fetchAllEvaluated = async (userId) =>{
+    const fetchAllEvaluatees = async (userId) =>{
         try{
-            const user  = {user_id: userId}
-            const { data } = await getAllEvaluated(user);
-            evaluated.value = data
-        } catch(e){
-            evaluated.value = null;
+            const { data } = await getAllEvaluatees(userId);
+            allEvaluatees.value = data
+            error.value = []
+        }catch(e){
+            allEvaluatees.value = []
             error.value = e.response
         }
-    };
-
-    const fetchALLNotYetEvaluated = async (userId) =>{
-        const user  = {user_id: userId}
-        const { data } = await getAllNotYetEvaluated(user);
         console.log(data)
-        notYetEvaluated.value = data
+        allEvaluatees.value = data
     }
+    
 
-    const fetchAllEvaluatees = async () =>{
-        const { data } = await getAllEvaluatees();
-        console.log(data)
-        evaluatees.value = data
-    }
-
-    if(localStorage.getItem('evaluatees')){
-        evaluatees.value = JSON.parse(localStorage.getItem('evaluatees'))
+    if(localStorage.getItem('allEvaluatees')){
+        allEvaluatees.value = JSON.parse(localStorage.getItem('allEvaluatees'))
     }
 
     watch(
-        evaluatees,
+        allEvaluatees,
         (evaluateesVal)=>{
-            localStorage.setItem('evaluatees', JSON.stringify(evaluateesVal))
+            localStorage.setItem('allEvaluatees', JSON.stringify(evaluateesVal))
         },
         {
             deep:true
@@ -48,13 +37,13 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     );
 
     const filterDepartment = (course)=>{
-        return evaluatees.value.filter((evaluatee)=>{
+        return allEvaluatees.value.filter((evaluatee)=>{
             return evaluatee.departments.some(department => department.department === course)
         })
     }
     
 
     return {
-        fetchALLNotYetEvaluated,fetchAllEvaluated,fetchAllEvaluatees, evaluatees,filterDepartment, evaluated
+        fetchAllEvaluatees, allEvaluatees,filterDepartment, allEvaluated
     }
 })

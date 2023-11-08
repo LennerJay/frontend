@@ -19,8 +19,8 @@ const evaluateeStore = useEvaluateeStore();
 
 
 onMounted(async() => {
-  await evaluateeStore.fetchAllEvaluated(userStore.user.id_number)
-  evaluatees.value = evaluateeStore.evaluated.evaluatees
+  // await evaluateeStore.fetchAllEvaluated(userStore.user.id_number)
+  // evaluatees.value = evaluateeStore.evaluated.evaluatees
   
 })
 </script>

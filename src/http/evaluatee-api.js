@@ -5,6 +5,4 @@ const resource = apiPath +  "/evaluatees"
 
 export const getAllEvaluatees = () => api.get(resource)
 
-export const getAllEvaluated = user => api.post(apiPath + "/evaluated",user)
-
-export const getAllNotYetEvaluated = user => api.post(apiPath + "/notyetevaluated",user)
+export const getAllEvaluated = user => api.post(resource + "/evaluated",user)

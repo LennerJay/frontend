@@ -10,7 +10,7 @@ const showSideBar = ref()
 watch(
   route,
   (to)=>{
-    if(to.path === '/login'){
+    if(to.path === '/login' || to.path === '/'){
       showSideBar.value = false
     }else{
       showSideBar.value = true

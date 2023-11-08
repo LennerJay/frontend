@@ -52,10 +52,10 @@ const closeTag= ()=>{
     open.value = false
 }
 onMounted(async ()=>{
-    if(!localStorage.getItem('evaluatees')){
+    if(!localStorage.getItem('allEvaluatees')){
         await store.fetchAllEvaluatees()
     }
-     evaluatees.value = store.evaluatees
+     evaluatees.value = store.allEvaluatees
     console.log( evaluatees.value)
     document.addEventListener('click', handleSelectTag);
  

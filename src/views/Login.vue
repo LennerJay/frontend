@@ -45,13 +45,24 @@ const handleSubmit = async () =>{
                 if(store.isAdminStaff){
                     router.push({name: 'admin'});
                 }else{
-                    router.push(route.query.redirect ?? {name:'evaluation'})
+                    router.push( {name:'dashboard'})
                 }
             }
         }
 };
 
-
+onMounted(async()=>{
+    // const res = await store.testApi()
+    // console.log(res)
+    // console.log(res.section_years)
+    // let classesId = []
+    // res.section_years.forEach(sy => {
+    //     sy.klasses.forEach(klass => {
+    //         classesId.push(klass.id)
+    //     })
+    // });
+    // console.log(classesId)
+})
 
 </script>
 

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-import {  csrfCookie, login, register, logout, getUser ,test} from '../http/auth-api';
+import {  csrfCookie, login, register, logout, getUser ,test,getEvaluateesToRate} from '../http/auth-api';
 
 
 export const useAuthStore = defineStore('authStore', ()=>{
@@ -9,10 +9,12 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const errors = ref({})
     const isAdminStaff = ref()
     const isLoggedIn = computed(()=> !!user.value)
+    const evaluateesToRate = ref({})
+
     const fetchUser = async ()=>{
       try{
           const {data}  = await getUser();
-          console.log(data)
+          // console.log(data)
           user.value =  data
           isAdminStaff.value =  user.value.roles.some(role => role.name === 'admin' || role.name ==='staff')
       }catch(error){
@@ -33,7 +35,6 @@ export const useAuthStore = defineStore('authStore', ()=>{
            }else{
             errors.value =  error.response
            }
-          //  await fetchUser();
         }
 
     };
@@ -62,7 +63,28 @@ export const useAuthStore = defineStore('authStore', ()=>{
       const {data}  = await test();
       return data;  
     }
+
+    const fetchEvaluateesToRate = async(userId)=>{
+      const { data } = await getEvaluateesToRate(userId)
+      evaluateesToRate.value = data
+    }
+    // const fetchEvaluateesToRate = async(userId)=>{
+    //   const user = { user_id: userId}
+    //   const { data } = await getEvaluateesToRate(user)
+    //   console.log(data)
+    //   evaluateesToRate.value = data
+    // }
+
+    const filterEvaluatees = (isDone) => {
+      if(!isDone){
+        return evaluateesToRate.value.filter(evaluatee => evaluatee.pivot.is_done === 0)
+      }
+
+      return evaluateesToRate.value.filter(evaluatee => evaluatee.pivot.is_done === 1)
+    }
+
     return{
-      testApi,user, errors, isAdminStaff,isLoggedIn,fetchUser, handleLogin, handleRegister, handleLogout
+      filterEvaluatees,
+      evaluateesToRate,fetchEvaluateesToRate,testApi,user, errors, isAdminStaff,isLoggedIn,fetchUser, handleLogin, handleRegister, handleLogout
     }
 });

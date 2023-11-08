@@ -41,7 +41,7 @@ const userStore  = useAuthStore()
 const evaluateeStore = useEvaluateeStore()
 const store = useQuestionaireStore();
 const router = useRouter()
-const { evaluatees } = storeToRefs(evaluateeStore)
+// const { evaluatees } = storeToRefs(evaluateeStore)
 const { user,errors } = userStore
 const rating = useRatingStore()
 const selectedevaluatee = ref('')
@@ -49,6 +49,7 @@ const selectedRatings = ref([]);
 const questionaire  = ref([]);
 const show = ref(true)
 const name = ref('')
+const evaluatees = ref('')
 
 
 const selectEvaluatee = (id)=>{
@@ -91,7 +92,6 @@ const handleSubmit = async ()=>{
         val: [...selectedRatings.value]
         
     }
-    console.log(value)
     await rating.save(value)
     if(rating.response.data.code === 201){
         const keys = Object.keys(localStorage);
@@ -119,9 +119,9 @@ const updateSelectedRatings = (val) => {
 
 
 onMounted(async ()=>{
-    if(!localStorage.getItem('evaluatees')){
-        await evaluateeStore.fetchAllEvaluatees()
-    }
+     await userStore.fetchEvaluateesToRate(user.id_number)
+     evaluatees.value = userStore.filterEvaluatees(false)
+
     if(!localStorage.getItem('questionaires')){
         await store.fetchLatestQuestionaire()
     }

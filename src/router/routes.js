@@ -5,16 +5,18 @@ import Evaluation from '../views/user/Evaluation.vue'
 import Profile from '../views/user/Profile.vue'
 import History from '../views/user/History.vue'
 import AdminDashboard from '../views/admin/AdminDashboard.vue'
+import { useRoute } from 'vue-router'
 
 
 const routes = [
     {
-        path: '/',
+        path: '/dashboard',
         name: 'dashboard',
         component: Dashboard,
         meta:{
           auth:true
-        }
+        },
+
       },
       {
         path:'/login',
@@ -23,6 +25,7 @@ const routes = [
           guest:true
         },
         component: Login,
+        alias: '/'
       },
       {
         path: '/evaluation',
