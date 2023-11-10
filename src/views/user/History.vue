@@ -17,10 +17,12 @@ const evaluatees = ref([]);
 const userStore = useAuthStore();
 const evaluateeStore = useEvaluateeStore();
 
+const { user,errors } = userStore
 
 onMounted(async() => {
-  // await evaluateeStore.fetchAllEvaluated(userStore.user.id_number)
-  // evaluatees.value = evaluateeStore.evaluated.evaluatees
+  await userStore.fetchEvaluateesToRate(user.id_number)
+  evaluatees.value = userStore.filterEvaluatees(true)
+
   
 })
 </script>

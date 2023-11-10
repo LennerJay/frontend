@@ -12,9 +12,10 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const evaluateesToRate = ref({})
 
     const fetchUser = async ()=>{
+
       try{
-          const {data}  = await getUser();
-          // console.log(data)
+            const {data}  = await getUser();
+          console.log(data);
           user.value =  data
           isAdminStaff.value =  user.value.roles.some(role => role.name === 'admin' || role.name ==='staff')
       }catch(error){
@@ -22,7 +23,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
         errors.value =  error.response
       }
     }
-
+    
     const handleLogin = async (credentials) => {
         await csrfCookie();
         try {
@@ -56,7 +57,6 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const handleLogout = async() => {
         await logout()
         user.value = null
-        // isLoggedIn.value = false;
     };
 
     const testApi = async () => {

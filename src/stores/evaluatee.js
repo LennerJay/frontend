@@ -17,8 +17,6 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
             allEvaluatees.value = []
             error.value = e.response
         }
-        console.log(data)
-        allEvaluatees.value = data
     }
     
 

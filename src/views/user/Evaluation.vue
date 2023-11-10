@@ -18,7 +18,7 @@
             <QuestionForm v-for="(criteria,key) in questionaire.criterias" :criteria="criteria" :key="key" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit"/>
             <hr class="h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700">
             <div class="flex justify-between">
-                <button @click="handleSubmit" :disabled="!isSubmitButtonEnabled">Submit</button>
+                <button @click="handleSubmit">Submit</button>
             </div>
         </div>
     </div>
@@ -28,7 +28,6 @@
 import QuestionForm from '../../components/QuestionForm.vue';
 import ProfileCard from '../../components/ProfileCard.vue';
 import { useAuthStore } from '../../stores/auth';
-import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
 import { useEvaluateeStore } from '../../stores/evaluatee';
 import { useQuestionaireStore } from '../../stores/questionaire';
@@ -83,15 +82,18 @@ const isSubmitButtonEnabled = computed(() => {
 }});
 
 const handleSubmit = async ()=>{
+
     selectedRatings.value.map( val => {
         val.evaluator_id = user.id_number
     })
     const value = {
         instructorId : selectedevaluatee.value.id,
-        // evaluatorId: user.id_number,
+        user_id : user.id_number,
         val: [...selectedRatings.value]
         
     }
+    console.log(user.id_number)
+    console.log(value)
     await rating.save(value)
     if(rating.response.data.code === 201){
         const keys = Object.keys(localStorage);
@@ -122,12 +124,11 @@ onMounted(async ()=>{
      await userStore.fetchEvaluateesToRate(user.id_number)
      evaluatees.value = userStore.filterEvaluatees(false)
 
-    if(!localStorage.getItem('questionaires')){
+    if(!localStorage.getItem('latest-questionaires')){
         await store.fetchLatestQuestionaire()
     }
 
     questionaire.value= store.latestQuestionaire
-    console.log( questionaire.value)
     let qId = []
     questionaire.value.criterias.forEach(criteria => {
         criteria.questions.forEach(question => {

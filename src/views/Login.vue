@@ -7,9 +7,9 @@
                         <img src="../assets/cpc_logo.png" class="h-32 pb-2.5 animate-bounce"/>
                     </div>
                     <input v-model="form.id_number" class="w-full py-2  bg-blue-50 text-zinc-600 px-1 rounded-md outline-none mb-6 text-center" :class="{'is-invalid':errors.id_number && errors.id_number[0] }" type="number" id="id_number" placeholder="Student ID"/>
-                    <p v-if="errors.id_number && errors.id_number[0]" class="text-red-500 text-xs italic">{{ errors.id_number && errors.id_number[0] }}</p>
+                    <!-- <p v-if="errors.id_number && errors.id_number[0]" class="text-red-500 text-xs italic">{{ errors.id_number && errors.id_number[0] }}</p> -->
                     <input  v-model="form.password" class="w-full py-2  bg-blue-50 text-zinc-600 px-1 rounded-md outline-none mb-6 text-center" :class="{'is-invalid':errors.password && errors.password[0] }" type="password" id="password" autocomplete="on" placeholder="Password"/>
-                    <p v-if="errors.password && errors.password[0]" class="text-red-500 text-xs italic">Please input a password.</p>
+                    <!-- <p v-if="errors.password && errors.password[0]" class="text-red-500 text-xs italic">Please input a password.</p> -->
                     <button type="submit" class="bg-blue-500 py-2 w-full text-gray-100 rounded-md hover:bg-blue-600 transition-colors">Login
                     </button>
                 </div>

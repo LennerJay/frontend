@@ -4,7 +4,7 @@
             Cordova Public College
             <p>2023</p>
             <div ref="selectRef">
-                <SelectTag   @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
+                <SelectTag  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
             </div>
        </div>
     
@@ -29,7 +29,7 @@ const store = useEvaluateeStore()
 const selectRef = ref(null)
 const  evaluatees = ref([]);
 let open = ref(false)
-let department = ref('Department')
+let department = ref('All Departments')
 
 const handleSelectTag = (event)=>{
     if (selectRef.value == null) {
@@ -41,9 +41,16 @@ const handleSelectTag = (event)=>{
 
 }
 const selectedValue = (val)=>{
-    evaluatees.value =  store.filterDepartment(val)
-   department.value= val
+    if(val === 'allDepartments'){
+        evaluatees.value = store.allEvaluatees
+        department.value= 'All Departments'
+    }else{
+        evaluatees.value =  store.filterDepartment(val)
+        department.value= val
+ 
+    }
     open.value = false
+
 }
 const show = (val)=>{
     open.value = val
@@ -55,12 +62,10 @@ onMounted(async ()=>{
     if(!localStorage.getItem('allEvaluatees')){
         await store.fetchAllEvaluatees()
     }
-     evaluatees.value = store.allEvaluatees
-    console.log( evaluatees.value)
+    evaluatees.value = store.allEvaluatees
     document.addEventListener('click', handleSelectTag);
  
 });
-
 
 
 </script>

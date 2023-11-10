@@ -10,11 +10,8 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to,from)=>{
-    
-    if(to.path !== '/login'){
-      const store = useAuthStore()
-
-      if(to.path !== '/login' && from.path !== '/login' ){
+  const store = useAuthStore()
+      if(to.path !== '/login' && from.path !== '/login'){
         await store.fetchUser();
       }
       if(to.meta.auth && !store.isLoggedIn){
@@ -28,7 +25,7 @@ router.beforeEach(async (to,from)=>{
       } else if(!to.meta.admin && store.isAdminStaff){
         return { name: "admin" };
       }
-    }
+
 
 });
 
