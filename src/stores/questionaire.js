@@ -5,7 +5,10 @@ import { ref, watch } from "vue";
 export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     const questionaires = ref([]);
     const latestQuestionaire = ref([]);
-    const errors = ref({});
+    const errors = ref([]);
+    const questionaireForEvaluatee = ref([]);
+
+
     const fetchQuestionaire = async ()=>{
         try{
             const {data}  = await allQuestionaires();
@@ -35,6 +38,9 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     if(localStorage.getItem('latest-questionaires')){
         latestQuestionaire.value = JSON.parse(localStorage.getItem('latest-questionaires'))
     }
+    if(localStorage.getItem('questionaire-for-evaluatee')){
+        questionaireForEvaluatee.value = JSON.parse(localStorage.getItem('questionaire-for-evaluatee'))
+    }
 
     watch(
         questionaires,
@@ -56,13 +62,23 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         }
 
     );
-
-    const fetchQuestionaireForEvaluatee = async(evaluateesId)=>{
-        const ids = {
-            evaluatees_list : evaluateesId
+    watch(
+        questionaireForEvaluatee,
+        (questionaireForEvaluateeVal)=>{
+            localStorage.setItem('questionaire-for-evaluatee',JSON.stringify(questionaireForEvaluateeVal))
+        },
+        {
+            deep:true
         }
-        const {data} = await getQuestionaireForEvaluatee(ids);
-        console.log(data);
+
+    );
+
+    const fetchQuestionaireForEvaluatee = async(departmentId)=>{
+        const id = {
+            departmend_id : departmentId
+        }
+        const {data} = await getQuestionaireForEvaluatee(id);
+        questionaireForEvaluatee.value = data.questionaires[0];
     }
 
 
@@ -72,6 +88,7 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         fetchQuestionaire,
         latestQuestionaire,
         fetchLatestQuestionaire,
+        questionaireForEvaluatee,
         fetchQuestionaireForEvaluatee
     }
 })

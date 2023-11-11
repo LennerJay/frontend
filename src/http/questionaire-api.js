@@ -7,4 +7,4 @@ export const allQuestionaires = () => api.get(resource)
 
 export const getLatestQuestionaire = ()=> api.get(resource + '/latest')
 
-export const getQuestionaireForEvaluatee = (ids)=> api.post(resource + '/for-evaluatees',ids)
+export const getQuestionaireForEvaluatee = (ids)=> api.post(resource + '/for-evaluatee',ids)
