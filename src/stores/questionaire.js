@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { allQuestionaires,getLatestQuestionaire } from "../http/questionaire-api";
+import { allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee } from "../http/questionaire-api";
 import { ref, watch } from "vue";
 
 export const useQuestionaireStore = defineStore('questionaireStore',()=>{
@@ -57,6 +57,13 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
 
     );
 
+    const fetchQuestionaireForEvaluatee = async(evaluateesId)=>{
+        const ids = {
+            evaluatees_list : evaluateesId
+        }
+        const {data} = await getQuestionaireForEvaluatee(ids);
+        console.log(data);
+    }
 
 
 
@@ -64,6 +71,7 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         questionaires,
         fetchQuestionaire,
         latestQuestionaire,
-        fetchLatestQuestionaire
+        fetchLatestQuestionaire,
+        fetchQuestionaireForEvaluatee
     }
 })

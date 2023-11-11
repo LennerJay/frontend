@@ -123,18 +123,29 @@ const updateSelectedRatings = (val) => {
 onMounted(async ()=>{
      await userStore.fetchEvaluateesToRate(user.id_number)
      evaluatees.value = userStore.filterEvaluatees(false)
+    console.log(evaluatees.value)
+    let evaluateesIds = [];
+    evaluatees.value.forEach(evaluatee =>{
+        console.log(evaluatee.id)
+        evaluateesIds.push(evaluatee.id);
+    })
+    console.log(evaluateesIds)
 
-    if(!localStorage.getItem('latest-questionaires')){
-        await store.fetchLatestQuestionaire()
-    }
+    // await store.fetchQuestionaireForEvaluatee(evaluateesIds);
 
-    questionaire.value= store.latestQuestionaire
-    let qId = []
-    questionaire.value.criterias.forEach(criteria => {
-        criteria.questions.forEach(question => {
-            qId.push(question.id)
-        })
-    });
+    // if(!localStorage.getItem('latest-questionaires')){
+    //     await store.fetchLatestQuestionaire()
+    // }
+
+    // questionaire.value= store.latestQuestionaire
+
+    // let qId = []
+    // questionaire.value.criterias.forEach(criteria => {
+    //     criteria.questions.forEach(question => {
+    //         qId.push(question.id)
+    //     })
+    // });
+
     if(localStorage.length > 0){
         for (let i = 0; i < localStorage.length; i++) {
             const id = localStorage.key(i);

@@ -6,3 +6,5 @@ const resource = apiPath + "/questionaires"
 export const allQuestionaires = () => api.get(resource)
 
 export const getLatestQuestionaire = ()=> api.get(resource + '/latest')
+
+export const getQuestionaireForEvaluatee = (ids)=> api.post(resource + '/for-evaluatees',ids)
