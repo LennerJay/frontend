@@ -1,15 +1,18 @@
 <template>
     <div class="md:ml-[250px] ml-0  font-serif px-0 w-full">
        <div class="header">
-            Cordova Public College
-            <p>2023</p>
-            <div ref="selectRef">
-                <SelectTag  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
+            <h1>Cordova Public College</h1>
+            <p class="school-year">SY: 2023-2024</p>
+       </div>
+
+       <div class="selectRef-main-container">
+            <div ref="selectRef" class="select-container">
+                <SelectTag  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'" class="department-selection"></SelectTag>
             </div>
        </div>
     
        <div class="min-h-screen bg-blue-50">
-            <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
+            <div class="grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
                 <ProfileCard v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id"/>
             </div>
          </div>
@@ -73,5 +76,39 @@ onMounted(async ()=>{
 
 
 <style scoped>
+
+    .header {
+        background-color: #0C4A6E;
+        padding: 25px 15px;
+        color: #ffffff;
+        font-family: Helvetica, Georgia, "Times New Roman";
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .school-year {
+        font-size: 18px;
+        font-style: italic
+    }
+
+    .selectRef-main-container {
+        width: 100%;
+        margin: auto;
+    }
+
+    .select-container {
+        background-color: #ffffff;
+        padding: 10px 15px;
+        width: 30.8%;
+    }
+
+    .department-selection {
+        font-family: Helvetica, Georgia, "Times New Roman";
+        font-size: 15px;
+    }
 
 </style>

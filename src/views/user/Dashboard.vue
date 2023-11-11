@@ -1,45 +1,48 @@
 <template>
-    <div class="md:ml-[250px] ml-0 bg-indigo-900 font-serif px-0 w-full">
-       <div class="header pl-2 pt-2 text-white text-center">
+    <div class="md:ml-[250px] ml-0 font-serif px-0 w-full dashboard-main-header">
+       <div class="header pl-2 py-6 text-white text-center">
+            <h2 class="dashboard">DASHBOARD</h2>
             <div class="font-bold p-1 text-[30px]">
               <span class="inline-block md:hidden" @click="drawer.toggle">
                 <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md cursor-pointer"></i>
               </span>
-                Cordova Public College
-                <p class="text-lg">2023</p>
+                <h1 class="header-name">Cordova Public College</h1>
+                <p class="school-year">SY: 2023-2024</p>
             </div>
-            <div class="font-bold text-[20px]">DASHBOARD</div>
+            <div class="empty">
+                <!-- Nothing goes here -->
+            </div>
        </div>
        <div class="bg-stone-200">
             <div class="flex flex-col min-h-[43.2rem]">
                 <div id="first-container" class="first-item:flex flex-col justify-center items-center text-center border-solid border-2 h-25 m-16 p-5 bg-sky-900 text-white overflow-hidden relative">
-                    <h1 class="text-center text-2xl font-serif">Announcement</h1>
+                    <h1 class="text text-2xl font-serif">Announcement</h1>
                 </div>
                 <div id="second-container" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 m-10 text-white">
                     <router-link to="/" class="bg-sky-900 flex flex-col justify-center items-center text-center h-24
-                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700">
+                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700 announcement">
                         <i class="bi bi-filter-circle-fill text-2xl"></i>
-                        <p>Dashboard</p>
+                        <p class="announcements">Dashboard</p>
                     </router-link>                 
                     <router-link to="/evaluatees" class="bg-sky-900 flex flex-col justify-center items-center text-center h-24
-                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700">
+                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700 announcement">
                         <i class="bi bi-people-fill text-2xl"></i>
-                        <p>Evaluatees</p>
+                        <p class="announcements">Evaluatees</p>
                     </router-link>
                     <router-link to="/evaluation" class="bg-sky-900 flex flex-col justify-center items-center text-center h-24
-                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700">
+                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700 announcement">
                         <i class="bi bi-clipboard-data-fill text-2xl"></i>
-                        <p>Evaluation</p>
+                        <p class="announcements">Evaluation</p>
                     </router-link>
                     <router-link to="/history" class="bg-sky-900 flex flex-col justify-center items-center text-center h-24
-                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700">
+                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700 announcement">
                         <i class="bi bi-arrow-counterclockwise text-2xl"></i>
-                        <p>History</p>
+                        <p class="announcements">History</p>
                     </router-link>
                     <router-link to="/profile" class="bg-sky-900 flex flex-col justify-center items-center text-center h-24
-                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700">
+                    cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-sky-900 duration-300 hover:border-sky-700 announcement">
                         <i class="bi bi-person-bounding-box text-2xl"></i>
-                        <p>Profile</p>
+                        <p class="announcements">Profile</p>
                     </router-link>  
                 </div>
             </div>
@@ -54,4 +57,41 @@ const drawer = useDrawerStore()
 </script>
 
 <style scoped>
+
+    .dashboard-main-header {
+        background-color: #0C4A6E;
+        font-family: Helvetica, Georgia, "Times New Roman";
+    }
+
+    .header-name {
+        font-size: 25px;
+    }
+
+    .school-year {
+        font-size: 18px;
+        font-style: italic
+    }
+
+    .dashboard {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .first-container {
+        border-radius: 15px;
+    }
+
+    .second-container {
+        border-radius: 5px;
+    }
+
+    .announcement {
+        border-radius: 5px;
+    }
+
+    .announcements {
+        font-family: "Lucida Grande";
+    }
+
 </style>

@@ -5,7 +5,7 @@
               <span class="inline-block md:hidden" @click="drawer.toggle">
                 <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md cursor-pointer"></i>
               </span>
-                <h1 class="font-bold">Evaluation for: {{ name }}</h1>
+                <h1 class="header-name">Evaluation for: {{ name }}</h1>
             </div>    
         </div>
 
@@ -167,3 +167,18 @@ onMounted(async ()=>{
 
 });
 </script>
+
+<style scoped>
+
+    .header {
+        background-color: #0C4A6E;
+        padding: 25px 15px;
+        font-family: Helvetica, Georgia, "Times New Roman";
+    }
+
+    .header-name {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+</style>
