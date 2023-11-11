@@ -1,18 +1,23 @@
 <template>
-    <div class="md:ml-[250px] ml-0  font-serif px-0 w-full">
-       <div class="header">
-            Cordova Public College
-            <p>2023</p>
-            <div ref="selectRef">
+    <div class="md:ml-[250px] ml-0 bg-sky-950 font-serif px-0 w-full">
+        <div class="header pl-2 pt-2 text-white ml-5">
+            <div class="font-bold p-1 text-[30px]">
+              <span class="inline-block md:hidden" @click="drawer.toggle">
+                <i class="bi bi-filter-left px-5 p-1 bg-blue-800 rounded-md cursor-pointer"></i>
+              </span>
+                Cordova Public College
+                <p class="text-lg">2023</p>
+            </div>
+            <div ref="selectRef" class="text-zinc-500 flex mr-5">
                 <SelectTag  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
             </div>
-       </div>
-    
+       </div>    
        <div class="min-h-screen bg-blue-50">
             <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
                 <ProfileCard v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id"/>
             </div>
-         </div>
+        </div>
+        <Footer/>
     </div>
 </template>
 
@@ -22,9 +27,11 @@ import { useEvaluateeStore } from "../../stores/evaluatee";
 import { onMounted ,ref } from 'vue';
 import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
+import Footer from "@/components/Footer.vue"
+import { useDrawerStore } from '../../stores/drawerStore';
 
 
-
+const drawer = useDrawerStore()
 const store = useEvaluateeStore()
 const selectRef = ref(null)
 const  evaluatees = ref([]);
