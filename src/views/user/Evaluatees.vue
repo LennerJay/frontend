@@ -17,7 +17,7 @@
                 <ProfileCard v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id"/>
             </div>
         </div>
-        <Footer/>
+        <FooterCard/>
     </div>
 </template>
 
@@ -27,7 +27,7 @@ import { useEvaluateeStore } from "../../stores/evaluatee";
 import { onMounted ,ref } from 'vue';
 import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
-import Footer from "@/components/Footer.vue"
+import FooterCard from "@/components/FooterCard.vue"
 import { useDrawerStore } from '../../stores/drawerStore';
 
 
