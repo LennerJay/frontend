@@ -5,11 +5,7 @@
               <span class="flex md:hidden pl-2" @click="drawer.toggle">
                 <i class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"></i>
               </span>
-<<<<<<< HEAD
                 <h1 class="header-name">Evaluation for: {{ name }}</h1>
-=======
-                <h1 class="font-bold m-5">Evaluation for: {{ name }}</h1>
->>>>>>> 3db9ce48db7d3f41293f099936f00646812a4f2f
             </div>    
         </div>
 

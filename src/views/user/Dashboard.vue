@@ -1,12 +1,7 @@
 <template>
-<<<<<<< HEAD
     <div class="md:ml-[250px] ml-0 font-serif px-0 w-full dashboard-main-header">
        <div class="header pl-2 py-6 text-white text-center">
             <h2 class="dashboard">DASHBOARD</h2>
-=======
-    <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
-       <div class="header py-3 text-white text-center">
->>>>>>> 3db9ce48db7d3f41293f099936f00646812a4f2f
             <div class="font-bold p-1 text-[30px]">
               <span class="md:hidden pr-5" @click="drawer.toggle">
                 <i class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"></i>
