@@ -1,15 +1,15 @@
 <template>
 <!-- Modal -->
-<div v-if="modalState" class="fixed inset-0 bg-sky-950 z-5 bg-opacity-5 items-center justify-center font-Times New Roman">
+<div v-if="modalState" class="fixed inset-0 bg-sky-950 bg-opacity-5  z-50 items-center justify-center font-Times New Roman">
     <div class="bg-white p-8 max-w-md mx-auto mt-48 border-8 border-sky-950 rounded-xl">
         <!-- Modal Header -->
         <div class="mb-4 flex flex-col">
             <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white">Details</h2>
-            <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2">
-                <span>Name: {{ selectedEvaluatee.name.split(' ').slice(0, 2).join(' ') }}</span>
-                <span>Shift : Fulltime</span>
-                <span>Department : {{ selectedEvaluatee.departments[0].department.split('-')[0] }}</span>
-                <span>Role : Instructor</span>
+            <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
+                <span><i class="bi bi-person-fill mr-1"></i>Name: {{ selectedEvaluatee.name.split(' ').slice(0, 2).join(' ') }}</span>
+                <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : Fulltime</span>
+                <span><i class="bi bi-bank2 mr-1"></i>Department : {{ selectedEvaluatee.departments[0].department.split('-')[0] }}</span>
+                <span><i class="bi bi-person-fill-gear mr-1"></i>Role : Instructor</span>
             </div>
         </div>
 
@@ -20,13 +20,15 @@
               <tr>
                 <th class="border">Subject</th>
                 <th class="border">Sections</th>
+                <th class="border">Schedule</th>
               </tr>
             </thead>
             <tbody class="text-center">
               <!-- Add your dynamic content here -->
-              <tr class="border">
-                <td>EDM</td>
-                <td>4A</td>
+              <tr>
+                <td class="border">EDM</td>
+                <td class="border">4A</td>
+                <td class="border">MWF</td>
               </tr>
             </tbody>
           </table>
@@ -34,9 +36,11 @@
 
         <!-- Modal Footer -->
         <div class="flex justify-between items-center">
-            <p class="mb-2">Date Evaluated</p>
+            <p class="mb-2">Date Evaluated 
+                <span class="flex ml-5">11-12-23</span>
+            </p>
             <div class="flex">
-                <button>
+                <button @click="handleEvaluate">
                     Evaluates
                     <span></span>
                 </button>
@@ -55,6 +59,8 @@ import { defineProps, ref, computed, getCurrentInstance } from 'vue';
 
 const props = defineProps(['modalState', 'selectedEvaluatee']);
 const { emit } = getCurrentInstance();
+const isDone = true;
+
 
 const closeModal = () => {
   // Emit an event to inform the parent component to close the modal
@@ -62,6 +68,7 @@ const closeModal = () => {
 };
 const handleEvaluate = () => {
   // Handle the evaluation logic if needed
+  console.log('go to evaluation page');
 };
 
 </script>
