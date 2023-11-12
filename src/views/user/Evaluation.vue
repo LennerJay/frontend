@@ -1,24 +1,29 @@
 <template>
-    <div class="md:ml-[250px] ml-0  font-serif px-0 w-full text-center">
-        <div class="header pl-2 pt-2 bg-indigo-900 text-white text-center">
-            <div class="font-bold p-1 text-[20px]">
-              <span class="inline-block md:hidden" @click="drawer.toggle">
-                <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md cursor-pointer"></i>
+    <div class="md:ml-[250px] ml-0 font-Times New Roman px-0 w-full text-center">
+        <div class="header pt-2 bg-sky-950 text-white text-center">
+            <div class="flex justify-center items-center font-bold text-[20px]">
+              <span class="flex md:hidden pl-2" @click="drawer.toggle">
+                <i class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"></i>
               </span>
+<<<<<<< HEAD
                 <h1 class="header-name">Evaluation for: {{ name }}</h1>
+=======
+                <h1 class="font-bold m-5">Evaluation for: {{ name }}</h1>
+>>>>>>> 3db9ce48db7d3f41293f099936f00646812a4f2f
             </div>    
         </div>
 
         <div v-if="show" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer">
             <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index" @click="selectEvaluatee(evaluatee.id)"/>
         </div>
+        <FooterCard v-if="show"/>
         <div v-else class="questions">
             <h1 class="font-bold">Title: {{ questionaire.title }}</h1>
             <p>description: {{ questionaire.description }}</p>
             <QuestionForm v-for="(criteria,key) in questionaire.criterias" :criteria="criteria" :key="key" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit"/>
             <hr class="h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700">
-            <div class="flex justify-between">
-                <button @click="handleSubmit">Submit</button>
+            <div class="p-5 border-solid border-2 mx-96 py-1 hover:bg-sky-950 hover:text-white">
+                <button @click="handleSubmit" :disabled="!isSubmitButtonEnabled">Submit</button>
             </div>
         </div>
     </div>
@@ -27,6 +32,7 @@
 <script setup>
 import QuestionForm from '../../components/QuestionForm.vue';
 import ProfileCard from '../../components/ProfileCard.vue';
+import FooterCard from '../../components/FooterCard.vue'
 import { useAuthStore } from '../../stores/auth';
 import { useRouter } from 'vue-router'
 import { useEvaluateeStore } from '../../stores/evaluatee';

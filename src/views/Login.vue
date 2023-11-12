@@ -15,12 +15,15 @@
                 </div>
             </form>
         </main>
+        <hr>
+        <FooterCard/>
     </div>
     
 </template>
 
 
 <script setup>
+import FooterCard from '../components/FooterCard.vue';
 import { ref,onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter,useRoute } from 'vue-router';

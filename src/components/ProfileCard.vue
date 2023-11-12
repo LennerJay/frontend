@@ -14,6 +14,7 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
     <ModalCard :modalState="modalStore.modalState" :selectedEvaluatee="modalStore.selectedEvaluatee" 
     @close-modal="modalStore.modalState = false"/>
 </template>
@@ -24,10 +25,70 @@ import { ref, computed } from 'vue';
 import { userModalStore } from '../stores/modalStore';
 import ModalCard from './ModalCard.vue';
 
+=======
+<!-- Modal -->
+<div v-if="modalStore.modalState" class="fixed inset-0 bg-sky-950 z-5 bg-opacity-5 items-center justify-center font-serif">
+    <div class="bg-white p-8 max-w-md mx-auto mt-48 border-8 border-sky-950 rounded-xl">
+        <!-- Modal Header -->
+        <div class="mb-4 flex flex-col">
+            <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white">Details</h2>
+            <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2">
+                <span>Name: {{ selectedEvaluatee.name }}</span>
+                <span>Shift : Fulltime</span>
+                <span>Department : {{ selectedEvaluatee.departments[0].department }}</span>
+                <span>Role : Instructor</span>
+            </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="mb-4">
+          <table class="w-full border">
+            <thead>
+              <tr>
+                <th class="border">Subject</th>
+                <th class="border">Sections</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              <!-- Add your dynamic content here -->
+              <tr class="border">
+                <td>EDM</td>
+                <td>4A</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="flex justify-between items-center">
+            <p class="mb-2">Date Evaluated</p>
+            <div class="flex">
+                <button>
+                    Evaluates
+                    <span></span>
+                </button>
+                <button @click="modalStore.modalState = false">
+                    Cancel
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
+
+<script setup>
+>>>>>>> 3db9ce48db7d3f41293f099936f00646812a4f2f
 const evaluatees = defineProps({
     evaluatee: Object
 });
 
+<<<<<<< HEAD
+=======
+import { ref, computed, onMounted } from 'vue';
+import { userModalStore } from '../stores/modalStore';
+
+>>>>>>> 3db9ce48db7d3f41293f099936f00646812a4f2f
 const modalStore = userModalStore();
 const selectedEvaluatee = computed(() => modalStore.selectedEvaluatee);
 </script>
