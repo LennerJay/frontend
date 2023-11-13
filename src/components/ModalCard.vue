@@ -1,39 +1,76 @@
 <template>
 <!-- Modal -->
 <div v-if="showModal" class="fixed inset-0 bg-sky-950 bg-opacity-5  z-50 items-center justify-center font-Times New Roman">
-  <div class="bg-white p-8 max-w-md mx-auto mt-48 border-8 border-sky-950 rounded-xl">
+  <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
     <button @click="closeModal">
-        Cancel elisi og X <!-- E butang ni sa upper right -->
+      <i class="bi bi-x-lg"></i>
         <span></span>
     </button>
     <div v-if="showDetail">
         <!-- Modal Header -->
         <div class="mb-4 flex flex-col">
-            <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white">Details</h2>
+            <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2">Details</h2>
             <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
-                <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name }}</span>
+                <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name.split(' ').slice(0, 2).join(' ') }}</span>
                 <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Fulltime':'Part Time' }}</span>
-                <span><i class="bi bi-bank2 mr-1"></i>Department : {{ evaluateeInfo.departments[0].department }}</span>
-                <!-- <span><i class="bi bi-person-fill-gear mr-1"></i>Role : Instructor</span> -->
-            </div>
+                <span><i class="bi bi-bank2 mr-1"></i>Department : {{ capitalizeFirstLetter(evaluateeInfo.departments[0].department.split('-')[0]) }}</span>
+              </div>
         </div>
 
         <!-- Modal Body -->
         <div class="mb-4">
-          <table class="w-full border">
+          <table class="max-w-screen w-full border">
             <thead>
               <tr>
                 <th class="border">Subject</th>
                 <th class="border">Sections</th>
                 <th class="border">Schedule</th>
+                <th class="border">Time</th>
               </tr>
             </thead>
             <tbody class="text-center">
               <!-- Add your dynamic content here -->
-              <tr>
-                <td class="border">EDM</td>
-                <td class="border">4A</td>
-                <td class="border">MWF</td>
+              <tr v-for="(klass, index) in evaluateeInfo.klasses" :key="index">
+                <td class="border">{{ capitalizeFirstLetter(klass.subject.name) }}</td>
+                <td class="border">
+                  <span v-for="(sectionYear, syIndex) in klass.section_years" :key="syIndex" 
+                  v-if="klass.section_years && klass.section_years.length > 0">
+                    <div>
+                      {{ sectionYear.s_y }}
+                      <hr>
+                    </div>
+                    <!-- Assuming section_years is an array of objects with s_y property -->
+                    <!-- {{ syIndex < klass.section_years.length - 1 ? ', ' : '' }} -->
+                  </span>
+                </td>
+                <td class="border">
+                  <div>
+                    MWF
+                    <hr>
+                  </div>
+                  <div>
+                    TTH
+                    <hr>
+                  </div>
+                  <div>
+                    SAT
+                    <hr>
+                  </div>
+                </td>
+                <td class="border">
+                  <div>
+                    1pm-2pm
+                    <hr>
+                  </div>
+                  <div>
+                    4pm-5pm
+                    <hr>
+                  </div>
+                  <div>
+                    7pm-8pm
+                    <hr>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -41,13 +78,30 @@
 
         <!-- Modal Footer -->
         <div class="flex justify-between items-center">
-            <p class="mb-2">Date Evaluated 
-                <span class="flex ml-5">11-12-23</span>
-            </p>
+          <p class="mb-2">Date Evaluated 
+            <hr>
+            <span class="flex ml-5">11-12-23</span>
+          </p>
         </div>
     </div>
-    <div v-else>
-      No Data / Loading data
+    <div v-else class="bg-white p-8 max-w-md mx-auto mt-48 max-h-[26rem]">
+      <div class="loader">
+        <svg viewBox="0 0 80 80">
+          <circle id="test" cx="40" cy="40" r="32"></circle>
+        </svg>
+      </div>
+
+      <div class="loader triangle">
+        <svg viewBox="0 0 86 80">
+          <polygon points="43 8 79 72 7 72"></polygon>
+        </svg>
+      </div>
+
+      <div class="loader">
+        <svg viewBox="0 0 80 80">
+          <rect x="8" y="8" width="64" height="64"></rect>
+        </svg>
+      </div>
       {{ selectedEvaluteeId }}
     </div>
   </div>
@@ -66,8 +120,6 @@ const props = defineProps([
               ]);
 const { emit } = getCurrentInstance();
 
-
-
 const closeModal = () => {
   // Emit an event to inform the parent component to close the modal
   emit('close-modal');
@@ -76,25 +128,181 @@ const handleEvaluate = () => {
   // Handle the evaluation logic if needed
   console.log('go to evaluation page');
 };
-
+const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 onMounted(()=>{
   
   // const id = {
-//             evaluatee_id: evaluatee.id
-//         }
-//         const {data} = await getEvaluateeInfo(id)
-//         console.log(data)
+  //           evaluatee_id: evaluatee.id
+  //       }
+  //       const {data} = await getEvaluateeInfo(id)
+  //       console.log(data)
 })
-
 </script>
 
 <style scoped>
+.loader {
+  --path: #2f3545;
+  --dot: #5628ee;
+  --duration: 3s;
+  width: 44px;
+  height: 44px;
+  position: relative;
+  bottom: 100px;
+  left: 40px;
+}
+
+.loader:before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  position: absolute;
+  display: block;
+  background: var(--dot);
+  top: 37px;
+  left: 19px;
+  transform: translate(-18px, -18px);
+  animation: dotRect var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+}
+
+.loader svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.loader svg rect, .loader svg polygon, .loader svg circle {
+  fill: none;
+  stroke: var(--path);
+  stroke-width: 10px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.loader svg polygon {
+  stroke-dasharray: 145 76 145 76;
+  stroke-dashoffset: 0;
+  animation: pathTriangle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+}
+
+.loader svg rect {
+  stroke-dasharray: 192 64 192 64;
+  stroke-dashoffset: 0;
+  animation: pathRect 3s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+}
+
+.loader svg circle {
+  stroke-dasharray: 150 50 150 50;
+  stroke-dashoffset: 75;
+  animation: pathCircle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+}
+
+.loader.triangle {
+  width: 48px;
+}
+
+.loader.triangle:before {
+  left: 21px;
+  transform: translate(-10px, -18px);
+  animation: dotTriangle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+}
+
+@keyframes pathTriangle {
+  33% {
+    stroke-dashoffset: 74;
+  }
+
+  66% {
+    stroke-dashoffset: 147;
+  }
+
+  100% {
+    stroke-dashoffset: 221;
+  }
+}
+
+@keyframes dotTriangle {
+  33% {
+    transform: translate(0, 0);
+  }
+
+  66% {
+    transform: translate(10px, -18px);
+  }
+
+  100% {
+    transform: translate(-10px, -18px);
+  }
+}
+
+@keyframes pathRect {
+  25% {
+    stroke-dashoffset: 64;
+  }
+
+  50% {
+    stroke-dashoffset: 128;
+  }
+
+  75% {
+    stroke-dashoffset: 192;
+  }
+
+  100% {
+    stroke-dashoffset: 256;
+  }
+}
+
+@keyframes dotRect {
+  25% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(18px, -18px);
+  }
+
+  75% {
+    transform: translate(0, -36px);
+  }
+
+  100% {
+    transform: translate(-18px, -18px);
+  }
+}
+
+@keyframes pathCircle {
+  25% {
+    stroke-dashoffset: 125;
+  }
+
+  50% {
+    stroke-dashoffset: 175;
+  }
+
+  75% {
+    stroke-dashoffset: 225;
+  }
+
+  100% {
+    stroke-dashoffset: 275;
+  }
+}
+
+.loader {
+  display: inline-block;
+  margin: 0 16px;
+}
+
+ 
 button {
   border: none;
   display: block;
   position: relative;
-  padding: 0.7em 2.4em;
+  padding: 4px 8px;
   font-size: 12px;
   background: transparent;
   cursor: pointer;
@@ -103,8 +311,10 @@ button {
   color: black;
   z-index: 1;
   font-family: inherit;
-  font-weight: 500;
-  margin-left: 5px;
+  font-weight: 1500;
+  margin-bottom: 10px;
+  left: 97%;
+  bottom: 20px;
 }
 
 button span {
@@ -115,7 +325,7 @@ button span {
   height: 100%;
   background: transparent;
   z-index: -1;
-  border: 4px solid rgba(8, 47, 73,1);
+  border: 2px solid rgb(109, 109, 109);
 }
 
 button span::before {
@@ -143,5 +353,20 @@ button:hover {
 
 button:active span::before {
   background: #2751cd;
+}
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+}
+.overflow-y-auto:hover::-webkit-scrollbar {
+  display: block;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgb(8, 47, 73, 1);
+  border-radius: 8px;
+  width: 4px;
 }
 </style>

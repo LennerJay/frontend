@@ -9,18 +9,18 @@
                 <p class="text-lg">2023</p>
             </div>
             <div ref="selectRef" class="text-zinc-500 flex mr-5">
-                <SelectTag  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
+                <SelectTag class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
             </div>
        </div>    
        <div class="min-h-screen bg-blue-50">
             <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
-                <ProfileCard v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id" option="View" @selectedEvaluatee="selectedEvaluatee"/>
+                <ProfileCard class="card-box" v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id" option="View" @selectedEvaluatee="selectedEvaluatee"/>
             </div>
         </div>
         <ModalCard  :showModal="showModal" 
                     :showDetail ="showDetail"
                     :evaluateeInfo="evaluateeInfo"
-                @close-modal="closeModel"/>
+                @close-modal="closeModel" class="modal-box"/>
         <FooterCard/>
     </div>
 </template>
@@ -94,11 +94,16 @@ onMounted(async ()=>{
     
 });
 
-
 </script>
 
-
-
 <style scoped>
-
+.select-dropdown {
+  z-index: 999;
+}
+.card-box {
+  z-index: 1;
+}
+.modal-box {
+  z-index: 1000
+}
 </style>
