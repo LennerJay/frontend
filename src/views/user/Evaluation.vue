@@ -43,7 +43,7 @@ const router = useRouter()
 // const { evaluatees } = storeToRefs(evaluateeStore)
 const { user,errors } = userStore
 const rating = useRatingStore()
-const selectedevaluatee = ref('')
+const selectedEvaluatee = ref('')
 const selectedRatings = ref([]);
 const questionaire  = ref([]);
 const show = ref(true)
@@ -56,8 +56,8 @@ const selectEvaluatee = async (id)=>{
     const departmentId = evaluatee.departments[0].id
     await store.fetchQuestionaireForEvaluatee(departmentId);
     questionaire.value = store.questionaireForEvaluatee
-    selectedevaluatee.value = evaluatee
-    localStorage.setItem('selectedevaluatee', JSON.stringify(evaluatee))
+    selectedEvaluatee.value = evaluatee
+    localStorage.setItem('selectedEvaluatee', JSON.stringify(evaluatee))
     name.value = evaluatee.name
     show.value = false
 
@@ -85,12 +85,13 @@ const isSubmitButtonEnabled = computed(() => {
 }});
 
 const handleSubmit = async ()=>{
-    console.log(selectedRatings.value)
+  
+
     selectedRatings.value.map( val => {
         val.evaluator_id = user.id_number
     })
     const value = {
-        instructorId : selectedevaluatee.value.id,
+        instructorId : selectedEvaluatee.value.id,
         user_id : user.id_number,
         val: [...selectedRatings.value]
         
@@ -106,8 +107,11 @@ const handleSubmit = async ()=>{
             localStorage.removeItem(key)
         }
         selectedRatings.value = []
-        router.go(0)
+        evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.id !== selectedEvaluatee.value.id)
+        name.value = ''
+        show.value = true
     }
+
 }
 
 
@@ -122,22 +126,21 @@ const updateSelectedRatings = (val) => {
 
 
 onMounted(async ()=>{
-    if(localStorage.getItem('selectedevaluatee')){
-        selectedevaluatee.value = JSON.parse(localStorage.getItem('selectedevaluatee'))
+    if(localStorage.getItem('selectedEvaluatee')){
+        selectedEvaluatee.value = JSON.parse(localStorage.getItem('selectedEvaluatee'))
             if(localStorage.getItem('questionaire-for-evaluatee')){
                 questionaire.value =  JSON.parse(localStorage.getItem('questionaire-for-evaluatee'))
             }else{
-                await store.fetchQuestionaireForEvaluatee(selectedevaluatee.value.departments[0].id);
+                await store.fetchQuestionaireForEvaluatee(selectedEvaluatee.value.departments[0].id);
                 questionaire.value = store.questionaireForEvaluatee
             }
-        name.value = selectedevaluatee.value.name
+        name.value = selectedEvaluatee.value.name
         show.value = false
     }else{
         await evaluateeStore.fetchEvaluateesToRate(user.id_number)
+        console.log(evaluateeStore.evaluateesToRate)
         evaluatees.value = evaluateeStore.filterEvaluatees(false)
-        console.log(evaluatees.value)
-        
-        console.log(evaluatees.value)
+
     }
 
 
