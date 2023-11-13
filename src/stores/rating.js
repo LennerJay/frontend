@@ -16,9 +16,6 @@ export const useRatingStore = defineStore('ratingStore',()=>{
         }
     }
 
-
-
-
     return {
         save, response, error
     }

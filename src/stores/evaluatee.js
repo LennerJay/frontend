@@ -1,12 +1,21 @@
 import {  defineStore } from "pinia";
 import { ref, watch } from "vue";
-import { getAllEvaluatees} from "../http/evaluatee-api"
+import { getAllEvaluatees,getEvaluateesToRate,getEvaluateeInfo} from "../http/evaluatee-api"
 
 
 export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const error = ref([]);
     const allEvaluatees = ref([]);
     const allEvaluated = ref([]);
+    const evaluateesToRate = ref({})
+
+    const fetchEvaluateeInfo = async(evaluateeId)=>{
+        const id = {
+            evaluatee_id: evaluateeId
+        }
+        const {data} = await getEvaluateeInfo(id)
+        return data;
+    }
 
     const fetchAllEvaluatees = async (userId) =>{
         try{
@@ -40,8 +49,27 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         })
     }
     
+    const fetchEvaluateesToRate = async(userId)=>{
+        const { data } = await getEvaluateesToRate(userId)
+        evaluateesToRate.value = data
+      }
+    
+      const filterEvaluatees = (isDone) => {
+        if(!isDone){
+          return evaluateesToRate.value.filter(evaluatee => evaluatee.pivot.is_done === 0)
+        }
+  
+        return evaluateesToRate.value.filter(evaluatee => evaluatee.pivot.is_done === 1)
+      }
 
     return {
-        fetchAllEvaluatees, allEvaluatees,filterDepartment, allEvaluated
+        fetchAllEvaluatees,
+         allEvaluatees,
+         filterDepartment, 
+         allEvaluated,
+         fetchEvaluateesToRate,
+         evaluateesToRate,
+         filterEvaluatees,
+         fetchEvaluateeInfo
     }
 })

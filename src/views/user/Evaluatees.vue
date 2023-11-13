@@ -14,9 +14,13 @@
        </div>    
        <div class="min-h-screen bg-blue-50">
             <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
-                <ProfileCard v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id"/>
+                <ProfileCard v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id" option="View" @selectedEvaluatee="selectedEvaluatee"/>
             </div>
         </div>
+        <ModalCard  :showModal="showModal" 
+                    :showDetail ="showDetail"
+                    :evaluateeInfo="evaluateeInfo"
+                @close-modal="closeModel"/>
         <FooterCard/>
     </div>
 </template>
@@ -25,11 +29,11 @@
 <script setup>
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { onMounted ,ref } from 'vue';
+import { useDrawerStore } from '../../stores/drawerStore';
 import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
 import FooterCard from "@/components/FooterCard.vue"
-import { useDrawerStore } from '../../stores/drawerStore';
-
+import ModalCard from '../../components/ModalCard.vue';
 
 const drawer = useDrawerStore()
 const store = useEvaluateeStore()
@@ -37,6 +41,22 @@ const selectRef = ref(null)
 const  evaluatees = ref([]);
 let open = ref(false)
 let department = ref('All Departments')
+const showModal = ref(false)
+const showDetail = ref(false)
+const evaluateeInfo = ref([]);
+
+
+const closeModel = ()=>{
+    showModal.value = false
+    showDetail.value = false
+}
+const selectedEvaluatee  = async(id) =>{
+    showModal.value = true
+    evaluateeInfo.value =  await store.fetchEvaluateeInfo(id)
+    console.log(evaluateeInfo.value )
+    showDetail.value = true
+    console.log(id)
+}
 
 const handleSelectTag = (event)=>{
     if (selectRef.value == null) {
@@ -71,7 +91,7 @@ onMounted(async ()=>{
     }
     evaluatees.value = store.allEvaluatees
     document.addEventListener('click', handleSelectTag);
- 
+    
 });
 
 

@@ -1,15 +1,20 @@
 <template>
 <!-- Modal -->
-<div v-if="modalState" class="fixed inset-0 bg-sky-950 bg-opacity-5  z-50 items-center justify-center font-Times New Roman">
-    <div class="bg-white p-8 max-w-md mx-auto mt-48 border-8 border-sky-950 rounded-xl">
+<div v-if="showModal" class="fixed inset-0 bg-sky-950 bg-opacity-5  z-50 items-center justify-center font-Times New Roman">
+  <div class="bg-white p-8 max-w-md mx-auto mt-48 border-8 border-sky-950 rounded-xl">
+    <button @click="closeModal">
+        Cancel elisi og X <!-- E butang ni sa upper right -->
+        <span></span>
+    </button>
+    <div v-if="showDetail">
         <!-- Modal Header -->
         <div class="mb-4 flex flex-col">
             <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white">Details</h2>
             <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
-                <span><i class="bi bi-person-fill mr-1"></i>Name: {{ selectedEvaluatee.name.split(' ').slice(0, 2).join(' ') }}</span>
-                <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : Fulltime</span>
-                <span><i class="bi bi-bank2 mr-1"></i>Department : {{ selectedEvaluatee.departments[0].department.split('-')[0] }}</span>
-                <span><i class="bi bi-person-fill-gear mr-1"></i>Role : Instructor</span>
+                <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name }}</span>
+                <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Fulltime':'Part Time' }}</span>
+                <span><i class="bi bi-bank2 mr-1"></i>Department : {{ evaluateeInfo.departments[0].department }}</span>
+                <!-- <span><i class="bi bi-person-fill-gear mr-1"></i>Role : Instructor</span> -->
             </div>
         </div>
 
@@ -39,27 +44,28 @@
             <p class="mb-2">Date Evaluated 
                 <span class="flex ml-5">11-12-23</span>
             </p>
-            <div class="flex">
-                <button @click="handleEvaluate">
-                    Evaluates
-                    <span></span>
-                </button>
-                <button @click="closeModal">
-                    Cancel
-                    <span></span>
-                </button>
-            </div>
         </div>
     </div>
+    <div v-else>
+      No Data / Loading data
+      {{ selectedEvaluteeId }}
+    </div>
+  </div>
 </div>
 </template>
 <script setup>
+import { defineProps, ref, getCurrentInstance, onMounted } from 'vue';
+import { useEvaluateeStore } from '../stores/evaluatee';
 
-import { defineProps, ref, computed, getCurrentInstance } from 'vue';
-
-const props = defineProps(['modalState', 'selectedEvaluatee']);
+const store = useEvaluateeStore();
+const props = defineProps([
+                'showModal', 
+                'evaluateeInfo',
+                'selectedEvaluteeId',
+                'showDetail',
+              ]);
 const { emit } = getCurrentInstance();
-const isDone = true;
+
 
 
 const closeModal = () => {
@@ -70,6 +76,16 @@ const handleEvaluate = () => {
   // Handle the evaluation logic if needed
   console.log('go to evaluation page');
 };
+
+
+onMounted(()=>{
+  
+  // const id = {
+//             evaluatee_id: evaluatee.id
+//         }
+//         const {data} = await getEvaluateeInfo(id)
+//         console.log(data)
+})
 
 </script>
 

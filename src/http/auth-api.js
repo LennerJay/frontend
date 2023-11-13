@@ -14,5 +14,3 @@ export const getUser = () => api.get('/api/v1/users/user')
 
 export const test = () => api.get('/api/test')
 
-export const getEvaluateesToRate = (userId) => api.post(`api/v1/users/${userId}/evaluatees-to-rate`)
-

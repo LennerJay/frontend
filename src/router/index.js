@@ -19,7 +19,7 @@ router.beforeEach(async (to,from)=>{
             name:'login',
         }
       } else if (to.meta.guest && store.isLoggedIn) {
-        return { name: "evaluation" };
+        return { name: "dashboard" };
       } else if (to.meta.admin && !store.isAdminStaff) {
         return { name: "dashboard" };
       } else if(!to.meta.admin && store.isAdminStaff){
