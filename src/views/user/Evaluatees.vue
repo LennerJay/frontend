@@ -1,4 +1,5 @@
 <template>
+    <LoadingAnimation v-if="isLoaded" class="loading-screen"/>
     <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
         <div class="header pl-2 pt-2 text-white ml-5">
             <div class="font-bold p-1 text-[30px]">
@@ -42,6 +43,7 @@ import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
 import FooterCard from "@/components/FooterCard.vue"
 import ModalCard from '../../components/ModalCard.vue';
+import LoadingAnimation from '../../components/LoadingAnimation.vue'
 
 const drawer = useDrawerStore()
 const store = useEvaluateeStore()
@@ -53,6 +55,14 @@ const showModal = ref(false)
 const showDetail = ref(false)
 const evaluateeInfo = ref([]);
 const showEvaluatee = ref(false);
+const isLoaded = ref(true);
+
+const loadedData = () => {
+    isLoaded.value = false
+    // setTimeout(() => {
+    //     isLoaded.value = false
+    // }, 2000); 
+}
 
 const closeModal = ()=>{
     showModal.value = false
@@ -101,7 +111,7 @@ onMounted(async ()=>{
     evaluatees.value = store.allEvaluatees
     showEvaluatee.value = true
     document.addEventListener('click', handleSelectTag);
-    
+    loadedData();
 });
 
 </script>
@@ -115,5 +125,8 @@ onMounted(async ()=>{
 }
 .modal-box {
   z-index: 1000
+}
+.loading-screen {
+    z-index: 1000;
 }
 </style>

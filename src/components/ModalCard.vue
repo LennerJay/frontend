@@ -1,6 +1,6 @@
 <template>
 <!-- Modal -->
-<div v-if="showModal" class="fixed inset-0 bg-sky-950 bg-opacity-5  z-50 items-center justify-center font-Times New Roman">
+<div v-if="showModal" class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman">
   <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
     <button @click="closeModal">
       <i class="bi bi-x-lg"></i>
@@ -18,70 +18,57 @@
         </div>
 
         <!-- Modal Body -->
-        <div class="mb-4">
-          <table class="max-w-screen w-full border">
-            <thead>
-              <tr>
-                <th class="border">Subject</th>
-                <th class="border">Sections</th>
-                <th class="border">Schedule</th>
-                <th class="border">Time</th>
-              </tr>
-            </thead>
-            <tbody class="text-center">
-              <tr v-for="(klass, index) in evaluateeInfo.klasses" :key="index">
-                <td class="border">{{ capitalizeFirstLetter(klass.subject.name) }}</td>
-                <td class="border">
-                  <span v-for="(sectionYear, syIndex) in klass.section_years" :key="syIndex" 
-                       v-if="klass.section_years && klass.section_years.length > 0" >
-                    <div>
-                      {{ sectionYear.s_y }}
-                      <hr>
-                    </div>
-                  </span>
-                </td>
-                <td class="border">
-                  <div>
-                    MWF
-                    <hr>
-                  </div>
-                  <div>
-                    TTH
-                    <hr>
-                  </div>
-                  <div>
-                    SAT
-                    <hr>
-                  </div>
-                </td>
-                <td class="border">
-                  <div>
-                    1pm-2pm
-                    <hr>
-                  </div>
-                  <div>
-                    4pm-5pm
-                    <hr>
-                  </div>
-                  <div>
-                    7pm-8pm
-                    <hr>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <div class="mb-4">
+            <table class="max-w-screen w-full border" v-if="isTeacher">
+              <thead>
+                <tr>
+                  <th class="border">Subject</th>
+                  <th class="border">Sections</th>
+                  <th class="border">Schedule</th>
+                  <th class="border">Time</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                <tr v-for="(klass, index) in evaluateeInfo.klasses" :key="index">
+                  <td class="border">{{ capitalizeFirstLetter(klass.subject.name) }}</td>
+                  <td class="border">
+                    <span v-for="(sectionYear, syIndex) in klass.section_years" :key="syIndex" 
+                        v-if="klass.section_years && klass.section_years.length > 0" >
+                        {{ sectionYear.s_y }}
+                      <hr v-if="syIndex < klass.section_years.length - 1">
+                    </span>
+                  </td>
+                  <td class="border">
+                    <span v-for="(sectionYear, pivotIndex) in klass.section_years" :key="pivotIndex">
+                      <span v-for="(day, dayIndex) in sectionYear.pivot.day" :key="dayIndex">
+                        {{ day.toUpperCase() }}
+                      </span>
+                      <hr v-if="pivotIndex < klass.section_years.length - 1">
+                    </span>
+                  </td>
+                  <td class="border">
+                    <span v-for="(sectionYear, pivotIndex) in klass.section_years" :key="pivotIndex">
+                      <span v-for="(time, timeIndex) in sectionYear.pivot.time" :key="timeIndex">
+                        {{ time.toUpperCase() }}
+                      </span>
+                      <hr v-if="pivotIndex < klass.section_years.length - 1">
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div v-else class="text-center">No Data</div>
+          </div>
 
         <!-- Modal Footer -->
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center" v-if="isHistoryRoute">
           <p class="mb-2">Date Evaluated 
             <hr>
             <span class="flex ml-5">11-12-23</span>
           </p>
         </div>
     </div>
-    <div v-else class="bg-white p-8 max-w-md mx-auto mt-48 max-h-[26rem]">
+    <div v-else class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex">
       <div class="loader">
         <svg viewBox="0 0 80 80">
           <circle id="test" cx="40" cy="40" r="32"></circle>
@@ -105,10 +92,12 @@
 </div>
 </template>
 <script setup>
-import { ref, getCurrentInstance, onMounted } from 'vue';
+import { ref, getCurrentInstance, onMounted, computed } from 'vue';
 import { useEvaluateeStore } from '../stores/evaluatee';
+import { useRoute } from 'vue-router';
 
 const store = useEvaluateeStore();
+const route = useRoute();
 const props = defineProps([
                 'showModal', 
                 'evaluateeInfo',
@@ -121,14 +110,11 @@ const closeModal = () => {
   // Emit an event to inform the parent component to close the modal
   emit('close-modal');
 };
-const handleEvaluate = () => {
-  // Handle the evaluation logic if needed
-  console.log('go to evaluation page');
-};
 const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
-
+const isHistoryRoute = computed(() => route.name === 'history');
+const isTeacher = computed(() => props.evaluateeInfo.departments[0].department !== 'canteen-staff');
 onMounted(()=>{
   
   // const id = {
@@ -136,6 +122,7 @@ onMounted(()=>{
   //       }
   //       const {data} = await getEvaluateeInfo(id)
   //       console.log(data)
+  // console.log(props.evaluateeInfo);
 })
 </script>
 
@@ -148,7 +135,7 @@ onMounted(()=>{
   height: 44px;
   position: relative;
   bottom: 100px;
-  left: 40px;
+  left: 50px;
 }
 
 .loader:before {

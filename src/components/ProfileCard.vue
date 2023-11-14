@@ -8,8 +8,10 @@
             </div>           
             <div class="pt-1 ml-2 text-left">
                 <div class="text-[15px] ml-2 pb-2"><span>Name : </span>{{ evaluatee.name }}</div>
-                <div v-for="departments in evaluatee.departments" class="text-[15px] ml-2"><span>Department : </span>{{ capitalizeFirstLetter(departments.department) }}</div>
-            </div>
+                <div v-for="(departments,index) in evaluatee.departments" :key="index" class="text-[15px] ml-2">
+                  <span>Department : </span>{{ capitalizeFirstLetter(departments.department) }}
+                </div>               
+              </div>
         </div>
         <div class="card-effect"></div>
        <!-- <button @click="handleClick(evaluatee)">{{ option }}</button> -->
@@ -37,8 +39,6 @@ const handleClick = (evaluatee)=>{
     console.log('clicked')
     emit('selectedEvaluatee',evaluatee.id)
 }
-
-
 </script>
 
 <style scoped>
