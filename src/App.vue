@@ -6,7 +6,6 @@ import SideBar from '@/components/SideBar.vue'
 const route = useRoute() 
 const showSideBar = ref()
 
-
 watch(
   route,
   (to)=>{
@@ -19,6 +18,7 @@ watch(
   }
 
 )
+
 </script>
 
 <template>

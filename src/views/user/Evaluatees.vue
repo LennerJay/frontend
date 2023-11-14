@@ -13,14 +13,22 @@
             </div>
        </div>    
        <div class="min-h-screen bg-blue-50">
-            <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
-                <ProfileCard class="card-box" v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id" option="View" @selectedEvaluatee="selectedEvaluatee"/>
+            <div v-if="showEvaluatee">
+                <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
+                    <ProfileCard class="card-box" v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id" option="View" @selectedEvaluatee="selectedEvaluatee"/>
+                </div>
+                <ModalCard :showModal="showModal" 
+                        :showDetail ="showDetail"
+                        :evaluateeInfo="evaluateeInfo"
+                        @close-modal="closeModal"
+                        class="modal-box"/>
             </div>
+            <div v-else>
+            Loading Data
+            </div>
+     
         </div>
-        <ModalCard  :showModal="showModal" 
-                    :showDetail ="showDetail"
-                    :evaluateeInfo="evaluateeInfo"
-                @close-modal="closeModel" class="modal-box"/>
+
         <FooterCard/>
     </div>
 </template>
@@ -44,9 +52,9 @@ let department = ref('All Departments')
 const showModal = ref(false)
 const showDetail = ref(false)
 const evaluateeInfo = ref([]);
+const showEvaluatee = ref(false);
 
-
-const closeModel = ()=>{
+const closeModal = ()=>{
     showModal.value = false
     showDetail.value = false
 }
@@ -88,8 +96,10 @@ const closeTag= ()=>{
 onMounted(async ()=>{
     if(!localStorage.getItem('allEvaluatees')){
         await store.fetchAllEvaluatees()
+        showEvaluatee.value = true
     }
     evaluatees.value = store.allEvaluatees
+    showEvaluatee.value = true
     document.addEventListener('click', handleSelectTag);
     
 });

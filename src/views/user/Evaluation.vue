@@ -9,15 +9,22 @@
             </div>    
         </div>
 
-        <div v-if="show" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer">
-            <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"  option="Select" @selectedEvaluatee="selectEvaluatee"/>
+        <div v-if="show" >
+            
+            <div v-if="showProfileCard" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer">
+                <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"  option="Select" @selectedEvaluatee="selectEvaluatee"/>
+            </div>
+            <div v-else>
+                    Loading Data
+            </div>
         </div>
         <div v-else class="questions">
             <h1 class="font-bold">Title: {{ questionaire.title }}</h1>
             <p>description: {{ questionaire.description }}</p>
-            <QuestionForm v-for="(criteria,key) in questionaire.criterias" :criteria="criteria" :key="key" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit"/>
+            <QuestionForm v-for="(criteria,index) in questionaire.criterias" :criteria="criteria" :key="index" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit"/>
             <hr class="h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700">
             <div class="flex justify-between">
+                <button >Back</button>
                 <button @click="handleSubmit">Submit</button>
             </div>
         </div>
@@ -49,7 +56,7 @@ const questionaire  = ref([]);
 const show = ref(true)
 const name = ref('')
 const evaluatees = ref('')
-
+const showProfileCard = ref(false)
 
 const selectEvaluatee = async (id)=>{
     const evaluatee = evaluatees.value.find(obj => obj.id === id)
@@ -85,7 +92,6 @@ const isSubmitButtonEnabled = computed(() => {
 }});
 
 const handleSubmit = async ()=>{
-  
 
     selectedRatings.value.map( val => {
         val.evaluator_id = user.id_number
@@ -110,6 +116,8 @@ const handleSubmit = async ()=>{
         evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.id !== selectedEvaluatee.value.id)
         name.value = ''
         show.value = true
+    }else{
+        alert('something went wrong')
     }
 
 }
@@ -134,40 +142,40 @@ onMounted(async ()=>{
                 await store.fetchQuestionaireForEvaluatee(selectedEvaluatee.value.departments[0].id);
                 questionaire.value = store.questionaireForEvaluatee
             }
+            let qId = []
+            questionaire.value.criterias.forEach(criteria => {
+                criteria.questions.forEach(question => {
+                    qId.push(question.id)
+                })
+                console.log(criteria.questions.length)
+            });
+            if(localStorage.length > 0){
+                for (let i = 0; i < localStorage.length; i++) {
+                    const id = localStorage.key(i);
+                    if(qId.includes(Number(id))){
+                        const rating = localStorage.getItem(id)
+                        if(rating > 5){
+                            localStorage.removeItem(id)
+                        }else{
+                            selectedRatings.value.push({question_id:Number(id),rating:Number(localStorage.getItem(id))})
+                        }
+                    }else if(!!Number(id)){
+                        localStorage.removeItem(id)
+                    }
+                }
+            }
         name.value = selectedEvaluatee.value.name
         show.value = false
     }else{
         await evaluateeStore.fetchEvaluateesToRate(user.id_number)
         console.log(evaluateeStore.evaluateesToRate)
+        showProfileCard.value = true
         evaluatees.value = evaluateeStore.filterEvaluatees(false)
 
     }
 
 
-    // let qId = []
-    
-    // questionaire.value.criterias.forEach(criteria => {
-    //     criteria.questions.forEach(question => {
-    //         qId.push(question.id)
-    //     })
-    //     console.log(criteria.questions.length)
-    // });
-    
-    // if(localStorage.length > 0){
-    //     for (let i = 0; i < localStorage.length; i++) {
-    //         const id = localStorage.key(i);
-    //         if(qId.includes(Number(id))){
-    //             const rating = localStorage.getItem(id)
-    //             if(rating > 5){
-    //                 localStorage.removeItem(id)
-    //             }else{
-    //                 selectedRatings.value.push({question_id:Number(id),rating:Number(localStorage.getItem(id))})
-    //             }
-    //         }else if(!!Number(id)){
-    //             localStorage.removeItem(id)
-    //         }
-    //     }
-    // }
+
 });
 </script>
 

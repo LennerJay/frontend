@@ -29,18 +29,15 @@
               </tr>
             </thead>
             <tbody class="text-center">
-              <!-- Add your dynamic content here -->
               <tr v-for="(klass, index) in evaluateeInfo.klasses" :key="index">
                 <td class="border">{{ capitalizeFirstLetter(klass.subject.name) }}</td>
                 <td class="border">
                   <span v-for="(sectionYear, syIndex) in klass.section_years" :key="syIndex" 
-                  v-if="klass.section_years && klass.section_years.length > 0">
+                       v-if="klass.section_years && klass.section_years.length > 0" >
                     <div>
                       {{ sectionYear.s_y }}
                       <hr>
                     </div>
-                    <!-- Assuming section_years is an array of objects with s_y property -->
-                    <!-- {{ syIndex < klass.section_years.length - 1 ? ', ' : '' }} -->
                   </span>
                 </td>
                 <td class="border">
@@ -108,7 +105,7 @@
 </div>
 </template>
 <script setup>
-import { defineProps, ref, getCurrentInstance, onMounted } from 'vue';
+import { ref, getCurrentInstance, onMounted } from 'vue';
 import { useEvaluateeStore } from '../stores/evaluatee';
 
 const store = useEvaluateeStore();
