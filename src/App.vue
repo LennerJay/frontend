@@ -2,6 +2,7 @@
 import { RouterView,useRoute } from 'vue-router'
 import { ref,watch} from 'vue';
 import SideBar from '@/components/SideBar.vue'
+import LoadingAnimation from './components/LoadingAnimation.vue';
 
 const route = useRoute() 
 const showSideBar = ref()
@@ -18,6 +19,7 @@ watch(
   }
 
 )
+
 
 </script>
 

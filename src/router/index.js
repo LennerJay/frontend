@@ -1,18 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from './routes';
-import { useAuthStore } from '../stores/auth';
+import { inject } from 'vue';
 
-let authStoreInitialized = false;
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
-
 router.beforeEach(async (to,from)=>{
-  const store = useAuthStore()
+
+  const store = inject('authStore')
+
+    if(to.path !== '/' && store.isLoggedIn){
       if(to.path !== '/login' && from.path !== '/login' ){
         await store.fetchUser();
+  
       }
       if(to.meta.auth && !store.isLoggedIn){
         return{
@@ -25,8 +27,8 @@ router.beforeEach(async (to,from)=>{
       } else if(!to.meta.admin && store.isAdminStaff){
         return { name: "admin" };
       }
-
-
+    }
+      
 });
 
 export default router

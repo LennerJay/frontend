@@ -5,3 +5,7 @@
         <router-link to="/" class="font-bold">Back to the main page</router-link>
     </div>
 </template>
+
+<script setup>
+
+</script>

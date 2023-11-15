@@ -24,8 +24,8 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const handleLogin = async (credentials) => {
         await csrfCookie();
         try {
-            await login(credentials);
-            await fetchUser();
+             await login(credentials);
+            // await fetchUser();
             errors.value= {};
         } catch (error) {
            if(error.response.status === 422){
@@ -33,6 +33,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
            }else{
             errors.value =  error.response
            }
+           console.log(errors.value)
         }
 
     };

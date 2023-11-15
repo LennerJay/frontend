@@ -1,12 +1,13 @@
 <template>
-    <LoadingAnimation v-if="isLoaded" class="loading-screen"/>
+   
     <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
+        <LoadingAnimation v-if="isLoaded" class="loading-screen"/>
         <div class="header pl-2 pt-2 text-white ml-5">
             <div class="font-bold p-1 text-[30px]">
               <span class="inline-block md:hidden" @click="drawer.toggle">
                 <i class="bi bi-filter-left px-5 p-1 bg-blue-800 rounded-md cursor-pointer"></i>
               </span>
-                Cordova Public College
+                Cordova Public CollegeX
                 <p class="text-lg">2023</p>
             </div>
             <div ref="selectRef" class="text-zinc-500 flex mr-5">

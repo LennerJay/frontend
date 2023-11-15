@@ -5,28 +5,28 @@ import Evaluation from '../views/user/Evaluation.vue'
 import Profile from '../views/user/Profile.vue'
 import History from '../views/user/History.vue'
 import AdminDashboard from '../views/admin/AdminDashboard.vue'
-import { useRoute } from 'vue-router'
 
 
 const routes = [
-    {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: Dashboard,
-        meta:{
-          auth:true
-        },
-
-      },
       {
-        path:'/login',
+        path:'/',
         name: 'login',
         meta:{
           guest:true
         },
         component: Login,
-        alias: '/'
+        alias: '/login'
       },
+      {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: Dashboard,
+      meta:{
+        auth:true
+      },
+
+      },
+
       {
         path: '/evaluation',
         name: 'evaluation',

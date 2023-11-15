@@ -19,7 +19,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
 import { ref, computed } from 'vue';
 import { userModalStore } from '../stores/modalStore';
 
