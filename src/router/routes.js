@@ -9,22 +9,21 @@ import AdminDashboard from '../views/admin/AdminDashboard.vue'
 
 const routes = [
       {
-        path:'/',
+        path:'/login',
         name: 'login',
         meta:{
           guest:true
         },
         component: Login,
-        alias: '/login'
+        alias: '/'
       },
       {
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard,
       meta:{
-        auth:true
-      },
-
+            auth:true
+        },
       },
 
       {

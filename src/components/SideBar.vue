@@ -95,7 +95,7 @@ const adminStaffComponent = [
 const handleLogout = async() =>{
     localStorage.clear()
     await store.handleLogout()
-    router.push({ name: 'login' })
+    router.push('/login')
 
 
 };

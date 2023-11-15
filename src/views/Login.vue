@@ -55,8 +55,8 @@ const handleSubmit = async () =>{
 };
 
 onMounted(async()=>{
-    const res = await store.testApi()
-    console.log(res)
+    // const res = await store.testApi()
+    // console.log(res)
     // console.log(res.section_years)
     // let classesId = []
     // res.section_years.forEach(sy => {
