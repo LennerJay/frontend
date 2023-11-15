@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
         await csrfCookie();
         try {
              await login(credentials);
-            // await fetchUser();
+            await fetchUser();
             errors.value= {};
         } catch (error) {
            if(error.response.status === 422){

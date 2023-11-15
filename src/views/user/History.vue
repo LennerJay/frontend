@@ -30,6 +30,8 @@ onMounted(async() => {
   await evaluateeStore.fetchEvaluateesToRate(user.id_number)
   evaluatees.value = evaluateeStore.filterEvaluatees(true)
   console.log(evaluatees.value.length)
-  
+  if(evaluatees.value.length > 0){
+    show.value = true
+  }
 })
 </script>
