@@ -14,6 +14,7 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
             evaluatee_id: evaluateeId
         }
         const {data} = await getEvaluateeInfo(id)
+ 
         return data;
     }
 

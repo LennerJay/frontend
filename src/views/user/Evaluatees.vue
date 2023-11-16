@@ -93,7 +93,6 @@ const selectedValue = (val)=>{
     }else{
         evaluatees.value =  store.filterDepartment(val)
         department.value= val
- 
     }
     open.value = false
 
