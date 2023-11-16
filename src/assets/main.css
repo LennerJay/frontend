@@ -7,3 +7,7 @@
 .content{
     margin-left: 250px;
 }
+
+.card {
+    background: linear-gradient(145deg, #fffdfd, rgb(8, 47, 73, 1));
+}

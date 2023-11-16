@@ -14,7 +14,7 @@
                 <SelectTag class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
             </div>
        </div>    
-       <div class="min-h-screen bg-blue-50">
+       <div class="min-h-screen card">
             <div v-if="showEvaluatee">
                 <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
                     <ProfileCard class="card-box" v-for="evaluatee in evaluatees" :evaluatee="evaluatee" :key="evaluatee.id" option="View" @selectedEvaluatee="selectedEvaluatee"/>
