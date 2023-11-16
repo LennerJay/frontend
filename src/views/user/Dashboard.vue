@@ -13,7 +13,7 @@
                 <!-- Nothing goes here -->
             </div>
        </div>
-       <div class="bg-stone-200">
+       <div class="card">
             <div class="flex flex-col min-h-[43.2rem]">
                 <div id="first-container" class="first-item:flex flex-col justify-center items-center text-center border-solid border-2 h-25 m-16 p-5 bg-sky-900 text-white overflow-hidden relative">
                     <h1 class="text text-2xl font-serif">Announcement</h1>
