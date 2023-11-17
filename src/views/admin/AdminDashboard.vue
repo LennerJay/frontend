@@ -1,5 +1,6 @@
 <template>
-    <div class="md:ml-[250px] ml-0 font-serif px-0 w-full dashboard-main-header">
+    <div class="flex">
+        <div class="md:ml-[250px] ml-0 font-serif px-0 w-full dashboard-main-header">
         <div class="header pl-2 py-6 text-white text-center">
             <h2 class="dashboard">DASHBOARD</h2>
             <div class="font-bold p-1 text-[30px] inline-block">
@@ -145,6 +146,7 @@
             </div>
        </div>
        <FooterCard/>
+    </div>
     </div>
 </template>
 

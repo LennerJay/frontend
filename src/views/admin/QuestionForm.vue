@@ -56,12 +56,12 @@ const handleBack = () => {
 }
 
 onMounted(async()=>{
-    await questionaireStore.fetchQuestionaire()
-    questionaires.value = questionaireStore.questionaires
-    if(localStorage.getItem('selectedQuestionaire')){
-        selectedQuestionaire.value = localStorage.getItem('selectedQuestionaire')
-        showTable.value = true;
-    }
+    // await questionaireStore.fetchQuestionaire()
+    // questionaires.value = questionaireStore.questionaires
+    // if(localStorage.getItem('selectedQuestionaire')){
+    //     selectedQuestionaire.value = localStorage.getItem('selectedQuestionaire')
+    //     showTable.value = true;
+    // }
 });
 </script>
 

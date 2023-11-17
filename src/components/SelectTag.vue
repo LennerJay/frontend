@@ -10,7 +10,7 @@
                <li  class="list" v-for="role in roles"  @click="$emit('selectValue',`${role.name}` )">{{ role.name}}</li>
            </div>
            <div v-else>
-               <li class="list"  @click="$on('selectValue','allDepartments' )">All Departments</li>
+               <li class="list"  @click="$emit('selectValue','allDepartments' )">All Departments</li>
                <li class="list" v-for="department in departments"  @click="$emit('selectValue',`${department.department}` )">{{ department.department }}</li>
            </div>         
        </ul>

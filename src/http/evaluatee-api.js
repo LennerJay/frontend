@@ -11,5 +11,7 @@ export const getEvaluateeInfo = (evaluateeId) => api.post(resource + "/evaluatee
 
 export const getEvaluateesToRate = (userId) => api.post(resource + `/${userId}/evaluatees-to-rate`)
 
+export const deleteEvaluatee = (evaluateeId) => api.delete(resource + `/${evaluateeId}`);
+
 
 

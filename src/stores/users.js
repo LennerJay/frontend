@@ -6,7 +6,7 @@ export const useUserStore = defineStore('userStore', ()=>{
     const users = ref([])
     const errors = ref({});
 
-    const fetchUsers = async ()=>{
+    const fetchAllUsers = async ()=>{
         try{
             const {data}  = await getAllUsers();
             users.value =  data
@@ -25,7 +25,7 @@ export const useUserStore = defineStore('userStore', ()=>{
     return{
         users,
         errors,
-        fetchUsers,
+        fetchAllUsers,
         filterUsers
     }
 });

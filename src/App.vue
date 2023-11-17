@@ -24,7 +24,7 @@ watch(
 </script>
 
 <template>
-  <div class="flex">
+  <div class="">
     <SideBar v-if="showSideBar" />
 
     <router-view v-slot="{Component}">
