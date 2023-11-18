@@ -46,7 +46,7 @@ import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
 import FooterCard from "@/components/FooterCard.vue"
 import ModalCard from '../../components/ModalCard.vue';
-import LoadingAnimation from '../../components/LoadingAnimation.vue'
+import LoadingAnimation from '../../components/LoadingAnimation.vue';
 
 const drawer = useDrawerStore()
 const store = useEvaluateeStore()
@@ -76,7 +76,6 @@ const selectedEvaluatee  = async(id) =>{
     evaluateeInfo.value =  await store.fetchEvaluateeInfo(id)
     console.log(evaluateeInfo.value )
     showDetail.value = true
-    console.log(id)
 }
 
 const handleSelectTag = (event)=>{
@@ -93,7 +92,7 @@ const selectedValue = (val)=>{
         evaluatees.value = store.allEvaluatees
         department.value= 'All Departments'
     }else{
-        evaluatees.value =  store.filterEvaluatees(val)
+        evaluatees.value =  store.filterEvaluatees('All',val)
         department.value= val
     }
     open.value = false

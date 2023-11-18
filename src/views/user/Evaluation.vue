@@ -12,12 +12,12 @@
 
         <div v-if="showProfileCards">
            <div class="selectTags">
-            <div ref="selectRef">
-                <SelectTag  class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="openSelectTag" @closeTag="closeTag" :option="'departments'"></SelectTag>
-            </div>
-            <div>
-                <SelectJobType :selectTypeJob="selectTypeJob" @jobTypeSelected="handleTypeSelected" />
-            </div>
+                <div ref="selectRef">
+                    <SelectTag  class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="openSelectTag" @closeTag="closeTag" :option="'departments'"></SelectTag>
+                </div>
+                <div>
+                    <SelectJobType :selectTypeJob="selectTypeJob" @jobTypeSelected="handleTypeSelected" />
+                </div>
            </div>
             <div v-if="showProfileCard" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer">
                 <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"  option="Select" @selectedEvaluatee="selectEvaluatee"/>
@@ -68,7 +68,7 @@ const selectedRatings = ref([]);
 const questionaire  = ref([]);
 const showProfileCards = ref(true)
 const name = ref('')
-const evaluatees = ref('')
+const evaluatees = ref([])
 const showProfileCard = ref(false)
 const openSelectTag = ref(false)
 const selectRef = ref('')
@@ -159,10 +159,10 @@ const handleSelectTag = (event)=>{
 const selectedValue = (departmentName)=>{
     if(departmentName === 'allDepartments'){
         department.value = 'All Departments'
-        evaluatees.value = evaluateeStore.filterEvaluatees(selectTypeJob.value,departmentName)
+        evaluatees.value = evaluateeStore.filterEvaluatees(selectTypeJob.value,departmentName,'evaluations')
     }else{
         department.value = departmentName
-        evaluatees.value =  evaluateeStore.filterEvaluatees(selectTypeJob.value,departmentName)
+        evaluatees.value =  evaluateeStore.filterEvaluatees(selectTypeJob.value,departmentName,'evaluations')
 
     }
     openSelectTag.value = false
@@ -175,9 +175,8 @@ const closeTag= ()=>{
 }
 const handleTypeSelected = (val)=>{
     selectTypeJob.value = val
-    evaluatees.value = evaluateeStore.filterEvaluatees(selectTypeJob.value,department.value)
+    evaluatees.value = evaluateeStore.filterEvaluatees(selectTypeJob.value,department.value,'evaluations')
 }
-
 
 
 onMounted(async ()=>{
@@ -219,11 +218,7 @@ onMounted(async ()=>{
         console.log(evaluateeStore.evaluateesToRate)
         showProfileCard.value = true
         evaluatees.value = evaluateeStore.isRatedEvaluatees(false)
-
     }
-
-
-
 });
 </script>
 

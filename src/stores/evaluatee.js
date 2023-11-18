@@ -45,20 +45,27 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         }
     );
 
-    const filterEvaluatees = (jobType, departmentName)=>{
+    const filterEvaluatees = (jobType, departmentName,path=null)=>{
+        const evaluatees = ref(); 
+            if(path === 'evaluations'){
+                evaluatees.value = evaluateesToRate.value
+            }else{
+                evaluatees.value = allEvaluatees.value
+            }
+
             if(departmentName == 'allDepartments' || departmentName == 'All Departments'){
                 if(jobType === 'All'){
-                    return evaluateesToRate.value
+                    return evaluatees.value
                 }
-                return evaluateesToRate.value.filter(evaluatee => evaluatee.job_type == Number(jobType))
+                return evaluatees.value.filter(evaluatee => evaluatee.job_type == Number(jobType))
             }else{
 
                 if(jobType === 'All'){
-                    return evaluateesToRate.value.filter((evaluatee)=>{
+                    return evaluatees.value.filter((evaluatee)=>{
                         return evaluatee.departments.some(department => department.department === departmentName)
                     })
                 }
-                return evaluateesToRate.value.filter((evaluatee)=>{
+                return evaluatees.value.filter((evaluatee)=>{
                     return evaluatee.departments.some(department => department.department === departmentName)
                 }).filter(evaluatee => evaluatee.job_type == Number(jobType))
             }

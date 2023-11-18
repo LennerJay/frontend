@@ -8,12 +8,21 @@
             </div>
             <div class="flex">
                 <div ref="selectRef" class="text-zinc-500 flex mr-5">
-                    <SelectTag  class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
+                    <SelectTag  class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="openSelectTag" @closeTag="closeTag" :option="'departments'"></SelectTag>
                 </div>
+                <SelectJobType :selectTypeJob="selectTypeJob" @jobTypeSelected="handleTypeSelected" />
+               
                 <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Create Evaluatee</button>
             </div>
         </div>
-        <TableForm  :data="filteredEvaluatees" :isNoData="isNoData" @deleteClick="handleDelete"></TableForm>
+        <TableForm  :data="filteredEvaluatees" :isNoData="isNoData" @handleActionClick="handleActionClick"></TableForm>
+        <ModalCard :showModal="showModal" 
+                        :showDetail ="showDetail"
+                        :evaluateeInfo="evaluateeInfo"
+                        :action ="action"
+                        @close-modal="closeModal"
+                        class="modal-box"/>
+        
     </div>
 </template>
 
@@ -22,14 +31,35 @@ import { useEvaluateeStore } from '../../stores/evaluatee';
 import { ref , onMounted,computed} from 'vue';
 import TableForm from '../../components/TableForm.vue';
 import SelectTag from '../../components/SelectTag.vue';
+import SelectJobType from '../../components/SelectJobType.vue';
+import ModalCard from '../../components/ModalCard.vue';
+
 
 const searchBar = ref('');
-const evaluateStore = useEvaluateeStore();
-const evaluatees = ref();
+const evaluateeStore = useEvaluateeStore();
+const evaluatees = ref([]);
 const isNoData = ref(true);
-let open = ref(false)
-let department = ref('All departments')
+const openSelectTag = ref(false)
+const department = ref('All Departments')
 const selectRef = ref(null)
+const selectTypeJob = ref('All')
+const showModal = ref(false)
+const showDetail = ref(false)
+const evaluateeInfo = ref([]);
+const action = ref('');
+
+const closeModal = ()=>{
+    showModal.value = false
+    showDetail.value = false
+}
+
+const selectedEvaluatee  = async(id) =>{
+    showModal.value = true
+    evaluateeInfo.value =  await evaluateeStore.fetchEvaluateeInfo(id)
+    console.log(evaluateeInfo.value)
+    showDetail.value = true
+    action.value = 'view'
+}
 
 const filteredEvaluatees = computed(()=>{
     if(!searchBar.value){
@@ -38,8 +68,15 @@ const filteredEvaluatees = computed(()=>{
 
     return evaluatees.value.filter(data => data.name.toLowerCase().includes(searchBar.value.toLowerCase()));
 })
-const handleDelete = async(id)=>{
-    await evaluateStore.removeEvaluate(id);
+const handleActionClick = async(id,action)=>{
+    console.log(id,action)
+    if(action === 'view'){
+       await selectedEvaluatee(id)
+    }else if(action === 'edit'){
+
+    }else if(action === 'delete'){
+
+    }
 }
  
 
@@ -48,37 +85,42 @@ const handleSelectTag = (event)=>{
         return; // Exit early if event.target is null
     }
     if(!selectRef || !selectRef.value.contains(event.target)){
-        open.value = false
+        openSelectTag.value = false
     }
 
 }
 
-const selectedValue = (val)=>{
-    if(val === 'allDepartments'){
-        department.value= 'All Departments'
-        evaluatees.value = evaluateStore.allEvaluatees
+const selectedValue = (departmentName)=>{
+    if(departmentName === 'allDepartments'){
+        department.value = 'All Departments'
+        evaluatees.value = evaluateeStore.filterEvaluatees(selectTypeJob.value,departmentName)
     }else{
-        department.value= val
-        evaluatees.value = evaluateStore.filterDepartment(val)
+        department.value = departmentName
+        evaluatees.value =  evaluateeStore.filterEvaluatees(selectTypeJob.value,departmentName)
     }
-    open.value = false
-
+    openSelectTag.value = false
 }
 
 const show = (val)=>{
-    open.value = val
+    openSelectTag.value = val
 }
-
 const closeTag= ()=>{
-    open.value = false
+    openSelectTag.value = false
 }
 
+const handleTypeSelected = (val)=>{
+    selectTypeJob.value = val
+    console.log(department.value)
+    console.log(selectTypeJob.value)
+    evaluatees.value = evaluateeStore.filterEvaluatees(selectTypeJob.value,department.value)
+    console.log(evaluatees.value)
+}
 
 onMounted(async()=>{
     document.addEventListener('click', handleSelectTag);
-    await evaluateStore.fetchAllEvaluatees()
-    if(evaluateStore.errors.length == 0){
-        evaluatees.value = evaluateStore.allEvaluatees;
+    await evaluateeStore.fetchAllEvaluatees()
+    if(evaluateeStore.errors.length == 0){
+        evaluatees.value = evaluateeStore.allEvaluatees;
         isNoData.value = false
     }
 
