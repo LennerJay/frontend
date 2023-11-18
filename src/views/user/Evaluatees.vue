@@ -1,6 +1,7 @@
 <template>
    
-    <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
+    <div class="flex">
+        <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
         <LoadingAnimation v-if="isLoaded" class="loading-screen"/>
         <div class="header pl-2 pt-2 text-white ml-5">
             <div class="font-bold p-1 text-[30px]">
@@ -32,6 +33,7 @@
         </div>
 
         <FooterCard/>
+    </div>
     </div>
 </template>
 

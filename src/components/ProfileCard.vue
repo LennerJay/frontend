@@ -1,7 +1,6 @@
 <template>
     <div  
-    class="flex items-center transparent rounded-xl border-4 font-Times New Roman border-sky-950 cursor-pointer
-    hover:-translate-y-1 hover:scale-90 card-box" @click="handleClick(evaluatee)">
+    class="flex items-center transparent rounded-xl border-4 font-Times New Roman border-sky-950 cursor-pointer hover:scale-90 card-box" @click="handleClick(evaluatee)">
         <div class="flex items-center" >
             <div class="flex-shrink-0">
                 <img src="../assets/male-teacher-icon.png" class="h-32">
