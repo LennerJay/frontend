@@ -1,5 +1,5 @@
 <template>
-    <div class="flex">
+    <div class="parent-body flex">
         <div class="md:ml-[250px] ml-0  font-serif px-0 w-full text-center">
         <div class="header pl-2 pt-2 bg-indigo-900 text-white text-center">
             <div class="font-bold p-1 text-[20px]">
@@ -27,15 +27,17 @@
             </div>
         </div>
         <div v-else class="questions">
-        <button class="border border-red-100">Back</button>
+        <button type="button" id="back" value="back" class="border border-red-100">Back</button>
             <div>
                 <h1 class="font-bold">Title: {{ questionaire.title }}</h1>
                 <p>description: {{ questionaire.description }}</p>
-                <QuestionForm v-for="(criteria,index) in questionaire.criterias" :criteria="criteria" :key="index" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit" style="background-color: tomato"/>
-                <hr class="h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700">
-                <div class="flex justify-between">
-                    <button >Back</button>
-                    <button @click="handleSubmit">Submit</button>
+                <div class="container" style="height: 100vh; overflow-y: scroll">
+                    <QuestionForm v-for="(criteria,index) in questionaire.criterias" :criteria="criteria" :key="index" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit" class="evaluation-form"/>
+                </div>
+                <!-- <hr class="h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700"> -->
+                <div class="actions">
+                    <button type="button" id="previous" value="previous">Previous</button>
+                    <button type="button" id="submit" value="submit" @click="handleSubmit">Submit</button>
                 </div>
             </div>
         </div>
@@ -229,6 +231,10 @@ onMounted(async ()=>{
 
 <style scoped>
 
+    .parent-body {
+        background-image: linear-gradient(to bottom right, #FEFCFC, #0C324C);
+    }
+
     .header {
         background-color: #0C4A6E;
         padding: 25px 15px;
@@ -238,6 +244,69 @@ onMounted(async ()=>{
     .header-name {
         font-weight: bold;
         font-size: 20px;
+    }
+
+    button#back {
+        background-color: #0C4A6E;
+        color: #ffffff;
+        padding: 8px 18px;
+        border: none;
+        outline: none;
+        font-family: Verdana;
+        font-size: 15px;
+        display: block;
+        margin: 12px 0 0 12px;
+        border-radius: 3px;
+    }
+
+    button#back:hover {
+        cursor: pointer;
+    }
+
+    .evaluation-form {
+        background-color: #E6E6E6;
+        width: 50%;
+        margin: 25px auto 15px auto;
+        box-shadow: 2px 2px 10px 0 #0A0A0A;
+        padding: 3px 20px 15px 20px;
+    }
+
+    .actions {
+        padding: 18px 15px;
+        width: 40%;
+        margin: 0 auto 15px auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .actions button#previous {
+        background-color: #0C4A6E;
+        color: #ffffff;
+        border: none;
+        outline: none;
+        font-family: Verdana;
+        font-size: 14px;
+        padding: 10px 15px;
+        border-radius: 3px;
+    }
+
+    .actions button#submit {
+        background-color: #0C4A6E;
+        color: #ffffff;
+        border: none;
+        outline: none;
+        font-family: Verdana;
+        font-size: 14px;
+        padding: 10px 15px;
+        border-radius: 3px;
+    }
+
+    .actions button#previous:hover,
+    .actions button#submit:hover {
+        cursor: pointer;
+        background-color: #E6E6E6;
+        color: #000000;
     }
 
 </style>

@@ -5,11 +5,12 @@
         <form :id="criteria.id">
             <input type="hidden" name="criteria_id" :value="criteria.id">
             <div v-for="(question,key) in criteria.questions" :key="key">
-                <p>{{  key+1}}. {{ question.question }}</p>
+                <p class="questionaire">{{  key+1}}. {{ question.question }}</p>
                 <div class="mb-2" >
                     <div class="mb-[0.125rem] mr-4 inline-block min-h-[1.5rem] pl-[1.5rem]" v-for="value in values" :key="value">
                         <!-- @click="handleClick(question.id,value,criteria.id)" -->
                         <input
+                            class="radio-button"
                             type="radio"
                             :name="question.id"
                             :id="'criteria'+ criteria.id +'question' + question.id + 'rating'+ value"
@@ -19,7 +20,7 @@
                       
                             />
                         <label
-                            class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer"
+                            class="mt-px inline-block pl-[0.15rem] hover:cursor-pointer rate"
                             :for="'criteria'+ criteria.id +'question' + question.id + 'rating'+ value"
                             >{{ value }}
                         </label>
@@ -51,6 +52,18 @@ const getValue = (id)=>{
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+
+    .questionaire {
+        text-align: left;
+        margin-bottom: 8px;
+    }
+
+    .radio-button {
+        border: 0;
+        width: 20px;
+        height: 16px;
+        display: inline;
+    }
 
 </style>
