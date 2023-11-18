@@ -45,10 +45,25 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         }
     );
 
-    const filterDepartment = (course)=>{
-        return allEvaluatees.value.filter((evaluatee)=>{
-            return evaluatee.departments.some(department => department.department === course)
-        })
+    const filterEvaluatees = (jobType, departmentName)=>{
+            if(departmentName == 'allDepartments' || departmentName == 'All Departments'){
+                if(jobType === 'All'){
+                    return evaluateesToRate.value
+                }
+                return evaluateesToRate.value.filter(evaluatee => evaluatee.job_type == Number(jobType))
+            }else{
+
+                if(jobType === 'All'){
+                    return evaluateesToRate.value.filter((evaluatee)=>{
+                        return evaluatee.departments.some(department => department.department === departmentName)
+                    })
+                }
+                return evaluateesToRate.value.filter((evaluatee)=>{
+                    return evaluatee.departments.some(department => department.department === departmentName)
+                }).filter(evaluatee => evaluatee.job_type == Number(jobType))
+            }
+
+
     }
     
     const fetchEvaluateesToRate = async(userId)=>{
@@ -56,7 +71,7 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         evaluateesToRate.value = data
       }
     
-      const filterEvaluatees = (isDone) => {
+      const isRatedEvaluatees = (isDone) => {
         if(!isDone){
           return evaluateesToRate.value.filter(evaluatee => evaluatee.pivot.is_done === 0)
         }
@@ -69,15 +84,25 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         console.log({data,status})
       }
 
+      const filterJobType = (evaluateesId,val,routePath = null)=>{
+        if(routePath == 'evaluations'){
+            return evaluateesToRate.value.map(evaluatee =>{
+                if(evaluateesId.includes(evaluatee.id) && evaluatee.job_type === val){
+                    return evaluatee;
+                }
+            });
+        }
+      }
 
     return {
+        filterJobType,
         fetchAllEvaluatees,
         allEvaluatees,
-        filterDepartment, 
+        filterEvaluatees, 
         allEvaluated,
         fetchEvaluateesToRate,
         evaluateesToRate,
-        filterEvaluatees,
+        isRatedEvaluatees,
         fetchEvaluateeInfo,
         errors,
         status,

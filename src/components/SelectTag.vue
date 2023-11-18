@@ -5,7 +5,6 @@
            <i class="fas fa-chevron-down text-xl"></i>
        </button>
        <ul class="z-2 absolute mt-1 w-full rounded bg-gray-50 ring-1 ring-gray-300" v-if="open">
-
            <div v-if="showRole">
                <li  class="list" v-for="role in roles"  @click="$emit('selectValue',`${role.name}` )">{{ role.name}}</li>
            </div>

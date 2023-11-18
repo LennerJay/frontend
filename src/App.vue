@@ -24,7 +24,7 @@ watch(
 </script>
 
 <template>
-  <div class="">
+
     <SideBar v-if="showSideBar" />
 
     <router-view v-slot="{Component}">
@@ -32,7 +32,6 @@ watch(
         <component :is="Component"/>
       </Transition>
     </router-view>
-  </div>
 </template>
 
 <style scoped>

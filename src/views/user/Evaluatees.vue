@@ -91,7 +91,7 @@ const selectedValue = (val)=>{
         evaluatees.value = store.allEvaluatees
         department.value= 'All Departments'
     }else{
-        evaluatees.value =  store.filterDepartment(val)
+        evaluatees.value =  store.filterEvaluatees(val)
         department.value= val
     }
     open.value = false

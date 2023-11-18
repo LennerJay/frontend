@@ -10,6 +10,9 @@
                 <div class="text-[15px] ml-2 pb-2"><span>Name : </span>{{ evaluatee.name }}</div>
                 <div v-for="(departments,index) in evaluatee.departments" :key="index" class="text-[15px] ml-2">
                   <span>Department : </span>{{ capitalizeFirstLetter(departments.department) }}
+                </div>
+                <div>
+                  <span> {{ evaluatee.job_type == 0 ? 'Full Time' : 'Part Time' }}</span>
                 </div>               
               </div>
         </div>
