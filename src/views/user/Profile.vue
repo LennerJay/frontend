@@ -1,5 +1,6 @@
 <template>
-    <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
+    <div class="flex">
+      <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
         <div class="header pt-2 text-white text-center">
             <div class="flex justify-center items-center font-bold text-[20px] my-6">
               <!-- <span class="md:hidden pr-2" @click="drawer.toggle">
@@ -102,6 +103,7 @@
             </div>
         </div>
         <FooterCard/>
+    </div>
     </div>
 </template>
 

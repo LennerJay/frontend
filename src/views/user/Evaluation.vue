@@ -31,7 +31,7 @@
             <div>
                 <h1 class="font-bold">Title: {{ questionaire.title }}</h1>
                 <p>description: {{ questionaire.description }}</p>
-                <QuestionForm v-for="(criteria,index) in questionaire.criterias" :criteria="criteria" :key="index" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit"/>
+                <QuestionForm v-for="(criteria,index) in questionaire.criterias" :criteria="criteria" :key="index" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit" style="background-color: tomato"/>
                 <hr class="h-1 my-8 bg-gray-200 border-0 rounded dark:bg-gray-700">
                 <div class="flex justify-between">
                     <button >Back</button>
@@ -213,7 +213,7 @@ onMounted(async ()=>{
                 }
             }
         name.value = selectedEvaluatee.value.name
-        show.value = false
+        showProfileCards.value = false
     }else{
         await evaluateeStore.fetchEvaluateesToRate(user.id_number)
         console.log(evaluateeStore.evaluateesToRate)
