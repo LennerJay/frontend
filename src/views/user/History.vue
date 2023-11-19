@@ -1,13 +1,31 @@
 <template>
   <div class="md:ml-[250px] ml-0  font-Times New Roman px-0 w-full text-center">
-    <h1>These are the people you evaluated</h1>
-
-    <div v-if="show">
-      <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"/>
+    <div class="header pl-2 pt-2 bg-sky-950 text-white text-center">
+      <div class="font-bold p-1 text-[20px]">
+        <span class="inline-block md:hidden" @click="drawer.toggle">
+          <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md cursor-pointer"></i>
+        </span>
+        <h1 class="header-name">List of Evaluated</h1>
+      </div>    
     </div>
-    <div v-else>
-      Loading History... / No Data Found
-    </div>
+    <div class="bg-stone-200 min-h-[44rem] card overflow-x-auto">
+      <div v-if="show">
+        <div class="mt-8 grid gap-10 lg:grid-cols-2 sm-grid-cols-2 p-5">
+          <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"/>
+        </div>     
+      </div>
+      <div v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20 pt-20">
+        <div class="loader3 mt-10">
+          <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">L</span></div>
+          <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">O</span></div>
+          <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">A</span></div>
+          <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">D</span></div>
+          <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">I</span></div>
+          <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">N</span></div>
+          <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">G</span></div>
+        </div>
+      </div>
+    </div> 
     <FooterCard/>
   </div>
 </template>
@@ -35,3 +53,5 @@ onMounted(async() => {
   }
 })
 </script>
+<style scoped>
+</style>
