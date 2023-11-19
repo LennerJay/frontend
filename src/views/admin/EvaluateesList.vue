@@ -11,40 +11,19 @@
           v-model="searchBar"
         />
       </div>
-      <div class="flex">
-        <div ref="selectRef1" class="text-zinc-500 flex mr-5">
+      <div class="selectTags flex">
+        <div>
           <SelectTag
-            class="select-dropdown"
-            @selectedTagValue="selectedTagValue"
-            :course="roles"
-            @show="show"
-            :open="openSelectTag"
-            @closeTag="closeTag"
-            :option="'roles'"
-          ></SelectTag>
+            :selectDepartment="selectDepartment"
+            @handleSelectedDepartment="handleSelectedDepartment"
+          />
         </div>
-        <div ref="selectRef2" class="text-zinc-500 flex mr-5">
-          <SelectTag
-            class="select-dropdown"
-            @selectedTagValue="selectedTagValue"
-            :course="department"
-            @show="show"
-            :open="openSelectTag"
-            @closeTag="closeTag"
-            :option="'departments'"
-          ></SelectTag>
+        <div>
+          <SelectJobType
+            :selectTypeJob="selectTypeJob"
+            @jobTypeSelected="handleJobTypeSelected"
+          />
         </div>
-
-        <SelectJobType
-          :selectTypeJob="selectTypeJob"
-          @jobTypeSelected="handleTypeSelected"
-        />
-
-        <button
-          class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        >
-          Create Evaluatee
-        </button>
       </div>
     </div>
     <TableForm
@@ -76,14 +55,13 @@ const evaluateeStore = useEvaluateeStore();
 const evaluatees = ref([]);
 const isNoData = ref(true);
 const openSelectTag = ref(false);
-const department = ref("All Departments");
+const selectDepartment = ref("All");
 const selectRef = ref(null);
-const selectTypeJob = ref("All");
+const selectTypeJob = ref("Both");
 const showModal = ref(false);
 const showDetail = ref(false);
 const evaluateeInfo = ref([]);
 const actionSelected = ref("");
-const roles = ref("Roles");
 
 const closeModal = () => {
   showModal.value = false;
@@ -120,35 +98,21 @@ const handleSelectTag = (event) => {
   }
 };
 
-const selectedTagValue = (departmentName) => {
-  if (departmentName === "allDepartments") {
-    department.value = "All Departments";
-    evaluatees.value = evaluateeStore.filterEvaluatees(
-      selectTypeJob.value,
-      departmentName
-    );
-  } else {
-    department.value = departmentName;
-    evaluatees.value = evaluateeStore.filterEvaluatees(
-      selectTypeJob.value,
-      departmentName
-    );
-  }
-  openSelectTag.value = false;
+const handleSelectedDepartment = (departmentName) => {
+  selectDepartment.value = departmentName;
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    selectTypeJob.value,
+    departmentName,
+    "evaluatees"
+  );
 };
 
-const show = (val) => {
-  openSelectTag.value = val;
-};
-const closeTag = () => {
-  openSelectTag.value = false;
-};
-
-const handleTypeSelected = (val) => {
+const handleJobTypeSelected = (val) => {
   selectTypeJob.value = val;
   evaluatees.value = evaluateeStore.filterEvaluatees(
     selectTypeJob.value,
-    department.value
+    selectDepartment.value,
+    "evaluatees"
   );
 };
 
