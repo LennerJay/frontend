@@ -1,7 +1,7 @@
 <template>
-        <div class="flex">
-            <label for="filter" class="block text-gray-700">Work Status:</label>
-            <select v-model="selectType" @change="handleTag" id="filter" class="focus:outline-none">
+        <div class="flex mt-2 ml-2">
+            <label for="filter" class="block mr-2">Work Status:</label>
+            <select v-model="selectType" @change="handleTag" id="filter" class="focus:outline-none rounded-2xl">
                 <option value="All">ALL</option>
                 <option value=1>Part Time</option>
                 <option value=0>Full Time</option>
