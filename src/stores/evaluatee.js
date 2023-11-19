@@ -15,7 +15,6 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
             evaluatee_id: evaluateeId
         }
         const {data} = await getEvaluateeInfo(id)
- 
         return data;
     }
 
@@ -53,14 +52,14 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
                 evaluatees.value = allEvaluatees.value
             }
 
-            if(departmentName == 'allDepartments' || departmentName == 'All Departments'){
-                if(jobType === 'All'){
+            if(departmentName == 'All'){
+                if(jobType === 'Both'){
                     return evaluatees.value
                 }
                 return evaluatees.value.filter(evaluatee => evaluatee.job_type == Number(jobType))
             }else{
 
-                if(jobType === 'All'){
+                if(jobType === 'Both'){
                     return evaluatees.value.filter((evaluatee)=>{
                         return evaluatee.departments.some(department => department.department === departmentName)
                     })
