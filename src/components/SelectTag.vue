@@ -2,12 +2,13 @@
   <div class="flex">
     <div v-if="showRole" class="flex"></div>
     <div v-else class="flex">
-      <label for="filter" class="block text-gray-700">Departments: </label>
+      <label for="filter" class="block text-white mr-2" v-if="isEvaluateeRoute">Departments:</label>
+      <label for="filter" class="block text-black mr-2" v-else>Departments:</label>
       <select
         v-model="selectDepartment"
         @change="handleTag"
         id="filter"
-        class="focus:outline-none"
+        class="focus:outline-none rounded-2xl text-black text-center"
       >
         <option value="All">All</option>
         <option v-for="department in departments" :value="department.department">
@@ -19,10 +20,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useDepartmentStore } from "../stores/department";
 import { useRoleStore } from "../stores/role";
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const store = useDepartmentStore();
 const roleStore = useRoleStore();
 
@@ -37,6 +40,8 @@ const roles = ref();
 const handleTag = () => {
   emits("handleSelectedDepartment", selectDepartment.value);
 };
+
+const isEvaluateeRoute = computed(() => route.name === 'evaluatees');
 
 onMounted(async () => {
   if (props.option === "roles") {

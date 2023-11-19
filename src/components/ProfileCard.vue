@@ -1,20 +1,20 @@
 <template>
   <div  
-  class="flex items-center bg-stone-200 rounded-xl border-4 font-Times New Roman border-sky-950 cursor-pointer
+  class="flex items-center transparent rounded-xl border-2 font-Times New Roman border-sky-900 cursor-pointer
   hover:-translate-y-1 hover:scale-90 card-box" @click="handleClick(evaluatee)">
       <div class="flex items-center" >
           <div class="flex-shrink-0">
               <img src="../assets/male-teacher-icon.png" class="h-32">
           </div>           
           <div class="pt-1 ml-2 text-center overflow-hidden">
-              <div class="text-[15px] ml-2 pb-2 border-2 border-sky-950 md:w-52 rounded-2xl h-6
+              <div class="text-[15px] ml-2 pb-2 md:w-52 rounded-2xl h-6
               bg-sky-950 text-white details"><span>Name : </span>{{ evaluatee.name.split(' ').slice(0, 2).join(' ') }}</div>
               <div v-for="(departments,index) in evaluatee.departments" :key="index" class="text-[15px] ml-2
-              mt-2 border-2 border-sky-950 md:w-52 rounded-2xl h-6
+              mt-2 md:w-52 rounded-2xl h-6
               bg-sky-950 text-white details">
                 <span>Department : </span>{{ capitalizeFirstLetter(departments.department) }}
               </div>
-              <div class="text-[15px] ml-2 pb-2 mt-2 border-2 border-sky-950 md:w-52 rounded-2xl h-6
+              <div class="text-[15px] ml-2 pb-2 mt-2 md:w-52 rounded-2xl h-6
                 bg-sky-950 text-white details">
                 <span> {{ evaluatee.job_type == 0 ? 'Full Time' : 'Part Time' }}</span>
               </div>               

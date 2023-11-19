@@ -1,11 +1,11 @@
 <template>
-  <div class="flex mt-2 ml-2">
+  <div class="flex  ml-2">
     <label for="filter" class="block mr-2">Work Status:</label>
     <select
       v-model="selectType"
       @change="handleTag"
       id="filter"
-      class="focus:outline-none rounded-2xl"
+      class="focus:outline-none rounded-2xl text-black text-center"
     >
       <option value="Both">Both</option>
       <option value="1">Part Time</option>
