@@ -144,6 +144,7 @@ onMounted(async() => {
 .data{
     @apply py-4 px-6 border-b border-gray-200
 }
+<<<<<<< HEAD
 .loader3 {
   display: flex;
   justify-content: center;
@@ -191,6 +192,8 @@ onMounted(async() => {
     opacity: 1;
   }
 }
+=======
+>>>>>>> 3ae0df00c8fc1e4492ab5d55fce88e788b83719c
 .profile-card {
   background: linear-gradient(145deg, rgb(239, 239, 252), rgb(8, 47, 73, 1));
 }

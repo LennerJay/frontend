@@ -6,7 +6,11 @@
         <div v-for="(question, key) in criteria.questions" :key="key">
           <div class="question-container md:flex md:justify-between md:items-center mt-4">
             <p class="question-text">{{ key + 1 }}. {{ question.question }}</p>
+<<<<<<< HEAD
             <div class="radio-group grid md:grid-row-5 pl-16 pb-2 cursor-pointer">
+=======
+            <div class="radio-group grid md:grid-row-5 pl-16 pb-2">
+>>>>>>> 3ae0df00c8fc1e4492ab5d55fce88e788b83719c
               <div v-for="value in values" :key="value" class="radio-item">
                 <input
                   type="radio"

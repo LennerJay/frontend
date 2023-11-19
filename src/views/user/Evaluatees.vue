@@ -1,5 +1,9 @@
 <template>
     <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
+<<<<<<< HEAD
+=======
+        <!-- <LoadingAnimation v-if="isLoaded" class="loading-screen"/> -->
+>>>>>>> 3ae0df00c8fc1e4492ab5d55fce88e788b83719c
         <div class="header pl-2 pt-2 text-white ml-5">
             <div class="font-bold p-1 text-[30px]">
               <span class="inline-block md:hidden" @click="drawer.toggle">
