@@ -1,14 +1,11 @@
 <template>
-   
-    <div class="flex">
-        <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
-        <LoadingAnimation v-if="isLoaded" class="loading-screen"/>
+    <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
         <div class="header pl-2 pt-2 text-white ml-5">
             <div class="font-bold p-1 text-[30px]">
               <span class="inline-block md:hidden" @click="drawer.toggle">
                 <i class="bi bi-filter-left px-5 p-1 bg-blue-800 rounded-md cursor-pointer"></i>
               </span>
-                Cordova Public CollegeX
+                Cordova Public College
                 <p class="text-lg">2023</p>
             </div>
             <div ref="selectRef" class="text-zinc-500 flex mr-5">
@@ -26,14 +23,21 @@
                         @close-modal="closeModal"
                         class="modal-box"/>
             </div>
-            <div v-else>
-            Loading Data
+            <div v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20">
+                <div class="loader3 mt-10 pt-24">
+                    <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">L</span></div>
+                    <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">O</span></div>
+                    <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">A</span></div>
+                    <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">D</span></div>
+                    <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">I</span></div>
+                    <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">N</span></div>
+                    <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">G</span></div>
+                </div>
             </div>
      
         </div>
 
         <FooterCard/>
-    </div>
     </div>
 </template>
 
@@ -46,7 +50,7 @@ import ProfileCard from "@/components/ProfileCard.vue";
 import SelectTag from "@/components/SelectTag.vue";
 import FooterCard from "@/components/FooterCard.vue"
 import ModalCard from '../../components/ModalCard.vue';
-import LoadingAnimation from '../../components/LoadingAnimation.vue';
+// import LoadingAnimation from '../../components/LoadingAnimation.vue'
 
 const drawer = useDrawerStore()
 const store = useEvaluateeStore()
@@ -58,7 +62,7 @@ const showModal = ref(false)
 const showDetail = ref(false)
 const evaluateeInfo = ref([]);
 const showEvaluatee = ref(false);
-const isLoaded = ref(true);
+// const isLoaded = ref(true);
 
 const loadedData = () => {
     isLoaded.value = false
@@ -112,7 +116,7 @@ onMounted(async ()=>{
     evaluatees.value = store.allEvaluatees
     showEvaluatee.value = true
     document.addEventListener('click', handleSelectTag);
-    loadedData();
+    // loadedData();
 });
 
 </script>

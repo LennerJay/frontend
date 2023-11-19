@@ -1,7 +1,7 @@
 <template>
-   <div class="flex">
-        <label for="department">Department: </label>
-        <select class="focus:outline-none" id="department" @change="handleSelectTag">
+   <div class="flex mt-2 ml-2">
+        <label for="department" class="mr-2">Department: </label>
+        <select class="focus:outline-none rounded-2xl" id="department" @change="handleSelectTag">
             <option value="allDepartments" selected>All Departments</option>
             <option v-for="department in departments" :value="department.department">{{ department.department }}</option>
         </select>
