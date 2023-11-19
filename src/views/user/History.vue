@@ -12,7 +12,7 @@
     </div>
     <div class="bg-stone-200 min-h-[44rem] card overflow-x-auto">
       <div v-if="showProfileCard">
-        <div class="mt-8 grid gap-10 lg:grid-cols-2 sm-grid-cols-2 p-5">
+        <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
           <ProfileCard
             v-for="(evaluatee, index) in evaluatees"
             :evaluatee="evaluatee"
@@ -69,10 +69,12 @@ import ProfileCard from "../../components/ProfileCard.vue";
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { useEvaluateeStore } from "../../stores/evaluatee";
+import { useDrawerStore } from "../../stores/drawerStore";
 import FooterCard from "../../components/FooterCard.vue";
 
 const evaluatees = ref([]);
 const userStore = useAuthStore();
+const drawer = useDrawerStore();
 const evaluateeStore = useEvaluateeStore();
 const showProfileCard = ref(false);
 
