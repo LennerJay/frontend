@@ -1,10 +1,5 @@
-<<<<<<< HEAD
  <template>
         <div class="md:ml-[250px] ml-0  font-serif px-0 w-full text-center">
-=======
-<template>
-    <div class="md:ml-[250px] ml-0  font-serif px-0 w-full text-center">
->>>>>>> 3ae0df00c8fc1e4492ab5d55fce88e788b83719c
         <div class="header pl-2 pt-2 bg-sky-950 text-white text-center">
             <div class="font-bold p-1 text-[20px]">
               <span class="inline-block md:hidden" @click="drawer.toggle">
@@ -13,7 +8,6 @@
                 <h1 class="header-name">Evaluation for: {{ name }}</h1>
             </div>    
         </div>
-<<<<<<< HEAD
 
         <div v-if="showProfileCards" class="min-h-[44rem] card overflow-x-auto">
             <div class="selectTags">
@@ -48,36 +42,6 @@
                 </div>
             </div>
         </div>
-=======
-        <div class="bg-stone-200 min-h-[44rem] card overflow-x-auto">
-            <div v-if="show" >           
-                <div v-if="showProfileCard" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer">
-                    <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"  option="Select" @selectedEvaluatee="selectEvaluatee"/>
-                </div>
-                <div v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20">
-                    <div class="loader3 mt-10 pt-24">
-                        <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">L</span></div>
-                        <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">O</span></div>
-                        <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">A</span></div>
-                        <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">D</span></div>
-                        <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">I</span></div>
-                        <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">N</span></div>
-                        <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">G</span></div>
-                    </div>
-                </div>
-            </div>
-            <div v-else class="questions">
-                <h1 class="font-bold text-lg">Title: {{ questionaire.title }}</h1>
-                <p>description: {{ questionaire.description }}</p>
-                <QuestionForm class="text-black question-card pb-4 rounded-2xl mt-4 mx-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-                v-for="(criteria,index) in questionaire.criterias" :criteria="criteria" :key="index" @ratingSelected="updateSelectedRatings" @handleSubmit="handleSubmit"/>
-                <div class="flex justify-between mb-2 mx-4">
-                    <button id="submit-btn">Back</button>
-                    <button @click="handleSubmit" id="submit-btn">Submit</button>
-                </div>
-            </div>
-        </div>    
->>>>>>> 3ae0df00c8fc1e4492ab5d55fce88e788b83719c
         <FooterCard/>  
     </div>
 </template>

@@ -5,13 +5,9 @@
         <span class="inline-block md:hidden" @click="drawer.toggle">
           <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md cursor-pointer"></i>
         </span>
-<<<<<<< HEAD
         <h2>History</h2>
         <h3>Cordova Public College</h3>
         <span class="school-year">SY: 2023-2024</span>
-=======
-        <h1 class="header-name">List of Evaluated</h1>
->>>>>>> 3ae0df00c8fc1e4492ab5d55fce88e788b83719c
       </div>    
     </div>
     <div class="bg-stone-200 min-h-[44rem] card overflow-x-auto">
@@ -30,10 +26,7 @@
           <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">N</span></div>
           <div class="circle1"><span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1">G</span></div>
         </div>
-<<<<<<< HEAD
         
-=======
->>>>>>> 3ae0df00c8fc1e4492ab5d55fce88e788b83719c
       </div>
     </div> 
     <FooterCard/>

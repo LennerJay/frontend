@@ -11,12 +11,9 @@
 .card {
     background: linear-gradient(145deg, #fffdfd, rgb(8, 47, 73, 1));
 }
-<<<<<<< HEAD
 .question-card {
     background: linear-gradient(145deg, #fffdfd, rgb(154, 170, 182));
 }
-=======
->>>>>>> 3ae0df00c8fc1e4492ab5d55fce88e788b83719c
 .loader3 {
     display: flex;
     justify-content: center;
