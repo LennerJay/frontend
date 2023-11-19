@@ -12,7 +12,7 @@
                 <p class="text-lg">2023</p>
             </div>
             <div ref="selectRef" class="text-zinc-500 flex mr-5">
-                <SelectTag class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
+                <SelectTag class="select-dropdown"  @selectedTagValue="selectedTagValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
             </div>
        </div>    
        <div class="min-h-screen card">
@@ -87,7 +87,7 @@ const handleSelectTag = (event)=>{
     }
 
 }
-const selectedValue = (val)=>{
+const selectedTagValue = (val)=>{
     if(val === 'allDepartments'){
         evaluatees.value = store.allEvaluatees
         department.value= 'All Departments'

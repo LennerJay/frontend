@@ -6,14 +6,15 @@
                 <label for="search" class="block text-gray-700 pl-2">Search:</label>
                 <input type="text" id="search" class="w-full p-2 border border-gray-300 rounded-md" v-model="searchBar">
             </div>
-            <div class="flex">
-                <div ref="selectRef" class="text-zinc-500 flex mr-5">
+            <div class="flex gap-4">
+                
+                <div ref="selectRef1" class="text-zinc-500 flex mr-5">
                     <SelectTag class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="open" @closeTag="closeTag" :option="'departments'"></SelectTag>
                 </div>
                 <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">Create User</button>
             </div>
         </div>
-        <!-- <TableForm :data="filteredUsers"  :isNodata="isNoData" @deleteClick="handleDelete"></TableForm> -->
+        <TableForm :data="filteredUsers"  :isNodata="isNoData"></TableForm>
     </div>
 </template>
 
@@ -21,7 +22,7 @@
 import { useUserStore } from '../../stores/users'
 import { ref, onMounted, computed } from 'vue';
 import SelectTag from '../../components/SelectTag.vue';
-
+import TableForm from '../../components/TableForm.vue';
 
 const userStore = useUserStore();
 
@@ -30,8 +31,10 @@ const searchBar = ref('');
 const users = ref([]);
 let open = ref(false)
 let department = ref('All Departments')
+let role = ref('Roles')
 const keys = ref([])
 const selectRef = ref(null)
+const selectRef1 = ref(null)
 const isNoData = ref(true);
 const filteredUsers = computed(()=>{
     if(!searchBar.value){
@@ -51,7 +54,7 @@ const handleSelectTag = (event)=>{
     if(!selectRef || !selectRef.value.contains(event.target)){
         open.value = false
     }
-
+    
 }
 const selectedValue = (val)=>{
     users.value = userStore.filterUsers(val)

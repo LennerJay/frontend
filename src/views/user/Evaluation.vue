@@ -1,4 +1,4 @@
-<template>
+ <template>
     <div class="parent-body flex">
         <div class="md:ml-[250px] ml-0  font-serif px-0 w-full text-center">
         <div class="header pl-2 pt-2 bg-indigo-900 text-white text-center">
@@ -12,12 +12,8 @@
 
         <div v-if="showProfileCards">
            <div class="selectTags">
-                <div ref="selectRef">
-                    <SelectTag  class="select-dropdown"  @selectValue="selectedValue"  :course="department" @show="show" :open="openSelectTag" @closeTag="closeTag" :option="'departments'"></SelectTag>
-                </div>
-                <div>
-                    <SelectJobType :selectTypeJob="selectTypeJob" @jobTypeSelected="handleTypeSelected" />
-                </div>
+                <SelectTag  class="select-dropdown" @selectedTagValue="selectedTagValue"  :selectDepartment="selectDepartment"  :option="'departments'"></SelectTag>
+                <SelectJobType :selectTypeJob="selectTypeJob" @jobTypeSelected="handleTypeSelected" />        
            </div>
             <div v-if="showProfileCard" class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer">
                 <ProfileCard v-for="(evaluatee,index) in evaluatees" :evaluatee="evaluatee" :key="index"  option="Select" @selectedEvaluatee="selectEvaluatee"/>
@@ -27,7 +23,7 @@
             </div>
         </div>
         <div v-else class="questions">
-        <button type="button" id="back" value="back" class="border border-red-100">Back</button>
+        <button @click="handleBackButton" type="button" id="back" value="back" class="border border-red-100">Back</button>
             <div>
                 <h1 class="font-bold">Title: {{ questionaire.title }}</h1>
                 <p>description: {{ questionaire.description }}</p>
@@ -62,7 +58,7 @@ const drawer = useDrawerStore()
 const userStore  = useAuthStore()
 const evaluateeStore = useEvaluateeStore()
 const store = useQuestionaireStore();
-const department = ref("All Departments")
+const selectDepartment = ref("All Departments")
 const { user,errors } = userStore
 const rating = useRatingStore()
 const selectedEvaluatee = ref('')
@@ -72,9 +68,8 @@ const showProfileCards = ref(true)
 const name = ref('')
 const evaluatees = ref([])
 const showProfileCard = ref(false)
-const openSelectTag = ref(false)
-const selectRef = ref('')
 const selectTypeJob = ref('All')
+
 
 const selectEvaluatee = async (id)=>{
     const evaluatee = evaluatees.value.find(obj => obj.id === id)
@@ -88,6 +83,11 @@ const selectEvaluatee = async (id)=>{
 
 }
 
+const handleBackButton = ()=>{
+    localStorage.removeItem('selectedEvaluatee')
+    name.value = ''
+    showProfileCards.value = true
+}
 const isSubmitButtonEnabled = computed(() => {
   if (!questionaire.value || !questionaire.value.criterias) {
     return false;
@@ -149,32 +149,18 @@ const updateSelectedRatings = (val) => {
         selectedRatings.value.push(val)
     }
 }
-const handleSelectTag = (event)=>{
-    if (selectRef.value == null) {
-        return; // Exit early if event.target is null
-    }
-    if(!selectRef || !selectRef.value.contains(event.target)){
-        openSelectTag.value = false
-    }
 
-}
-const selectedValue = (departmentName)=>{
+const selectedTagValue = (departmentName)=>{
+    console.log(departmentName)
     if(departmentName === 'allDepartments'){
-        department.value = 'All Departments'
+        selectDepartment.value = 'All Departments'
         evaluatees.value = evaluateeStore.filterEvaluatees(selectTypeJob.value,departmentName,'evaluations')
     }else{
-        department.value = departmentName
+        selectDepartment.value = departmentName
         evaluatees.value =  evaluateeStore.filterEvaluatees(selectTypeJob.value,departmentName,'evaluations')
-
     }
-    openSelectTag.value = false
 }
-const show = (val)=>{
-    openSelectTag.value = val
-}
-const closeTag= ()=>{
-    openSelectTag.value = false
-}
+
 const handleTypeSelected = (val)=>{
     selectTypeJob.value = val
     evaluatees.value = evaluateeStore.filterEvaluatees(selectTypeJob.value,department.value,'evaluations')
@@ -182,7 +168,6 @@ const handleTypeSelected = (val)=>{
 
 
 onMounted(async ()=>{
-    document.addEventListener('click', handleSelectTag);
     if(localStorage.getItem('selectedEvaluatee')){
         selectedEvaluatee.value = JSON.parse(localStorage.getItem('selectedEvaluatee'))
             if(localStorage.getItem('questionaire-for-evaluatee')){

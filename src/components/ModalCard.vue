@@ -1,11 +1,7 @@
 <template>
 <!-- Modal -->
 <div v-if="showModal" class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman">
-  <div v-if="action == 'update'">
-  
-  
-  </div>
-  <div v-else-if="action == 'update'" class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
+  <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
     <button @click="closeModal">
       <i class="bi bi-x-lg"></i>
         <span></span>
@@ -108,7 +104,6 @@ const props = defineProps([
                 'evaluateeInfo',
                 'selectedEvaluteeId',
                 'showDetail',
-                'action'
               ]);
 const { emit } = getCurrentInstance();
 
