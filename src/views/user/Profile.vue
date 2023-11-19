@@ -1,6 +1,4 @@
 <template>
-
-    <div class="flex">
       <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
 
         <div class="header pt-2 text-white text-center">
@@ -8,7 +6,7 @@
               <!-- <span class="md:hidden pr-2" @click="drawer.toggle">
                 <i class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"></i>
               </span> -->
-                <h1 class="text-2xl">Student Profile</h1>
+                <h1 class="text-2xl text-white">Student Profile</h1>
             </div>    
         </div>
         <div class="bg-stone-200 min-h-[44rem] card overflow-x-auto">
@@ -106,9 +104,6 @@
         </div>
         <FooterCard/>
     </div>
-
-  </div>
-
 </template>
 
 <script setup>
@@ -196,9 +191,6 @@ onMounted(async() => {
     opacity: 1;
   }
 }
-/* .card {
-  background: linear-gradient(145deg, #fffdfd, rgb(8, 47, 73, 1));
-} */
 .profile-card {
   background: linear-gradient(145deg, rgb(239, 239, 252), rgb(8, 47, 73, 1));
 }
