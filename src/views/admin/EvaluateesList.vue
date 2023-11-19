@@ -25,12 +25,38 @@
           />
         </div>
       </div>
+      <button
+        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+      >
+        Create User
+      </button>
+    </div>
+    <div>
+      <label for="selectPages">Page Size:</label>
+      <select v-model="pageSize" @change="handlePageSizeChange" id="selectPages">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
     </div>
     <TableForm
       :data="filteredEvaluatees"
       :isNoData="isNoData"
       @handleActionClick="handleActionClick"
     ></TableForm>
+    <div>
+      <span>{{ status }}</span>
+      <div>
+        <span
+          v-for="pageNumber in totalPages"
+          :key="pageNumber"
+          @click="gotoPage(pageNumber)"
+          :class="{ active: pageNumber === currentPage }"
+          >{{ pageNumber }}</span
+        >
+      </div>
+    </div>
     <ModalCard
       :showModal="showModal"
       :showDetail="showDetail"
@@ -54,14 +80,36 @@ const searchBar = ref("");
 const evaluateeStore = useEvaluateeStore();
 const evaluatees = ref([]);
 const isNoData = ref(true);
-const openSelectTag = ref(false);
 const selectDepartment = ref("All");
-const selectRef = ref(null);
 const selectTypeJob = ref("Both");
 const showModal = ref(false);
 const showDetail = ref(false);
 const evaluateeInfo = ref([]);
 const actionSelected = ref("");
+const pageSize = ref("10");
+const currentPage = ref(1);
+
+const handlePageSizeChange = () => {
+  currentPage.value = 1;
+};
+
+const paginatedData = computed(() => {
+  const startIndex = (currentPage.value - 1) * pageSize.value;
+  const endIndex = currentPage.value * pageSize.value;
+  return evaluatees.value.slice(startIndex, endIndex);
+});
+const totalPages = computed(() => Math.ceil(evaluatees.value.length / pageSize.value));
+const status = computed(() => {
+  const entriesStart = (currentPage.value - 1) * pageSize.value + 1;
+  const entriesEnd = Math.min(
+    currentPage.value * pageSize.value,
+    evaluatees.value.length
+  );
+  return `Showing ${entriesStart} to ${entriesEnd} of ${evaluatees.value.length} entries`;
+});
+const gotoPage = (pageNumber) => {
+  currentPage.value = pageNumber;
+};
 
 const closeModal = () => {
   showModal.value = false;
@@ -81,22 +129,13 @@ const handleActionClick = (id, action) => {
 };
 const filteredEvaluatees = computed(() => {
   if (!searchBar.value) {
-    return evaluatees.value;
+    return paginatedData.value;
   }
 
-  return evaluatees.value.filter((data) =>
+  return paginatedData.value.filter((data) =>
     data.name.toLowerCase().includes(searchBar.value.toLowerCase())
   );
 });
-
-const handleSelectTag = (event) => {
-  if (selectRef.value == null) {
-    return; // Exit early if event.target is null
-  }
-  if (!selectRef || !selectRef.value.contains(event.target)) {
-    openSelectTag.value = false;
-  }
-};
 
 const handleSelectedDepartment = (departmentName) => {
   selectDepartment.value = departmentName;
@@ -117,7 +156,6 @@ const handleJobTypeSelected = (val) => {
 };
 
 onMounted(async () => {
-  document.addEventListener("click", handleSelectTag);
   await evaluateeStore.fetchAllEvaluatees();
   if (evaluateeStore.errors.length == 0) {
     evaluatees.value = evaluateeStore.allEvaluatees;

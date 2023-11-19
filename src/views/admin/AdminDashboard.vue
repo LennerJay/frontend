@@ -24,7 +24,8 @@
                     hover:-translate-y-1 hover:scale-90" id="cards">
                         <h1 class="hover:text-indigo-500">
                             <i class="bi bi-person-fill mr-1 text-2xl"></i>
-                            <p>Students</p>
+                            <p>{{ res.total_users }}</p>
+                            <p>Students Enrolled</p>
                         </h1>
                     </div>
                     <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center h-32
@@ -32,7 +33,8 @@
                     hover:-translate-y-1 hover:scale-90" id="cards">
                         <h1 class="hover:text-indigo-500">
                             <i class="bi bi-clipboard-data-fill mr-1 text-2xl"></i>
-                            <p>Evaluates</p>
+                            <p>{{ res.total_evaluatees }}</p>
+                            <p>Evaluates Registered</p>
                         </h1>
                     </div>
                     <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center h-32
@@ -40,7 +42,7 @@
                     hover:-translate-y-1 hover:scale-90" id="cards">
                         <h1 class="hover:text-indigo-500">
                             <i class="bi bi-bank2 mr-1 text-2xl"></i>
-                            <p>Instructor</p>
+                            <p>Nan</p>
                         </h1>
                     </div>
                 </div>
@@ -151,9 +153,26 @@
 </template>
 
 <script setup>
+import { useDashboardStore } from '../../stores/dashboard';
 import { useDrawerStore } from '../../stores/drawerStore';
+import { ref,onMounted } from 'vue';
 import FooterCard from '../../components/FooterCard.vue'
+
+
 const drawer = useDrawerStore()
+const dashboardStore = useDashboardStore()
+const res = ref([]);
+
+
+
+
+onMounted(async()=>{
+    const data = await dashboardStore.fetchAdminDashboardData()
+    res.value = dashboardStore.adminData
+    console.log(res.value)
+
+})
+
 </script>
 
 <style scoped>

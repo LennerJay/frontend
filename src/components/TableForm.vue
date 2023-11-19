@@ -9,10 +9,10 @@
               class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"
             >
               <th class="py-3 px-6 text-left">ID Number</th>
-              <th class="py-3 px-6 text-left">Name</th>
+              <th class="py-3 px-6 text-left">FullName</th>
               <th class="py-3 px-6 text-left">Course</th>
-              <th class="py-3 px-6 text-left">Name</th>
-              <th class="py-3 px-6 text-center">Work Status</th>
+              <th class="py-3 px-6 text-left">Section & Year</th>
+              <th class="py-3 px-6 text-center">Status</th>
               <th class="py-3 px-6 text-center">Actions</th>
             </tr>
             <tr v-else class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -31,19 +31,19 @@
             </tr>
             <tr
               v-else-if="isUser"
-              v-for="instructor in data"
+              v-for="user in data"
+              :key="user.id_number"
               class="border-b border-gray-200 hover:bg-gray-100"
             >
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
-                  <span class="font-medium">{{ instructor.name }}</span>
+                  <span class="font-medium">{{ user.id_number }}</span>
                 </div>
               </td>
-              <td class="py-3 px-6 text-center">
-                <span
-                  class="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs"
-                  >{{ instructor.job_type == 0 ? "Full Time" : "Part Time" }}</span
-                >
+              <td class="py-3 px-6 text-left whitespace-nowrap">
+                <div class="flex items-center">
+                  <span class="font-medium">{{ user.infos.fullname }}</span>
+                </div>
               </td>
               <td class="py-3 px-6 text-center">
                 <div class="flex item-center justify-center">
@@ -106,7 +106,8 @@
             </tr>
             <tr
               v-else
-              v-for="instructor in data"
+              v-for="(instructor) in data"
+              :key="instructor.id"
               class="border-b border-gray-200 hover:bg-gray-100"
             >
               <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -193,11 +194,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 const emit = defineEmits(["selectedValueTag", "deleteClick", "handleActionClick"]);
 const props = defineProps({
-  data: Object,
+  data: Array,
   isNoData: Boolean,
   isUser: Boolean,
 });
