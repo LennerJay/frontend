@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="md:ml-[250px] ml-0 font-serif px-0 w-full">
     <h1 class="font-bold">Evaluatee List</h1>
     <div class="flex items-center justify-between mb-4 mt-10">
       <div class="flex items-center">
@@ -27,7 +27,7 @@
       </div>
       <button
         class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-      >
+        @click="crudModal.showCreateModal">
         Create User
       </button>
     </div>
@@ -66,18 +66,28 @@
       @close-modal="closeModal"
       class="modal-box"
     />
+    <CreateModal :addOpen="crudModal.modalAdd" @addNotOpen="addNotOpen"/>
+    <EditModal :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen"/>
+    <DeleteModal :deleteOpen="crudModal.modalDelete" @deleteNotOpen="deleteNotOpen"/>
+    <FooterCard/>
   </div>
 </template>
 
 <script setup>
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { ref, onMounted, computed } from "vue";
+import { useCrudModal } from '../../stores/crudModalStore'
 import EvaluateeListTable from "../../components/EvaluateeListTable.vue";
 import TableForm from "../../components/TableForm.vue";
 import SelectTag from "../../components/SelectTag.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
 import ModalCard from "../../components/ModalCard.vue";
+import CreateModal from '../../components/CreateModal.vue';
+import EditModal from '../../components/EditModal.vue';
+import DeleteModal from '../../components/DeleteModal.vue';
+import FooterCard from '../../components/FooterCard.vue';
 
+const crudModal = useCrudModal();
 const searchBar = ref("");
 const evaluateeStore = useEvaluateeStore();
 const evaluatees = ref([]);
@@ -94,6 +104,18 @@ const currentPage = ref(1);
 const handlePageSizeChange = () => {
   currentPage.value = 1;
 };
+
+const addNotOpen = () => {
+  crudModal.modalAdd = false
+}
+
+const editNotOpen = () => {
+  crudModal.modalEdit = false
+}
+
+const deleteNotOpen = () => {
+  crudModal.modalDelete = false
+}
 
 const paginatedData = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize.value;
@@ -127,6 +149,14 @@ const selectedEvaluatee = async (id) => {
 const handleActionClick = (id, action) => {
   if (action == "view") {
     selectedEvaluatee(id);
+  }
+  else if (action == "edit"){
+    console.log('Edit Click!');
+    crudModal.modalEdit = true;
+  }
+  else if (action == "delete") {
+    console.log('Delete Click!');
+    crudModal.modalDelete = true;
   }
 };
 const filteredEvaluatees = computed(() => {
