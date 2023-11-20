@@ -19,7 +19,7 @@
       </div>
       <div class="selectTags flex items-center">
         <div>
-          <SelectTag
+          <SelectDepartment
             :selectDepartment="selectDepartment"
             @handleSelectedDepartment="handleSelectedDepartment"
           />
@@ -74,7 +74,7 @@ import { useEvaluateeStore } from "../../stores/evaluatee";
 import { onMounted, ref, computed } from "vue";
 import { useDrawerStore } from "../../stores/drawerStore";
 import ProfileCard from "@/components/ProfileCard.vue";
-import SelectTag from "@/components/SelectTag.vue";
+import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
 import FooterCard from "@/components/FooterCard.vue";
 import ModalCard from "../../components/ModalCard.vue";
