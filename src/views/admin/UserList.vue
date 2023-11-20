@@ -17,7 +17,7 @@
             <SortTag :sort="sort" @handleSelectRole="handleSelectRole" />
           </div>
           <div>
-            <SelectTag
+            <SelectDepartment
               :selectDepartment="selectDepartment"
               @handleSelectedDepartment="handleSelectedDepartment"
             />
@@ -30,7 +30,11 @@
         </button>
       </div>
     </div>
-    <TableForm :data="users" :isUser="true" :isNoData="isNoData"></TableForm>
+    <UserListTable
+      :data="users"
+      :isNoData="isNoData"
+      @handleActionClick="handleActionClicked"
+    ></UserListTable>
   </div>
 </template>
 
@@ -38,8 +42,8 @@
 import { useUserStore } from "../../stores/users";
 import { ref, onMounted, computed } from "vue";
 import SortTag from "../../components/SortTag.vue";
-import SelectTag from "../../components/SelectTag.vue";
-import TableForm from "../../components/TableForm.vue";
+import SelectDepartment from "../../components/SelectDepartment.vue";
+import UserListTable from "../../components/UserListTable.vue";
 
 const userStore = useUserStore();
 
@@ -66,6 +70,10 @@ const handleSelectRole = (val) => {
 const handleSelectedDepartment = (val) => {
   users.value = userStore.filterUsers(val);
   userList.value = val;
+};
+
+const handleActionClicked = (id, action) => {
+  console.log(id, action);
 };
 
 onMounted(async () => {

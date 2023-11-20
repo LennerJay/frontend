@@ -45,8 +45,18 @@ const handleTag = () => {
 const isEvaluateeRoute = computed(() => route.name === "evaluatees");
 
 onMounted(async () => {
+  const excluded = ["guard", "cantent-staff"];
   await store.getDepartments();
-  departments.value = store.departments;
+  if (route.name == "users-list") {
+    departments.value = store.departments.filter((department) => {
+      if (excluded.includes(department.department)) {
+        return department;
+      }
+    });
+    console.log(departments.value);
+  } else {
+    departments.value = store.departments;
+  }
 });
 </script>
 

@@ -13,7 +13,7 @@
       </div>
       <div class="selectTags flex">
         <div>
-          <SelectTag
+          <SelectDepartment
             :selectDepartment="selectDepartment"
             @handleSelectedDepartment="handleSelectedDepartment"
           />
@@ -44,7 +44,7 @@
       :data="filteredEvaluatees"
       :isNoData="isNoData"
       @handleActionClick="handleActionClick"
-    ></EvaluateeListTable>
+    />
 
     <div>
       <span>{{ status }}</span>
@@ -73,8 +73,7 @@
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { ref, onMounted, computed } from "vue";
 import EvaluateeListTable from "../../components/EvaluateeListTable.vue";
-import TableForm from "../../components/TableForm.vue";
-import SelectTag from "../../components/SelectTag.vue";
+import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
 import ModalCard from "../../components/ModalCard.vue";
 
