@@ -31,8 +31,8 @@
             </tr>
             <tr
               v-else-if="isUser"
-              v-for="user in data"
-              :key="user.id_number"
+              v-for="(user,userIndex) in data"
+              :key="userIndex"
               class="border-b border-gray-200 hover:bg-gray-100"
             >
               <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -43,6 +43,21 @@
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
                   <span class="font-medium">{{ user.infos.fullname }}</span>
+                </div>
+              </td>
+              <td class="py-3 px-6 text-left whitespace-nowrap">
+                <div class="flex items-center">
+                  <span class="font-medium">{{ user.infos.course }}</span>
+                </div>
+              </td>
+              <td class="py-3 px-6 text-left whitespace-nowrap">
+                <div class="flex items-center">
+                  <span class="font-medium">{{ user.year_sections[0].year_section }}</span>
+                </div>
+              </td>
+              <td class="py-3 px-6 text-left whitespace-nowrap">
+                <div class="flex items-center">
+                  <span class="font-medium">{{ user.infos.regular == 0 ? 'Regular':'Irregular' }}</span>
                 </div>
               </td>
               <td class="py-3 px-6 text-center">
@@ -104,10 +119,11 @@
                 </div>
               </td>
             </tr>
+
             <tr
               v-else
-              v-for="(instructor) in data"
-              :key="instructor.id"
+              v-for="(instructor,instructorIndex) in data"
+              :key="instructorIndex"
               class="border-b border-gray-200 hover:bg-gray-100"
             >
               <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -191,6 +207,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script setup>
@@ -198,7 +215,7 @@ import { ref, onMounted, computed } from "vue";
 
 const emit = defineEmits(["selectedValueTag", "deleteClick", "handleActionClick"]);
 const props = defineProps({
-  data: Array,
+  data: Object,
   isNoData: Boolean,
   isUser: Boolean,
 });

@@ -14,12 +14,14 @@
       <div class="flex gap-4">
         <div class="selectTags flex">
           <div>
+            <SortTag :sort="sort" @handleSelectRole="handleSelectRole" />
+          </div>
+          <div>
             <SelectTag
               :selectDepartment="selectDepartment"
               @handleSelectedDepartment="handleSelectedDepartment"
             />
           </div>
-          <div></div>
         </div>
         <button
           class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
@@ -35,15 +37,17 @@
 <script setup>
 import { useUserStore } from "../../stores/users";
 import { ref, onMounted, computed } from "vue";
+import SortTag from "../../components/SortTag.vue";
 import SelectTag from "../../components/SelectTag.vue";
 import TableForm from "../../components/TableForm.vue";
 
 const userStore = useUserStore();
+
 const userList = ref([]);
 const searchBar = ref("");
 const users = ref([]);
 let selectDepartment = ref("All");
-let role = ref("Roles");
+let sort = ref("student");
 const isNoData = ref(true);
 // const filteredUsers = computed(() => {
 //   if (!searchBar.value) {
@@ -54,18 +58,21 @@ const isNoData = ref(true);
 //   );
 // });
 
+const handleSelectRole = (val) => {
+  sort.value = val;
+  console.log(sort.value);
+};
+
 const handleSelectedDepartment = (val) => {
   users.value = userStore.filterUsers(val);
   userList.value = val;
 };
 
 onMounted(async () => {
-  const test = []
   await userStore.fetchAllUsers();
   if (userStore.errors.length == 0) {
-    users.value = userStore.users;
+    users.value = userStore.users.filter((user) => user.roles[0].name == "student");
     isNoData.value = false;
-    // console.log(users.value[0].infos.fullname);
   }
   // console.log(users.value);
   // keys.value = Object.keys(users.value[0].info)

@@ -40,11 +40,12 @@
         <option value="100">100</option>
       </select>
     </div>
-    <TableForm
+    <EvaluateeListTable
       :data="filteredEvaluatees"
       :isNoData="isNoData"
       @handleActionClick="handleActionClick"
-    ></TableForm>
+    ></EvaluateeListTable>
+
     <div>
       <span>{{ status }}</span>
       <div>
@@ -71,6 +72,7 @@
 <script setup>
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { ref, onMounted, computed } from "vue";
+import EvaluateeListTable from "../../components/EvaluateeListTable.vue";
 import TableForm from "../../components/TableForm.vue";
 import SelectTag from "../../components/SelectTag.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
