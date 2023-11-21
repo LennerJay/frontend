@@ -8,7 +8,7 @@ const route = useRoute();
 const showSideBar = ref();
 
 watch(route, (to) => {
-  if (to.path === "/login" || to.path === "/") {
+  if (to.path === "/login" || to.path === "/" || to.path === "/about-us") {
     showSideBar.value = false;
   } else {
     showSideBar.value = true;
@@ -17,7 +17,7 @@ watch(route, (to) => {
 </script>
 
 <template>
-  <div class="">
+  <div class="flex">
     <SideBar v-if="showSideBar" />
 
     <router-view v-slot="{ Component }">

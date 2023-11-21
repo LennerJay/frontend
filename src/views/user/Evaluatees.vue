@@ -66,6 +66,7 @@
     </div>
 
     <FooterCard />
+    <AboutUs />
   </div>
 </template>
 
@@ -77,6 +78,7 @@ import ProfileCard from "@/components/ProfileCard.vue";
 import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
 import FooterCard from "@/components/FooterCard.vue";
+import AboutUs from "../../components/AboutUs.vue";
 import ModalCard from "../../components/ModalCard.vue";
 import LoadingAnimation from "../../components/LoadingAnimation.vue";
 
