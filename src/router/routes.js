@@ -108,6 +108,11 @@ const routes = [
         path:'/:notFound(.*)',
         name:'error.404',
         component:NotFoundErrorPage
+      },
+      {
+        path:'/about-us',
+        name:'about-us',
+        component: ()=> import('../views/AboutUs.vue'),
       }
 ]
 
