@@ -55,6 +55,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const handleLogout = async() => {
         await logout()
         user.value = null
+        isAdminStaff.value = null
     };
 
     const fetchUserInfo = async(id) =>{

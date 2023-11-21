@@ -11,7 +11,7 @@ router.beforeEach(async (to,from)=>{
 
   const store = inject('authStore')
 
-    if(to.path !== '/' && store.isLoggedIn){
+
       if(to.path !== '/login' && from.path !== '/login' ){
         await store.fetchUser();
       }
@@ -26,7 +26,7 @@ router.beforeEach(async (to,from)=>{
       } else if(!to.meta.admin && store.isAdminStaff){
         return { name: "admin" };
       }
-    }
+
       
 });
 

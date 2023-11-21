@@ -127,7 +127,7 @@ const handleSelectRole = (val) => {
     isStudent.value = false;
   }
   users.value = userStore.filterUsers(sort.value,selectDepartment.value,sectionYear.value)
-  console.log(users.value)
+  // console.log(users.value)
 };
 
 const handleSelectedDepartment = (val) => {

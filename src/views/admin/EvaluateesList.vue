@@ -121,7 +121,9 @@ const paginatedData = computed(() => {
   const endIndex = currentPage.value * pageSize.value;
   return evaluatees.value.slice(startIndex, endIndex);
 });
+
 const totalPages = computed(() => Math.ceil(evaluatees.value.length / pageSize.value));
+
 const status = computed(() => {
   const entriesStart = (currentPage.value - 1) * pageSize.value + 1;
   const entriesEnd = Math.min(
@@ -130,6 +132,7 @@ const status = computed(() => {
   );
   return `Showing ${entriesStart} to ${entriesEnd} of ${evaluatees.value.length} entries`;
 });
+
 const gotoPage = (pageNumber) => {
   currentPage.value = pageNumber;
 };

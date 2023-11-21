@@ -89,7 +89,7 @@
       <div>
         <h1 class="font-bold text-lg">Title: {{ questionaire.title }}</h1>
         <p>description: {{ questionaire.description }}</p>
-        <QuestionForm
+        <QuestionFormTable
           v-for="(criteria, index) in questionaire.criterias"
           :criteria="criteria"
           :key="index"
@@ -110,7 +110,7 @@
 </template>
 
 <script setup>
-import QuestionForm from "../../components/QuestionForm.vue";
+import QuestionFormTable from "../../components/QuestionFormTable.vue";
 import ProfileCard from "../../components/ProfileCard.vue";
 import FooterCard from "../../components/FooterCard.vue";
 import { useAuthStore } from "../../stores/auth";
