@@ -49,9 +49,9 @@
 </template>
 
 <script setup>
-import { useCrudModal } from '../stores/crudModalStore';
+import { userModalStore } from '../stores/modalStore';
 
-const deleteModal = useCrudModal();
+const deleteModal = userModalStore();
 const { emit } = deleteModal;
 const props = defineProps([
   'deleteOpen'

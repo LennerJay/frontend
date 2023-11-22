@@ -1,13 +1,13 @@
 <template>
   <div class="bg-gray-100 flex justify-center font-sans h-screen">
-    <div class="w-full lg:w-5/6">
-      <div class="bg-white shadow-md rounded my-6">
-        <table class="min-w-max w-full table-auto">
+    <div class="w-full lg:w-5/6 max-h-[550px] md:max-h-[550px] overflow-y-auto">
+      <div class="transparent shadow-md rounded my-6">
+        <table class="min-w-[250px] md:w-full table-auto">
           <thead>
-            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              <th class="py-3 px-6 text-left">Name</th>
-              <th class="py-3 px-6 text-center">Work Status</th>
-              <th class="py-3 px-6 text-center">Actions</th>
+            <tr class="bg-sky-950 text-white uppercase text-sm leading-normal">
+              <th class="py-3 md:px-6 text-left">Name</th>
+              <th class="py-3 md:px-6 text-center">Work Status</th>
+              <th class="py-3 md:px-6 text-center">Actions</th>
             </tr>
           </thead>
           <tbody class="text-gray-600 text-sm font-light">
@@ -21,16 +21,17 @@
             <tr
               v-for="(instructor, instructorIndex) in data"
               :key="instructorIndex"
-              class="border-b border-gray-200 hover:bg-gray-100"
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700
+              border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
             >
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
                   <span class="font-medium">{{ instructor.name }}</span>
                 </div>
               </td>
-              <td class="py-3 px-6 text-center">
+              <td class="md:py-3 md:px-6 text-center">
                 <span
-                  class="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs"
+                  class="bg-purple-200 text-purple-600 md:py-1 md:px-3 rounded-full text-xs "
                   >{{ instructor.job_type == 0 ? "Full Time" : "Part Time" }}</span
                 >
               </td>
@@ -122,4 +123,20 @@ const handleActionClick = (id, action) => {
 onMounted(() => {});
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+}
+.overflow-y-auto:hover::-webkit-scrollbar {
+  display: block;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgb(8, 47, 73, 1);
+  border-radius: 8px;
+  width: 4px;
+}
+</style>
