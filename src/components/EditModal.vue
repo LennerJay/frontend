@@ -46,9 +46,9 @@
 </template>
 
 <script setup>
-import { useCrudModal } from '../stores/crudModalStore';
+import { userModalStore } from '../stores/modalStore';
 
-const editModal = useCrudModal();
+const editModal = userModalStore();
 const { emit } = editModal;
 const props = defineProps([
   'editOpen'

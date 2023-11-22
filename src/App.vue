@@ -17,7 +17,7 @@ watch(route, (to) => {
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex font-poppins">
     <SideBar v-if="showSideBar" />
 
     <router-view v-slot="{ Component }">
@@ -38,4 +38,5 @@ watch(route, (to) => {
 .fade-leave-to {
   opacity: 0;
 }
+
 </style>
