@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-100 flex justify-center font-sans h-screen">
+  <div class="bg-gray-100 flex justify-center font-poppins h-screen">
     <div class="w-full lg:w-5/6 max-h-[550px] md:max-h-[550px] overflow-y-auto">
       <div class="transparent shadow-md rounded my-6">
         <table class="min-w-[250px] md:w-full table-auto">

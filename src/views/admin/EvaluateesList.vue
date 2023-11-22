@@ -1,5 +1,5 @@
 <template>
-  <div class="md:ml-[250px] ml-0 font-serif px-0 w-full">
+  <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full">
     <div class="header py-6 text-white text-center bg-sky-950">
       <div class="font-bold p-1 text-[30px]">
         <span class="inline-block md:hidden pr-5" @click="drawer.toggle">
@@ -85,19 +85,38 @@
           @handleActionClick="handleActionClick"
           class="card md:pt-20"
         />
+        <!-- end table area -->
+        <!-- Pagination -->
         <div class="bg-gray-200 px-2">
-          <span>{{ status }}</span>
-          <div>
-            <span
-              v-for="pageNumber in totalPages"
-              :key="pageNumber"
-              @click="gotoPage(pageNumber)"
-              :class="{ active: pageNumber === currentPage }"
-              >{{ pageNumber }}</span
-            >
-          </div>
+            <span class="text-gray-600">{{ status }}</span>
+            <div class="mt-2 flex items-center pb-2">
+                <!-- Previous Button -->
+                <i class="bi bi-arrow-left-square cursor-pointer hover:bg-sky-950 hover:text-white transition duration-300"
+                  @click="gotoPage(currentPage - 1)"
+                  :class="{ '': currentPage > 1, 'mx-1 px-3 py-1': true }"
+                  v-if="currentPage > 1">
+                </i>
+
+                <!-- Page Numbers -->
+                <template v-for="pageNumber in displayPageRange">
+                    <span
+                        @click="gotoPage(pageNumber)"
+                        :class="{ 'border-2 border-gray-400': pageNumber === currentPage, 'px-3 py-1 cursor-pointer hover:bg-sky-950 hover:text-white': true }"
+                    >
+                        {{ pageNumber }}
+                    </span>
+                </template>
+                <!-- End Page Numbers -->
+
+                <!-- Next Button -->
+                <i class="bi bi-arrow-right-square cursor-pointer hover:bg-sky-950 hover:text-white transition duration-300"
+                  @click="gotoPage(currentPage + 1)"
+                  :class="{ '': currentPage < totalPages, 'mx-1 px-3 py-1': true }"
+                  v-if="currentPage < totalPages">
+                </i>
+            </div>
         </div>
-         <!-- end table area -->
+        <!-- End Pagination -->
         <!-- Modal area -->
         <ModalCard
           :showModal="showModal"
@@ -146,6 +165,13 @@ const evaluateeInfo = ref([]);
 const actionSelected = ref("");
 const pageSize = ref("10");
 const currentPage = ref(1);
+
+const displayPageRange = computed(() => {
+    const rangeStart = Math.max(currentPage.value - 2, 1);
+    const rangeEnd = Math.min(rangeStart + 4, totalPages.value);
+
+    return Array.from({ length: rangeEnd - rangeStart + 1 }, (_, index) => rangeStart + index);
+});
 
 const handlePageSizeChange = () => {
   currentPage.value = 1;
