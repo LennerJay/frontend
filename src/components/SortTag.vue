@@ -1,15 +1,15 @@
 <template>
   <div class="flex">
-    <label for="sort">Sort: </label>
+    <label for="sort" class="pr-2">Sort: </label>
     <select
-      class="focus:outline-none"
+      class="focus:outline-none rounded-2xl text-center"
       v-model="sort"
       name="sort"
       id="sort"
       @change="$emit('handleSelectRole', sort)"
     >
       <option v-for="(role, roleIndex) in roles" :value="role.name" :key="roleIndex">
-        {{ role.name }}
+        {{ capitalizeFirstLetter(role.name) }}
       </option>
     </select>
   </div>
@@ -25,6 +25,10 @@ const roles = ref();
 const props = defineProps({
   sort: String,
 });
+
+const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 const sort = ref(props.sort);
 

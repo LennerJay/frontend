@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-gray-100 flex justify-center font-sans h-screen">
-    <div class="w-full lg:w-5/6">
-      <div class="bg-white shadow-md rounded my-6">
-        <table class="min-w-max w-full table-auto">
+  <div class="card flex justify-center font-poppins h-screen">
+    <div class="w-full lg:w-5/6 max-h-[550px] md:max-h-[550px] overflow-y-auto mt-12">
+      <div class="transparent shadow-md rounded my-6">
+        <table class="min-w-[250px] md:w-full table-auto">
           <thead>
             <tr
               v-if="isStudent"
-              class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"
+              class="bg-sky-950 text-white uppercase text-sm leading-normal"
             >
               <th class="py-3 px-6 text-left">ID Number</th>
               <th class="py-3 px-6 text-left">FullName</th>
@@ -15,9 +15,10 @@
               <th class="py-3 px-6 text-center">Status</th>
               <th class="py-3 px-6 text-center">Actions</th>
             </tr>
-            <tr v-else>
-              <th>Name</th>
-              <th>Action</th>
+            <tr v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20 text-center text-white bg-sky-950">
+              <!-- <th>Name</th>
+              <th>Action</th> -->
+              No Data
             </tr>
           </thead>
           <tbody class="text-gray-600 text-sm font-light">
@@ -25,14 +26,15 @@
               <td
                 class="py-3 px-6 text-left whitespace-nowrap flex justify-center row-span-3"
               >
-                <span class="font-medium">No data Found</span>
+                <span class="font-medium text-center">No data Found</span>
               </td>
             </tr>
             <tr
               v-else-if="isStudent"
               v-for="(user, userIndex) in data"
               :key="userIndex"
-              class="border-b border-gray-200 hover:bg-gray-100"
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700
+              border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
             >
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
@@ -215,4 +217,20 @@ const handleActionClick = (id, action) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+}
+.overflow-y-auto:hover::-webkit-scrollbar {
+  display: block;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgb(8, 47, 73, 1);
+  border-radius: 8px;
+  width: 4px;
+}
+</style>

@@ -1,7 +1,6 @@
 <template>
-    <div class="flex">
-        <div class="md:ml-[250px] ml-0 font-serif px-0 w-full dashboard-main-header">
-        <div class="header pl-2 py-6 text-white text-center">
+    <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full dashboard-main-header">
+        <div class="header pl-2 py-6 text-white text-center bg-sky-950">
             <h2 class="dashboard">DASHBOARD</h2>
             <div class="font-bold p-1 text-[30px] inline-block">
               <span class="md:hidden pr-5" @click="drawer.toggle">
@@ -60,9 +59,9 @@
                     </div>
                 </div>
                 <!-- CHAIRPERSON TABLE SECTION -->
-                <div class="table-container mt-8 p-5 m-8 bg-white border-2 border-indigo-200 max-w-full items-center" id="cards">
-                    <h1 class="block text-black font-bold font-Times New Roman">CHAIRPERSON</h1>
-                    <div class="overflow-x-auto shadow-md sm:rounded-lg mt-4">
+                <div class="table-container mt-8 p-5 m-8 bg-white border-2 border-indigo-200 max-w-full items-center max-h-[250px] md:max-h-[300px] overflow-y-scroll" id="cards">
+                    <h1 class="block text-black font-bold font-poppins">CHAIRPERSON</h1>
+                    <div class="shadow-md sm:rounded-lg mt-4">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
@@ -84,7 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 text-left">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         Ranel
                                     </th>
@@ -149,7 +148,6 @@
        </div>
        <FooterCard/>
     </div>
-    </div>
 </template>
 
 <script setup>
@@ -178,7 +176,6 @@ onMounted(async()=>{
 <style scoped>
     .dashboard-main-header {
         background-color: #0C4A6E;
-        font-family: Helvetica, Georgia, "Times New Roman";
     }
 
     .header-name {
@@ -219,5 +216,20 @@ onMounted(async()=>{
     #cards:active {
     transform: scale(0.95);
     border: 1px solid blue;
+    }
+    .overflow-y-auto::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+    }
+    .overflow-y-auto:hover::-webkit-scrollbar {
+    display: block;
+    }
+    .overflow-y-auto::-webkit-scrollbar-track {
+    background-color: transparent;
+    }
+    .overflow-y-auto::-webkit-scrollbar-thumb {
+    background-color: rgb(8, 47, 73, 1);
+    border-radius: 8px;
+    width: 4px;
     }
 </style>
