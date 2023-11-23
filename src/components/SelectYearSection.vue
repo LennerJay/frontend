@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <label for="section-year">Section & Year: </label>
-    <select v-model="sY" name="section-year" id="section-year" @change="handleClick">
+  <div class="flex">
+    <label for="section-year md:pr-2">Section & Year: </label>
+    <select v-model="sY" name="section-year" id="section-year" @change="handleClick" class="focus:outline-none 
+    rounded-2xl text-center">
       <option value="All">All</option>
       <option v-for="sy in sys" :value="sy.year_section">{{ sy.year_section }}</option>
     </select>
