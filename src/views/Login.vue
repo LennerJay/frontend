@@ -27,7 +27,7 @@ import FooterCard from '../components/FooterCard.vue';
 import { ref,onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter,useRoute } from 'vue-router';
-import { useAuthStore } from '../stores/auth'
+import { useAuthStore } from '../stores/auth';
 
 
 const route = useRoute()
@@ -43,6 +43,7 @@ const form = ref({
 
 const handleSubmit = async () =>{
     await handleLogin(form.value)
+    console.log(store.user)
         if(Object.keys(store.errors).length === 0){
             if(store.isLoggedIn){
                 if(store.isAdminStaff){

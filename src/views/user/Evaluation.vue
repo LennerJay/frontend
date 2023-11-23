@@ -8,7 +8,6 @@
         <h1 class="header-name">Evaluation for: {{ name }}</h1>
       </div>
     </div>
-
     <div v-if="showProfileCards" class="min-h-[44rem] card overflow-x-auto">
       <div class="selectTags flex p-4">       
        <div>
@@ -39,6 +38,9 @@
           option="Select"
           @selectedEvaluatee="selectEvaluatee"
         />
+      </div>
+      <div v-else-if="isDoneRating">
+        Done Rating
       </div>
       <div v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20">
         <div class="loader3 mt-10 pt-24">
@@ -135,7 +137,7 @@ const drawer = useDrawerStore();
 const userStore = useAuthStore();
 const evaluateeStore = useEvaluateeStore();
 const questionaireStore = useQuestionaireStore();
-const { user, errors } = userStore;
+const {  errors } = userStore;
 const ratingStore = useRatingStore();
 const selectedEvaluatee = ref("");
 const selectedRatings = ref([]);
@@ -149,8 +151,9 @@ const selectDepartment = ref("All");
 const entity = ref("All");
 const entities = ref([]);
 const departments = ref([]);
-
-
+const user= ref([]);
+const isDoneRating = ref(false);
+const showLoadingAnimations = ref(true);
 const selectEvaluatee = async (id) => {
   const evaluatee = evaluatees.value.find((obj) => obj.id === id);
   await questionaireStore.fetchQuestionaireForEvaluatee(evaluatee.entity.id);
@@ -165,10 +168,40 @@ const selectEvaluatee = async (id) => {
   });
 };
 
-const handleBackButton = () => {
-  localStorage.removeItem("selectedEvaluatee");
-  name.value = "";
-  showProfileCards.value = true;
+const handleBackButton = async() => {
+  if(selectedRatings.value.length > 0) {
+      if(confirm('Changes you made may not be saved.') == true){
+        clearLocalStorage();
+        name.value = "";
+        showProfileCards.value = true;
+        showProfileCard.value = false
+        if(evaluatees.value.length == 0) {
+            if(!user.value.id_numbe  ){
+              await userStore.fetchUser();
+              user.value = userStore.user
+            }
+            await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
+            evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
+        }
+        showProfileCard.value = true;
+    }
+  }else{
+    localStorage.removeItem("selectedEvaluatee");
+    name.value = "";
+    showProfileCards.value = true;
+    showProfileCard.value = false
+    if(evaluatees.value.length == 0) {
+        if(!user.value.id_numbe  ){
+          await userStore.fetchUser();
+          user.value = userStore.user
+        }
+        await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
+        evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
+    }
+    showProfileCard.value = true;
+  }
+
+
 };
 const isSubmitButtonEnabled = computed(() => {
   if (!questionaire.value || !questionaire.value.criterias) {
@@ -203,14 +236,7 @@ const handleSubmit = async () => {
   };
   await ratingStore.save(value);
   if (ratingStore.response.data.code === 201) {
-    const keys = Object.keys(localStorage);
-    const keepKeys = ["instructors", "questionaires","entities","departments"];
-    for (const key of keys) {
-      if (keepKeys.includes(key)) {
-        continue;
-      }
-      localStorage.removeItem(key);
-    }
+    clearLocalStorage();
     selectedRatings.value = [];
     evaluatees.value = evaluatees.value.filter( evaluatee => evaluatee.id !== selectedEvaluatee.value.id);
     name.value = "";
@@ -267,6 +293,18 @@ const handleJobTypeSelected = (val) => {
   );
 };
 
+const clearLocalStorage = ()=>{
+  const keys = Object.keys(localStorage);
+    const keepKeys = ["instructors", "questionaires","entities","departments","jwt_token"];
+    for (const key of keys) {
+      if (keepKeys.includes(key)) {
+        continue;
+      }
+      localStorage.removeItem(key);
+    }
+}
+
+
 onBeforeMount(async()=>{
   if(!localStorage.getItem('entities')){
     await entityStore.fetchAllEntity();
@@ -276,6 +314,7 @@ onBeforeMount(async()=>{
     await departmentStore.getDepartments();
   }
   departments.value = departmentStore.departments;
+
 });
 
 onMounted(async () => {
@@ -316,9 +355,17 @@ onMounted(async () => {
     name.value = selectedEvaluatee.value.name;
     showProfileCards.value = false;
   } else {
-    await evaluateeStore.fetchEvaluateesToRate(user.id_number);
-    showProfileCard.value = true;
+    await userStore.fetchUser();
+    user.value = userStore.user
+    await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
     evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
+    if(evaluatees.value.length > 0){
+      showProfileCard.value = true;
+    }else{
+      isDoneRating.value = true;
+      console.log(isDoneRating)
+    }
+
   }
 });
 </script>

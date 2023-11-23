@@ -27,10 +27,11 @@ export const useAuthStore = defineStore('authStore', ()=>{
   
     const fetchUser = async ()=>{
       const {data,status}  = await getUser();
+    
       if(status === 200){
-        user.value = data.user;
+        user.value = await data;
       }else{
-        errors.value = data.errors
+        errors.value = data
       }
     }
     

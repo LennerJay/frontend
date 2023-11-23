@@ -7,24 +7,23 @@ const router = createRouter({
   routes
 })
 router.beforeEach(async (to,from)=>{
-
-
-    const store = useAuthStore();
-
-  console.log(store.isLoggedIn)
-  console.log(store.isAdminStaff)
-      if(to.meta.auth && !store.isLoggedIn){
-        return{
-            name:'login',
-        }
-        
-      } else if (to.meta.guest && store.isLoggedIn) {
-        return { name: "dashboard" };
-      } else if (to.meta.admin && !store.isAdminStaff) {
-        return { name: "dashboard" };
-      } else if(!to.meta.admin && store.isAdminStaff){
-        return { name: "admin" };
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+  const store = useAuthStore();
+    if(to.meta.auth && !store.isLoggedIn){
+      return{
+          name:'login',
       }
+      
+    } else if (to.meta.guest && store.isLoggedIn) {
+      return { name: "dashboard" };
+    } else if (to.meta.admin && !store.isAdminStaff) {
+      return { name: "dashboard" };
+    } else if(!to.meta.admin && store.isAdminStaff){
+      return { name: "admin" };
+    }
 
 
       

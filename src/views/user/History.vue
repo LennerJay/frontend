@@ -81,14 +81,13 @@ const drawer = useDrawerStore();
 const evaluateeStore = useEvaluateeStore();
 const showProfileCard = ref(false);
 const isNoData = ref(false);
-const { user, errors } = userStore;
+const user = ref([]);
+
 
 onMounted(async () => {
-  await evaluateeStore.fetchEvaluateesToRate(user.id_number);
+  await userStore.fetchUser()
+  await evaluateeStore.fetchEvaluateesToRate(userStore.user.id_number);
   evaluatees.value = evaluateeStore.isRatedEvaluatees(true);
-
-  console.log(evaluatees.value.length);
-  console.log(evaluatees.value);
   if (evaluatees.value.length > 0) {
       showProfileCard.value = true;
       isNoData.value = false;

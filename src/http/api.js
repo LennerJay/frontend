@@ -10,7 +10,6 @@ api.interceptors.request.use((config) => {
         const token = localStorage.getItem('jwt_token').split('.')[0];
         config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
 }, (error) => {
     return Promise.reject(error);
