@@ -52,7 +52,7 @@ const userComponent = [
   {
     name: "Dashboard",
     icon: "bi bi-filter-circle-fill",
-    path: "/dashboard",
+    path: "/",
   },
   {
     name: "Evaluatees",
