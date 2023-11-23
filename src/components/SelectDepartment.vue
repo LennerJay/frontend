@@ -25,18 +25,15 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useDepartmentStore } from "../stores/department";
-
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const store = useDepartmentStore();
 
-const props = defineProps(["selectDepartment", "option"]);
+const props = defineProps(["selectDepartment", "option","departments"]);
 const emits = defineEmits(["handleSelectedDepartment"]);
 
 const selectDepartment = ref(props.selectDepartment);
-const departments = ref();
+
 
 const handleTag = () => {
   emits("handleSelectedDepartment", selectDepartment.value);
@@ -44,19 +41,6 @@ const handleTag = () => {
 
 const isEvaluateeRoute = computed(() => route.name === "evaluatees");
 
-onMounted(async () => {
-  const excluded = ["guard", "canteen-staff"];
-  await store.getDepartments();
-  if (route.name == "users-list") {
-    departments.value = store.departments.filter((department) => {
-      if (!excluded.includes(department.department)) {
-        return department;
-      }
-    });
-  } else {
-    departments.value = store.departments;
-  }
-});
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref ,watch} from "vue";
 import { getAllDepartments } from "../http/department-api"
 
 
@@ -16,6 +16,20 @@ export const useDepartmentStore = defineStore('departmentStore',() =>{
             errors.value =  error.response
         }
     };
+
+    if(localStorage.getItem('departments')){
+        departments.value = JSON.parse(localStorage.getItem('departments'))
+    }
+
+    watch(
+        departments,
+        (departmentsVal)=>{
+            localStorage.setItem('departments',JSON.stringify(departmentsVal));
+        },
+        {
+            deep:true
+        }
+    );
 
 
     return {

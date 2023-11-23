@@ -49,13 +49,15 @@
 
 <script setup>
 
-const emits = defineEmits(['handleAction'])
+
 const props = defineProps({
   data:Object,
   isNoData:Boolean
 });
+const emits = defineEmits(['handleAction']);
 
-const handleClickAction = ()=>{
+
+const handleClickAction = (id,action)=>{
   emits('handleAction',id,action)
 }
 </script>

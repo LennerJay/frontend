@@ -118,8 +118,8 @@
         </div>
         <!-- End Pagination -->
         <!-- Modal area -->
-        <ModalCard
-          :showModal="showModal"
+        <ModalCard v-if="showModal"
+          :isInstructor="isInstructor"
           :showDetail="showDetail"
           :evaluateeInfo="evaluateeInfo"
           :action="actionSelected"
@@ -165,6 +165,7 @@ const evaluateeInfo = ref([]);
 const actionSelected = ref("");
 const pageSize = ref("10");
 const currentPage = ref(1);
+const isInstructor = ref(false);
 
 const displayPageRange = computed(() => {
     const rangeStart = Math.max(currentPage.value - 2, 1);
@@ -213,11 +214,16 @@ const gotoPage = (pageNumber) => {
 const closeModal = () => {
   showModal.value = false;
   showDetail.value = false;
+  isInstructor.value = false;
 };
 
 const selectedEvaluatee = async (id) => {
   showModal.value = true;
   evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
+  if(evaluateeInfo.value.entity.entity_name === 'instructor'){
+    isInstructor.value = true;
+    console.log( isInstructor.value )
+  }
   showDetail.value = true;
 };
 

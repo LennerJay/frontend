@@ -1,7 +1,7 @@
 <template>
   <div  
   class="flex items-center transparent rounded-xl border-2 font-Times New Roman border-sky-900 cursor-pointer
-  hover:-translate-y-1 hover:scale-90 card-box" @click="handleClick(evaluatee)">
+  hover:-translate-y-1 hover:scale-90 card-box" @click="handleClick(evaluatee.id)">
       <div class="flex items-center" >
           <div class="flex-shrink-0">
               <img src="../assets/male-teacher-icon.png" class="h-32">
@@ -40,9 +40,8 @@ const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const handleClick = (evaluatee)=>{
-  console.log('clicked')
-  emit('selectedEvaluatee',evaluatee.id)
+const handleClick = (evaluatee_id)=>{
+  emit('selectedEvaluatee',evaluatee_id)
 }
 </script>
 

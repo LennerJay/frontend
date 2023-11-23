@@ -44,32 +44,27 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         }
     );
 
-    const filterEvaluatees = (jobType, departmentName,path=null)=>{
+    const filterEvaluatees = (entity, departmentName,jobType,path=null)=>{
         const evaluatees = ref(); 
             if(path === 'evaluations'){
                 evaluatees.value = evaluateesToRate.value
             }else{
                 evaluatees.value = allEvaluatees.value
             }
-
-            if(departmentName == 'All'){
-                if(jobType === 'Both'){
-                    return evaluatees.value
+            
+            if(entity !== "All"){
+                evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.entity.entity_name === entity)
+                if(departmentName !== "All"){
+                    evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.departments[0].department === departmentName)
                 }
-                return evaluatees.value.filter(evaluatee => evaluatee.job_type == Number(jobType))
-            }else{
-
-                if(jobType === 'Both'){
-                    return evaluatees.value.filter((evaluatee)=>{
-                        return evaluatee.departments.some(department => department.department === departmentName)
-                    })
-                }
-                return evaluatees.value.filter((evaluatee)=>{
-                    return evaluatee.departments.some(department => department.department === departmentName)
-                }).filter(evaluatee => evaluatee.job_type == Number(jobType))
+           
             }
 
+            if(jobType !== "All"){
+                evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.job_type === Number(jobType))
+            }
 
+            return evaluatees.value
     }
     
     const fetchEvaluateesToRate = async(userId)=>{
@@ -98,6 +93,14 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
                 }
             });
         }
+      }
+
+      const updateEvaluateeToRate = (id)=>{
+        evaluateesToRate.value =  evaluateesToRate.value.map(evaluatee=>{
+            if(evaluatee.id == id){
+                evaluatee.pivot.is_done = 1;
+            }
+        })
       }
 
     return {

@@ -52,6 +52,7 @@
 </template>
 <script setup>
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../../stores/auth";
 import { useDrawerStore } from '../../stores/drawerStore';
 import FooterCard from '../../components/FooterCard.vue'
 

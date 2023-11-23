@@ -73,9 +73,9 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
 
     );
 
-    const fetchQuestionaireForEvaluatee = async(departmentId)=>{
+    const fetchQuestionaireForEvaluatee = async(entityId)=>{
         const id = {
-            departmend_id : departmentId
+            entity_id : entityId
         }
         const {data} = await getQuestionaireForEvaluatee(id);
         questionaireForEvaluatee.value = data.questionaires[0];

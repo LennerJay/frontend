@@ -104,9 +104,11 @@ const adminStaffComponent = [
 ];
 
 const handleLogout = async () => {
-  localStorage.clear();
+
   await store.handleLogout();
-  router.push("/login");
+    localStorage.clear();
+    store.isLoggedIn = false
+    router.push("/login");
 };
 
 const showToggle = () => {

@@ -1,6 +1,6 @@
 <template>
 <!-- Modal -->
-<div v-if="showModal" class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman">
+<div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman">
   <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
     <button @click="closeModal">
       <i class="bi bi-x-lg"></i>
@@ -13,19 +13,21 @@
             <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
                 <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name.split(' ').slice(0, 2).join(' ') }}</span>
                 <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Fulltime':'Part Time' }}</span>
-                <span><i class="bi bi-bank2 mr-1"></i>Department : {{ capitalizeFirstLetter(evaluateeInfo.departments[0].department.split('-')[0]) }}</span>
+                <span>Personnel Type: {{ evaluateeInfo.entity.entity_name }}</span>
+                <span v-if="isInstructor"><i class="bi bi-bank2 mr-1"></i>Department : {{ capitalizeFirstLetter(evaluateeInfo.departments[0].department.split('-')[0]) }}</span>
               </div>
         </div>
 
         <!-- Modal Body -->
-          <div class="mb-4">
-            <table class="max-w-screen w-full border" v-if="isTeacher">
+          <div v-if="isInstructor" class="mb-4">
+            <table class="max-w-screen w-full border">
               <thead>
                 <tr>
                   <th class="border">Subject</th>
                   <th class="border">Sections</th>
                   <th class="border">Schedule</th>
                   <th class="border">Time</th>
+            
                 </tr>
               </thead>
               <tbody class="text-center">
@@ -57,7 +59,6 @@
                 </tr>
               </tbody>
             </table>
-            <div v-else class="text-center">No Data</div>
           </div>
 
         <!-- Modal Footer -->
@@ -100,7 +101,7 @@ import { useRoute } from 'vue-router';
 const store = useEvaluateeStore();
 const route = useRoute();
 const props = defineProps([
-                'showModal', 
+                'isInstructor', 
                 'evaluateeInfo',
                 'selectedEvaluteeId',
                 'showDetail',
@@ -115,7 +116,7 @@ const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 const isHistoryRoute = computed(() => route.name === 'history');
-const isTeacher = computed(() => props.evaluateeInfo.departments[0].department !== 'canteen-staff');
+
 onMounted(()=>{
   
   // const id = {

@@ -10,9 +10,13 @@
     </div>
 
     <div v-if="showProfileCards" class="min-h-[44rem] card overflow-x-auto">
-      <div class="selectTags flex p-4">
+      <div class="selectTags flex p-4">       
+       <div>
+          <SelectEntity :entities="entities" :entity="entity" @handleSelect="handleEntity"/>        
+        </div>
         <div>
-          <SelectDepartment
+          <SelectDepartment v-if="entity === 'instructor'"
+            :departments="departments"
             :selectDepartment="selectDepartment"
             @handleSelectedDepartment="handleSelectedDepartment"
           />
@@ -116,18 +120,23 @@ import FooterCard from "../../components/FooterCard.vue";
 import { useAuthStore } from "../../stores/auth";
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { useQuestionaireStore } from "../../stores/questionaire";
-import { onMounted, ref, computed } from "vue";
+import { onBeforeMount,onMounted, ref, computed } from "vue";
 import { useRatingStore } from "../../stores/rating";
 import { useDrawerStore } from "../../stores/drawerStore";
+import { useEntityStore } from "../../stores/entity";
+import { useDepartmentStore } from "../../stores/department";
 import SelectJobType from "../../components/SelectJobType.vue";
 import SelectDepartment from "../../components/SelectDepartment.vue";
+import SelectEntity from "../../components/SelectEntity.vue";
 
+const entityStore = useEntityStore()
+const departmentStore = useDepartmentStore()
 const drawer = useDrawerStore();
 const userStore = useAuthStore();
 const evaluateeStore = useEvaluateeStore();
-const store = useQuestionaireStore();
+const questionaireStore = useQuestionaireStore();
 const { user, errors } = userStore;
-const rating = useRatingStore();
+const ratingStore = useRatingStore();
 const selectedEvaluatee = ref("");
 const selectedRatings = ref([]);
 const questionaire = ref([]);
@@ -135,18 +144,25 @@ const showProfileCards = ref(true);
 const name = ref("");
 const evaluatees = ref([]);
 const showProfileCard = ref(false);
-const selectTypeJob = ref("Both");
+const selectTypeJob = ref("All");
 const selectDepartment = ref("All");
+const entity = ref("All");
+const entities = ref([]);
+const departments = ref([]);
+
 
 const selectEvaluatee = async (id) => {
   const evaluatee = evaluatees.value.find((obj) => obj.id === id);
-  const departmentId = evaluatee.departments[0].id;
-  await store.fetchQuestionaireForEvaluatee(departmentId);
-  questionaire.value = store.questionaireForEvaluatee;
+  await questionaireStore.fetchQuestionaireForEvaluatee(evaluatee.entity.id);
+  questionaire.value = questionaireStore.questionaireForEvaluatee;
   selectedEvaluatee.value = evaluatee;
   localStorage.setItem("selectedEvaluatee", JSON.stringify(evaluatee));
   name.value = evaluatee.name;
   showProfileCards.value = false;
+    window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 };
 
 const handleBackButton = () => {
@@ -185,10 +201,10 @@ const handleSubmit = async () => {
     user_id: user.id_number,
     val: [...selectedRatings.value],
   };
-  await rating.save(value);
-  if (rating.response.data.code === 201) {
+  await ratingStore.save(value);
+  if (ratingStore.response.data.code === 201) {
     const keys = Object.keys(localStorage);
-    const keepKeys = ["instructors", "questionaires"];
+    const keepKeys = ["instructors", "questionaires","entities","departments"];
     for (const key of keys) {
       if (keepKeys.includes(key)) {
         continue;
@@ -196,10 +212,14 @@ const handleSubmit = async () => {
       localStorage.removeItem(key);
     }
     selectedRatings.value = [];
-    evaluatees.value = evaluatees.value.filter(
-      (evaluatee) => evaluatee.id !== selectedEvaluatee.value.id
-    );
+    evaluatees.value = evaluatees.value.filter( evaluatee => evaluatee.id !== selectedEvaluatee.value.id);
     name.value = "";
+    alert('successfully RATED')
+    showProfileCards.value = true;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   } else {
     alert("something went wrong");
   }
@@ -216,11 +236,23 @@ const updateSelectedRatings = (val) => {
   }
 };
 
+const handleEntity = (val)=>{
+  entity.value = val;
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluations"
+  );
+
+}
+
 const handleSelectedDepartment = (departmentName) => {
   selectDepartment.value = departmentName;
   evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
     selectTypeJob.value,
-    departmentName,
     "evaluations"
   );
 };
@@ -228,11 +260,23 @@ const handleSelectedDepartment = (departmentName) => {
 const handleJobTypeSelected = (val) => {
   selectTypeJob.value = val;
   evaluatees.value = evaluateeStore.filterEvaluatees(
-    selectTypeJob.value,
+    entity.value,
     selectDepartment.value,
+    selectTypeJob.value,
     "evaluations"
   );
 };
+
+onBeforeMount(async()=>{
+  if(!localStorage.getItem('entities')){
+    await entityStore.fetchAllEntity();
+  }
+  entities.value = entityStore.entities;
+  if(!localStorage.getItem("departments")){
+    await departmentStore.getDepartments();
+  }
+  departments.value = departmentStore.departments;
+});
 
 onMounted(async () => {
   if (localStorage.getItem("selectedEvaluatee")) {
@@ -240,10 +284,10 @@ onMounted(async () => {
     if (localStorage.getItem("questionaire-for-evaluatee")) {
       questionaire.value = JSON.parse(localStorage.getItem("questionaire-for-evaluatee"));
     } else {
-      await store.fetchQuestionaireForEvaluatee(
+      await questionaireStore.fetchQuestionaireForEvaluatee(
         selectedEvaluatee.value.departments[0].id
       );
-      questionaire.value = store.questionaireForEvaluatee;
+      questionaire.value = questionaireStore.questionaireForEvaluatee;
     }
     let qId = [];
     questionaire.value.criterias.forEach((criteria) => {

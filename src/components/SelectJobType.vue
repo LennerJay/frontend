@@ -7,7 +7,7 @@
       id="filter"
       class="focus:outline-none rounded-2xl text-black text-center"
     >
-      <option value="Both">All</option>
+      <option value="All">All</option>
       <option value="1">Part Time</option>
       <option value="0">Full Time</option>
     </select>

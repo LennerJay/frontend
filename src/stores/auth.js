@@ -1,56 +1,61 @@
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
-import {  csrfCookie, login, register, logout, getUser,getUserInfo ,test} from '../http/auth-api';
+import { computed, ref,watch } from 'vue';
+import {  csrfCookie, login, logout, getUser,getUserInfo ,test} from '../http/auth-api';
 
 
 export const useAuthStore = defineStore('authStore', ()=>{
     const user = ref({})
     const errors = ref({})
-    const isAdminStaff = ref()
-    const isLoggedIn = computed(()=> !!user.value)
+    const isAdminStaff = ref(false)
+    // const isLoggedIn = computed(()=> !!user.value)
+    const isLoggedIn = ref(false)
+    const token = ref([]);
 
+  if(localStorage.getItem('jwt_token')){
+      isLoggedIn.value = true;
+      const tmp = localStorage.getItem('jwt_token')
+      isAdminStaff.value = atob(tmp.split('.')[1]) === 'admin';
+  }else{
+    isLoggedIn.value = false;
+  }
+  watch(
+    token,
+    (tokenVal)=>{
+      localStorage.setItem('jwt_token', tokenVal +'.'+ btoa(user.value.role.name)) 
+    }
+  );
+  
     const fetchUser = async ()=>{
-      try{
-          const {data}  = await getUser();
-          console.log(data);
-          user.value =  data
-          isAdminStaff.value =  user.value.roles.some(role => role.name === 'admin' || role.name ==='staff')
-      }catch(error){
-        user.value = null
-        errors.value =  error.response
+      const {data,status}  = await getUser();
+      if(status === 200){
+        user.value = data.user;
+      }else{
+        errors.value = data.errors
       }
     }
     
     const handleLogin = async (credentials) => {
         await csrfCookie();
         try {
-             await login(credentials);
-            await fetchUser();
-            errors.value= {};
+            const res = await login(credentials);
+            if(res.status === 200){
+              isLoggedIn.value = true;
+              token.value = res.data.token  ;
+              user.value = res.data.user ;
+              isAdminStaff.value = user.value.role.name ==='admin'
+            }
         } catch (error) {
-           if(error.response.status === 422){
-            errors.value =  error.response.data.errors
-           }else{
-            errors.value =  error.response
-           }
-           console.log(errors.value)
+          //  if(error.response.status == 422){
+          //   errors.value =  error.response.data.errors
+          //  }else{
+          //   errors.value =  error.response
+          //  }
+          //  console.log(errors.value)
         }
 
     };
 
-    const handleRegister = async (newUser) => {
-        try {
-          await register(newUser);
-          await handleLogin({
-            email: newUser.email,
-            password: newUser.password,
-          });
-        } catch (error) {
-          if (error.response && error.response.status === 422) {
-            errors.value = error.response.data.errors;
-          }
-        }
-      };
+
 
     const handleLogout = async() => {
         await logout()
@@ -79,7 +84,6 @@ export const useAuthStore = defineStore('authStore', ()=>{
       isLoggedIn,
       fetchUser,
       handleLogin,
-      handleRegister, 
       handleLogout
     }
 });

@@ -157,13 +157,16 @@ import { useDashboardStore } from '../../stores/dashboard';
 import { useDrawerStore } from '../../stores/drawerStore';
 import { ref,onMounted } from 'vue';
 import FooterCard from '../../components/FooterCard.vue'
+import { useAuthStore } from "../../stores/auth";
 
 
 const drawer = useDrawerStore()
 const dashboardStore = useDashboardStore()
 const res = ref([]);
+const store = useAuthStore()
 
-
+console.log(store.isLoggedIn)
+console.log(store.isAdminStaff)
 
 
 onMounted(async()=>{

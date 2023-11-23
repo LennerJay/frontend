@@ -8,7 +8,7 @@ const route = useRoute();
 const showSideBar = ref();
 
 watch(route, (to) => {
-  if (to.path === "/login" || to.path === "/" || to.path === "/about-us") {
+  if (to.path === "/login" || to.path === "/about-us") {
     showSideBar.value = false;
   } else {
     showSideBar.value = true;

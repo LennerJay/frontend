@@ -19,7 +19,11 @@
       </div>
       <div class="selectTags flex items-center">
         <div>
+          <SelectEntity :entities="entities" :entity="entity" @handleSelect="handleEntity"/>        
+          </div>
+        <div v-if="entity == 'instructor'">
           <SelectDepartment
+          :departments="departments"
             :selectDepartment="selectDepartment"
             @handleSelectedDepartment="handleSelectedDepartment"
           />
@@ -44,8 +48,8 @@
             @selectedEvaluatee="selectedEvaluatee"
           />
         </div>
-        <ModalCard
-          :showModal="showModal"
+        <ModalCard v-if="showModal"
+          :isInstructor="isInstructor"
           :showDetail="showDetail"
           :evaluateeInfo="evaluateeInfo"
           @close-modal="closeModal"
@@ -66,22 +70,25 @@
     </div>
 
     <FooterCard />
-    <AboutUs />
   </div>
 </template>
 
 <script setup>
 import { useEvaluateeStore } from "../../stores/evaluatee";
-import { onMounted, ref, computed } from "vue";
+import { onBeforeMount,onMounted, ref, computed } from "vue";
 import { useDrawerStore } from "../../stores/drawerStore";
 import ProfileCard from "@/components/ProfileCard.vue";
 import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
+import SelectEntity from "../../components/SelectEntity.vue";
 import FooterCard from "@/components/FooterCard.vue";
-import AboutUs from "../../components/AboutUs.vue";
 import ModalCard from "../../components/ModalCard.vue";
+import { useDepartmentStore } from "../../stores/department";
+import { useEntityStore } from "../../stores/entity";
 import LoadingAnimation from "../../components/LoadingAnimation.vue";
 
+const entityStore = useEntityStore()
+const departmentStore = useDepartmentStore();
 const drawer = useDrawerStore();
 const evaluateeStore = useEvaluateeStore();
 const evaluatees = ref([]);
@@ -90,9 +97,13 @@ const showDetail = ref(false);
 const evaluateeInfo = ref([]);
 const showEvaluatee = ref(false);
 const isLoaded = ref(true);
-const selectTypeJob = ref("Both");
+const selectTypeJob = ref("All");
 const selectDepartment = ref("All");
 const searchBar = ref("");
+const entity = ref("All");
+const isInstructor= ref(false);
+const departments= ref([]);
+const entities = ref([]);
 
 const loadedData = () => {
 isLoaded.value = false;
@@ -102,33 +113,52 @@ isLoaded.value = false;
 };
 
 const closeModal = () => {
-showModal.value = false;
-showDetail.value = false;
+  showModal.value = false;
+  showDetail.value = false;
+  isInstructor.value = false;
 };
 const selectedEvaluatee = async (id) => {
-showModal.value = true;
-evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
-console.log(evaluateeInfo.value);
-showDetail.value = true;
+  showModal.value = true;
+  evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
+  if(evaluateeInfo.value.entity.entity_name === 'instructor'){
+    isInstructor.value = true;
+  }
+
+  showDetail.value = true;
 };
 
+const handleEntity = (val)=>{
+  entity.value = val;
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluation"
+  );
+
+}
+
 const handleSelectedDepartment = (departmentName) => {
-selectDepartment.value = departmentName;
-evaluatees.value = evaluateeStore.filterEvaluatees(
-  selectTypeJob.value,
-  departmentName,
-  "evaluatees"
-);
+  selectDepartment.value = departmentName;
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluation"
+  );
 };
 
 const handleJobTypeSelected = (val) => {
-selectTypeJob.value = val;
-evaluatees.value = evaluateeStore.filterEvaluatees(
-  selectTypeJob.value,
-  selectDepartment.value,
-  "evaluatees"
-);
+  selectTypeJob.value = val;
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluation"
+  );
 };
+
+
 
 const filteredEvaluatees = computed(() => {
 if (!searchBar.value) {
@@ -140,13 +170,30 @@ return evaluatees.value.filter((data) =>
 );
 });
 
-onMounted(async () => {
+onBeforeMount(async () => {
+  if(!localStorage.getItem('entities')){
+    await entityStore.fetchAllEntity();
+  }
+  entities.value = entityStore.entities;
+if(!localStorage.getItem("departments")){
+  await departmentStore.getDepartments();
+}
+departments.value = departmentStore.departments;
 if (!localStorage.getItem("allEvaluatees")) {
   await evaluateeStore.fetchAllEvaluatees();
   showEvaluatee.value = true;
 }
-evaluatees.value = evaluateeStore.allEvaluatees;
+evaluatees.value =evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluatees"
+  );;
+
 showEvaluatee.value = true;
+
+
+
 loadedData();
 });
 </script>

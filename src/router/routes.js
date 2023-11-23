@@ -15,10 +15,9 @@ const routes = [
           guest:true
         },
         component: Login,
-        alias:'/'
       },
       {
-      path: '/dashboard',
+      path: '/',
       name: 'dashboard',
       component: Dashboard,
       meta:{

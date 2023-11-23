@@ -59,6 +59,9 @@
           </div>
         </div>
       </div>
+      <div v-if="isNoData">
+          <h1>You have not rated yet</h1>
+      </div>
     </div>
     <FooterCard />
   </div>
@@ -77,16 +80,21 @@ const userStore = useAuthStore();
 const drawer = useDrawerStore();
 const evaluateeStore = useEvaluateeStore();
 const showProfileCard = ref(false);
-
+const isNoData = ref(false);
 const { user, errors } = userStore;
 
 onMounted(async () => {
   await evaluateeStore.fetchEvaluateesToRate(user.id_number);
   evaluatees.value = evaluateeStore.isRatedEvaluatees(true);
+
   console.log(evaluatees.value.length);
   console.log(evaluatees.value);
   if (evaluatees.value.length > 0) {
+      showProfileCard.value = true;
+      isNoData.value = false;
+  }else{
     showProfileCard.value = true;
+    isNoData.value = true;
   }
 });
 </script>
