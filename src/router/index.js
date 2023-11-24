@@ -11,6 +11,7 @@ router.beforeEach(async (to,from)=>{
     top: 0,
     behavior: 'smooth'
   });
+  
   const store = useAuthStore();
     if(to.meta.auth && !store.isLoggedIn){
       return{

@@ -51,13 +51,18 @@
         </div>
 </template>
 <script setup>
-import { useRouter } from "vue-router";
+import {onMounted } from 'vue';
 import { useAuthStore } from "../../stores/auth";
 import { useDrawerStore } from '../../stores/drawerStore';
 import FooterCard from '../../components/FooterCard.vue'
-
+const store = useAuthStore()
 
 const drawer = useDrawerStore()
+
+
+onMounted(()=>{
+    console.log(store.user)
+})
 </script>
 
 <style scoped>

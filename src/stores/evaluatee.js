@@ -1,7 +1,7 @@
 import {  defineStore } from "pinia";
 import { ref, watch } from "vue";
-import { getAllEvaluatees,getEvaluateesToRate,getEvaluateeInfo,deleteEvaluatee} from "../http/evaluatee-api"
-
+import { getAllEvaluatees,getEvaluateesToRate,getEvaluateeInfo,deleteEvaluatee , storeEvaluatee} from "../http/evaluatee-api"
+import { csrfCookie } from "../http/auth-api"
 
 export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const status = ref([]);
@@ -24,8 +24,10 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
             allEvaluatees.value = data
             errors.value = []
         }catch(e){
+
             allEvaluatees.value = []
             errors.value = e.response
+            console.log(errors.value)
         }
     }
     
@@ -80,31 +82,27 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         return evaluateesToRate.value.filter(evaluatee => evaluatee.pivot.is_done === 1)
       }
 
-      const removeEvaluate = async(userId) => {
+    const removeEvaluate = async(userId) => {
         const {data,status} = await deleteEvaluatee(userId);
         console.log({data,status})
-      }
+    }
 
-      const filterJobType = (evaluateesId,val,routePath = null)=>{
-        if(routePath == 'evaluations'){
-            return evaluateesToRate.value.map(evaluatee =>{
-                if(evaluateesId.includes(evaluatee.id) && evaluatee.job_type === val){
-                    return evaluatee;
-                }
-            });
+    const saveEvaluatee = async (val)=>{
+        const value = {
+            name: val.name,
+            entity_id : val.entity_id,
+            job_type : val.job_type,
         }
-      }
+        const {data,status} = await storeEvaluatee(value)
+        console.log(data,status)        
+        if(status === 200){
+            return res.data.message
+        }
 
-      const updateEvaluateeToRate = (id)=>{
-        evaluateesToRate.value =  evaluateesToRate.value.map(evaluatee=>{
-            if(evaluatee.id == id){
-                evaluatee.pivot.is_done = 1;
-            }
-        })
-      }
+    }
 
     return {
-        filterJobType,
+        saveEvaluatee,
         fetchAllEvaluatees,
         allEvaluatees,
         filterEvaluatees, 

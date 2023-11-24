@@ -38,14 +38,21 @@
               <ul class="font-medium flex flex-col md:p-0  border border-gray-100 rounded-lg bg-gray-50 
                 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-200 dark:bg-gray-800 md:dark:bg-gray-900
                  dark:border-gray-700">
-                <li>
-                  <div class="selectTags pl-2 pb-2">
-                    <SelectDepartment
+                 <li>
+                  <div class="selectTags pl-2 pb-2"  v-if="entity == 'instructor'">
+                    <SelectDepartment 
+                    :departments="departments"
                       :selectDepartment="selectDepartment"
                       @handleSelectedDepartment="handleSelectedDepartment"
                     />
                   </div>
                 </li>
+                <li>
+                  <div class="selectTags pl-2 pb-2">
+                    <SelectEntity :entities="entities" :entity="entity" @handleSelect="handleSelectEntity"/>        
+                  </div>
+                </li>
+  
                 <li>
                   <div class="selectTags pb-2">
                     <SelectJobType
@@ -126,7 +133,7 @@
           @close-modal="closeModal"
           class="modal-box"
         />
-        <CreateModal :addOpen="crudModal.modalAdd" @addNotOpen="addNotOpen"/>
+        <CreateModal :departments="departments" :entities="entities"  :showCreateModal="crudModal.modalAdd" @addNotOpen="addNotOpen" @handleCreateClick="handleCreateClick"/>
         <EditModal :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen"/>
         <DeleteModal :deleteOpen="crudModal.modalDelete" @deleteNotOpen="deleteNotOpen"/>
       </div>
@@ -139,9 +146,12 @@
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { useDrawerStore } from '../../stores/drawerStore';
 import { useNavarStore } from '../../stores/navarStore';
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed ,onBeforeMount} from "vue";
 import { userModalStore } from '../../stores/modalStore'
+import { useDepartmentStore } from "../../stores/department";
+import { useEntityStore } from "../../stores/entity";
 import EvaluateeListTable from "../../components/EvaluateeListTable.vue";
+import SelectEntity from "../../components/SelectEntity.vue";
 import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
 import ModalCard from "../../components/ModalCard.vue";
@@ -150,6 +160,8 @@ import EditModal from '../../components/EditModal.vue';
 import DeleteModal from '../../components/DeleteModal.vue';
 import FooterCard from '../../components/FooterCard.vue';
 
+const entityStore = useEntityStore()
+const departmentStore = useDepartmentStore();
 const crudModal = userModalStore();
 const navStore = useNavarStore();
 const drawer = useDrawerStore();
@@ -158,7 +170,7 @@ const evaluateeStore = useEvaluateeStore();
 const evaluatees = ref([]);
 const isNoData = ref(true);
 const selectDepartment = ref("All");
-const selectTypeJob = ref("Both");
+const selectTypeJob = ref("All");
 const showModal = ref(false);
 const showDetail = ref(false);
 const evaluateeInfo = ref([]);
@@ -166,6 +178,10 @@ const actionSelected = ref("");
 const pageSize = ref("10");
 const currentPage = ref(1);
 const isInstructor = ref(false);
+const entity = ref("All");
+const departments= ref([]);
+const entities = ref([]);
+
 
 const displayPageRange = computed(() => {
     const rangeStart = Math.max(currentPage.value - 2, 1);
@@ -240,6 +256,7 @@ const handleActionClick = (id, action) => {
     crudModal.modalDelete = true;
   }
 };
+
 const filteredEvaluatees = computed(() => {
   if (!searchBar.value) {
     return paginatedData.value;
@@ -250,30 +267,75 @@ const filteredEvaluatees = computed(() => {
   );
 });
 
+const handleSelectEntity = (val)=>{
+  entity.value = val;
+  if(val === 'instructor'){
+    isInstructor.value = true
+  }
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluatee-list"
+  );
+
+}
+
 const handleSelectedDepartment = (departmentName) => {
   selectDepartment.value = departmentName;
   evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
     selectTypeJob.value,
-    departmentName,
-    "evaluatees"
+    "evaluatee-list"
   );
 };
 
 const handleJobTypeSelected = (val) => {
   selectTypeJob.value = val;
   evaluatees.value = evaluateeStore.filterEvaluatees(
-    selectTypeJob.value,
+    entity.value,
     selectDepartment.value,
-    "evaluatees"
+    selectTypeJob.value,
+    "evaluatee-list"
   );
 };
 
+const handleCreateClick = async (val) => {
+ const res =  await evaluateeStore.saveEvaluatee(val)
+ alert(res)
+}
+
+onBeforeMount(async () => {
+  if(!localStorage.getItem('entities')){
+    await entityStore.fetchAllEntity();
+  }
+  entities.value = entityStore.entities;
+if(!localStorage.getItem("departments")){
+  await departmentStore.getDepartments();
+}
+departments.value = departmentStore.departments;
+
+
+});
 onMounted(async () => {
   await evaluateeStore.fetchAllEvaluatees();
   if (evaluateeStore.errors.length == 0) {
-    evaluatees.value = evaluateeStore.allEvaluatees;
+    evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluatees"
+  );
     isNoData.value = false;
   }
+
+
+  // await evaluateeStore.saveEvaluatee({
+  //   name:'test',
+  //   job_type:1,
+  //   entity_id:1,
+  // });
 });
 </script>
 

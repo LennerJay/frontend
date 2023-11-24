@@ -8,8 +8,8 @@
       class="focus:outline-none rounded-2xl text-black text-center"
     >
       <option value="All">All</option>
-      <option value="1">Part Time</option>
-      <option value="0">Full Time</option>
+      <option value="0">Part Time</option>
+      <option value="1">Full Time</option>
     </select>
   </div>
 </template>

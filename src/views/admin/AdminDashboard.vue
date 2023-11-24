@@ -163,14 +163,15 @@ const dashboardStore = useDashboardStore()
 const res = ref([]);
 const store = useAuthStore()
 
-console.log(store.isLoggedIn)
-console.log(store.isAdminStaff)
+// console.log(store.isLoggedIn)
+// console.log(store.isAdminStaff)
 
 
 onMounted(async()=>{
     const data = await dashboardStore.fetchAdminDashboardData()
     res.value = dashboardStore.adminData
     console.log(res.value)
+    
 
 })
 

@@ -14,3 +14,5 @@ export const getUserInfo = () => api.get('/api/v1/users/user-info')
 
 export const test = () => api.get('/api/test')
 
+
+export const testCreateApi = (data)=> api.post('/api/v1/users',data)

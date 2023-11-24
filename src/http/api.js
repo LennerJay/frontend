@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 axios.defaults.withCredentials = true;
 const api = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL
@@ -12,8 +13,20 @@ api.interceptors.request.use((config) => {
     }
     return config;
 }, (error) => {
+    // console.log(error)
     return Promise.reject(error);
 });
+// api.interceptors.response.use((response) => {
+//     // console.log(response)
+//     return response;
+// }, (error) => {
+//     // console.log(error.response)
+//     return Promise.reject(error);
+// });
+
+
+
+
 
 
 export default api

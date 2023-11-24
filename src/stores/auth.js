@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref,watch } from 'vue';
-import {  csrfCookie, login, logout, getUser,getUserInfo ,test} from '../http/auth-api';
+import {  csrfCookie, login, logout, getUser,getUserInfo ,test,testCreateApi} from '../http/auth-api';
 
 
 export const useAuthStore = defineStore('authStore', ()=>{
@@ -45,13 +45,14 @@ export const useAuthStore = defineStore('authStore', ()=>{
               user.value = res.data.user ;
               isAdminStaff.value = user.value.role.name ==='admin'
             }
+            console.log(res)
         } catch (error) {
-          //  if(error.response.status == 422){
-          //   errors.value =  error.response.data.errors
-          //  }else{
-          //   errors.value =  error.response
-          //  }
-          //  console.log(errors.value)
+           if(error.response.status == 422){
+            errors.value =  error.response.data.errors
+           }else{
+            errors.value =  error.response
+           }
+           console.log(errors.value)
         }
 
     };
@@ -59,6 +60,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
 
 
     const handleLogout = async() => {
+        // csrfCookie()
         await logout()
         user.value = null
         isAdminStaff.value = null
@@ -76,7 +78,13 @@ export const useAuthStore = defineStore('authStore', ()=>{
       const {data}  = await test();
       return data;  
     }
+
+    const testCreate = async(val)=>{
+      const res = await testCreateApi(val);
+      console.log(res);
+    }
     return{
+      testCreate,
       testApi,
       fetchUserInfo,
       user, 

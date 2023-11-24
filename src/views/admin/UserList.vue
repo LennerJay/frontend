@@ -214,7 +214,7 @@ const handleActionClicked = (id, action) => {
 onMounted(async () => {
   await userStore.fetchAllUsers();
   if (userStore.errors.length == 0) {
-    users.value = userStore.users.filter(user => user.roles[0].name == "student");
+    users.value = userStore.users.filter(user => user.role.name == "student");
     isNoData.value = false;
     isStudent.value = true;
   }

@@ -12,7 +12,7 @@
             <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2">Details</h2>
             <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
                 <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name.split(' ').slice(0, 2).join(' ') }}</span>
-                <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Fulltime':'Part Time' }}</span>
+                <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Part time':'Full Time' }}</span>
                 <span>Personnel Type: {{ evaluateeInfo.entity.entity_name }}</span>
                 <span v-if="isInstructor"><i class="bi bi-bank2 mr-1"></i>Department : {{ capitalizeFirstLetter(evaluateeInfo.departments[0].department.split('-')[0]) }}</span>
               </div>

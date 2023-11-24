@@ -170,20 +170,20 @@ const selectEvaluatee = async (id) => {
 
 const handleBackButton = async() => {
   if(selectedRatings.value.length > 0) {
-      if(confirm('Changes you made may not be saved.') == true){
-        clearLocalStorage();
-        name.value = "";
-        showProfileCards.value = true;
-        showProfileCard.value = false
-        if(evaluatees.value.length == 0) {
-            if(!user.value.id_numbe  ){
-              await userStore.fetchUser();
-              user.value = userStore.user
-            }
-            await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
-            evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
-        }
-        showProfileCard.value = true;
+    if(confirm('Changes you made may not be saved.') == true){
+      clearLocalStorage();
+      name.value = "";
+      showProfileCards.value = true;
+      showProfileCard.value = false
+      if(evaluatees.value.length == 0) {
+          if(!user.value.id_numbe  ){
+            await userStore.fetchUser();
+            user.value = userStore.user
+          }
+          await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
+          evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
+      }
+      showProfileCard.value = true;
     }
   }else{
     localStorage.removeItem("selectedEvaluatee");

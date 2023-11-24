@@ -1,8 +1,8 @@
 <template>
       <!-- Modal container -->
-    <div v-if="addOpen" class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman">
+    <div v-if="showCreateModal" class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman">
         <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
-            <button @click="isNotOpen" id="close-btn">
+            <button @click="handleClose" id="close-btn">
                 <i class="bi bi-x-lg"></i>
                 <span></span>
             </button>
@@ -12,32 +12,43 @@
             <!-- Modal body -->
             <div class="mb-4">
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">First Name</label>
-                    <input  class="border rounded w-full py-2 px-3" id="firstName" type="text" placeholder="Enter first name">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">Full Name</label>
+                    <input v-model="name" class="border rounded w-full py-2 px-3" id="firstName" type="text" placeholder="Enter Full name">
+                    <p v-if="errors.name">{{ errors.name }}</p>
                 </div>
-                    
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">Last Name</label>
-                    <input class="border rounded w-full py-2 px-3" id="lastName" type="text" placeholder="Enter last name">
-                </div>
-                    
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="middleName">Middle Name</label>
-                    <input class="border rounded w-full py-2 px-3" id="middleName" type="text" placeholder="Enter middle name">
-                </div>
-                    
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Gender</label>
-                    <select class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Shift</label>
+                    <select v-model="shift" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                        <option value=0>Part Time</option>
+                        <option value=1>Full Time</option>
                     </select>
                 </div>
+                <div class="mb-4 flex">
+                   <div class="mr-10">
+                      <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Personal Type</label>
+                      <select v-model="personelType" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                         <option v-for="entity in entities" :value="entity.id">{{ entity.entity_name }}</option>
+                      </select>
+                   </div>
+                   <div v-if="personelType == 1">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Department</label>
+                    <select v-model="department" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                        <option v-for="department in departments" :value="department.id">{{ department.department }}</option>
+                    </select>
+                   </div>
+                </div>
+            </div>
+
+            <div v-if="personelType == 1">
+             <button @click="handleClickAdd" class="g-blue-500 hover:bg-blue-500 bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Class</button>
+              <div v-if="addClass">
+                test
+              
+              </div>
             </div>
             <!-- Modal footer -->
             <div class="flex justify-end">
-                <button class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button @click="handleClickCreate" class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Create
                 </button>
             </div>
@@ -46,17 +57,58 @@
 </template>
 
 <script setup>
+import {ref} from 'vue'
 import { userModalStore } from '../stores/modalStore';
 
+const errors = ref({})
+const name = ref('')
 const createModal = userModalStore();
+const shift = ref(0)
+const department = ref(props.departments[0].id);
+const personelType = ref(props.entities[0].id)
+const addClass =ref(false)
+
 const { emit } = createModal;
 const props = defineProps([
-    'addOpen'
+    'showCreateModal',
+    'entities',
+    'departments',
+    
 ]);
-const emits = defineEmits(['addNotOpen']);
+const emits = defineEmits(['addNotOpen','handleCreateClick']);
 
-const isNotOpen = () => {
+const handleClose = () => {
+  //  shift.value = ref(0)
+  // department.value = ref(props.departments[0].id);
+  // personelType.value = ref(props.entities[0].id)
   emits('addNotOpen');
+}
+
+const handleClickAdd= ()=>{
+  addClass.value = true
+}
+
+
+const handleClickCreate = ()=>{
+  if(name.value !== ''){
+    // console.log(props.departments)
+    // console.log(props.entities)
+    // console.log(shift.value)
+    // console.log(personelType.value)
+    // console.log(name.value)
+    errors.value= {}
+    emits('handleCreateClick',{
+      name:name.value,
+      entity_id:personelType.value,
+      job_type: shift.value
+    })
+  }else{
+    errors.value.name = 'name is required'
+    console.log(errors.value)
+  }
+
+
+
 }
 </script>
 <style scoped>

@@ -19,8 +19,8 @@
       </div>
       <div class="selectTags flex items-center">
         <div>
-          <SelectEntity :entities="entities" :entity="entity" @handleSelect="handleEntity"/>        
-          </div>
+          <SelectEntity :entities="entities" :entity="entity" @handleSelect="handleSelectEntity"/>        
+        </div>
         <div v-if="entity == 'instructor'">
           <SelectDepartment
           :departments="departments"
@@ -127,7 +127,7 @@ const selectedEvaluatee = async (id) => {
   showDetail.value = true;
 };
 
-const handleEntity = (val)=>{
+const handleSelectEntity = (val)=>{
   entity.value = val;
   evaluatees.value = evaluateeStore.filterEvaluatees(
     entity.value,

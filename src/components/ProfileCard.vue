@@ -16,7 +16,7 @@
               </div>
               <div class="text-[15px] ml-2 pb-2 mt-2 md:w-52 rounded-2xl h-6
                 bg-sky-950 text-white details">
-                <span> {{ evaluatee.job_type == 0 ? 'Full Time' : 'Part Time' }}</span>
+                <span> {{ evaluatee.job_type == 0 ? 'Part Time' : 'Full Time' }}</span>
               </div>               
             </div>
       </div>
