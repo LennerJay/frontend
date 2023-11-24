@@ -38,14 +38,58 @@
                    </div>
                 </div>
             </div>
-
-            <div v-if="personelType == 1">
-             <button @click="handleClickAdd" class="g-blue-500 hover:bg-blue-500 bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Class</button>
-              <div v-if="addClass">
-                test
-              
+            <div class="mb-4 flex" v-if="personelType == 1">
+              <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Subject</label>
+                <select v-model="subject" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                    <option v-for="subject in subjects" :value="subject.id">{{ subject.name }}</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Section & Year</label>
+                <select v-model="sectionYear" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                    <option v-for="sectionYear in sectionYears" :value="sectionYear.id">{{ sectionYear.year_section }}</option>
+                </select>
               </div>
             </div>
+            <div class="mb-4 flex" v-if="personelType == 1">
+              <div>
+                <label class=" text-gray-700 text-sm font-bold mb-2" for="firstName">Time</label>
+                <input v-model="time" class="border rounded w-full py-2 px-3" id="firstName" type="text" placeholder="Eg. 1:00-2:30 PM">
+                <p v-if="timeError">{{ timeError }}</p>
+              </div>
+              <div>
+                <label class=" text-gray-700 text-sm font-bold mb-2" for="firstName">Schedule</label>
+                <input v-model="schedule" class="border rounded w-full py-2 px-3" id="firstName" type="text" placeholder="Eg. MWF, TTH, SAT">
+                <p v-if="sYError">{{ sYError }}</p>
+              </div>
+              
+             <button @click="addClassBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Add Class</button>
+            </div>
+            <p v-if="dataExist">{{ dataExist }}</p>
+            <table v-if="showTable">
+              <thead>
+                <th>Subject</th>
+                <th>Sections</th>
+                <th>Schedule</th>
+                <th>Time</th>
+                <th>Action</th>
+              </thead>
+              <tbody v-for="(klass,klassIndex) in classes" :key="klassIndex">
+                <tr v-for="(sched,schedIndex) in klass.schedules ">
+                  
+                  <td v-if="schedIndex == 0" :rowspan="klass.schedules.length">{{ klass.subject.name }}</td>
+                  <td>{{ sched.sectionYear.year_section }}</td>
+                  <td>{{ sched.day }}</td>
+                  <td>{{ sched.time }}</td>
+                  <td>
+                    <button @click="editData(klass.subject.id,sched.sectionYear.id,sched.day,sched.time,klassIndex,schedIndex)">Edit</button>
+                    <button @click="removeRowData(klassIndex,schedIndex)">Remove</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p v-if="errors.class">{{ errors.class }}</p>
             <!-- Modal footer -->
             <div class="flex justify-end">
                 <button @click="handleClickCreate" class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -58,50 +102,118 @@
 
 <script setup>
 import {ref} from 'vue'
-import { userModalStore } from '../stores/modalStore';
 
-const errors = ref({})
-const name = ref('')
-const createModal = userModalStore();
-const shift = ref(0)
+const timeError = ref('');
+const sYError = ref('');
+const dataExist = ref('');
+const errors = ref({});
+const name = ref('');
+const shift = ref(0);
 const department = ref(props.departments[0].id);
-const personelType = ref(props.entities[0].id)
-const addClass =ref(false)
-
-const { emit } = createModal;
+const personelType = ref(props.entities[0].id);
+const subject = ref(props.subjects[0].id);
+const sectionYear = ref(props.sectionYears[0].id);
+const time = ref('');
+const schedule = ref('');
+const showTable = ref(false);
+const classes = ref([]);
 const props = defineProps([
     'showCreateModal',
     'entities',
     'departments',
-    
+    'subjects',
+    'sectionYears'
 ]);
-const emits = defineEmits(['addNotOpen','handleCreateClick']);
+const emits = defineEmits(['handleCloseButton','handleCreateClick']);
 
 const handleClose = () => {
   //  shift.value = ref(0)
   // department.value = ref(props.departments[0].id);
   // personelType.value = ref(props.entities[0].id)
-  emits('addNotOpen');
+  emits('handleCloseButton');
 }
 
-const handleClickAdd= ()=>{
-  addClass.value = true
+const editData = (subjectId,sectionYearId,scheduleData,timeData,parentIndex,childIndex) => {
+  subject.value = subjectId
+  sectionYear.value = sectionYearId
+  schedule.value= scheduleData
+  time.value = timeData
+  removeRowData(parentIndex,childIndex)
 }
+
+const removeRowData = (parentIndex,childIndex) => {
+  console.log(parentIndex,childIndex)
+  classes.value[parentIndex].schedules.splice(childIndex,1)
+}
+
+const addClassBtn = ()=>{
+  errors.value.class = ''
+  let error = false
+  if(time.value == ''){
+    error = true
+    timeError.value = 'Please enter a time'
+  }
+  if(schedule.value == ''){
+    error = true
+    sYError.value = 'Please input the schedule'
+  }
+  if(!error){
+    sYError.value= ''
+    timeError.value =''
+    const findSY = props.sectionYears.find(sy => sy.id == sectionYear.value)
+    const index = classes.value.findIndex(klass => klass.subject.id == subject.value )
+    if(index != -1){// check if existing ang data
+        if(!classes.value[index].schedules.some(sched => sched.sectionYear.id == sectionYear.value)){
+          classes.value[index].schedules.push({
+                              sectionYear: findSY,
+                              day: schedule.value,
+                              time: time.value
+                            })
+                            dataExist.value = ''
+        }else{
+          dataExist.value = 'The data already exists'
+          console.log(dataExist.value)
+        }
+    }else{
+      const findSub =  props.subjects.find(sub => sub.id == subject.value)
+      classes.value.push({
+                        subject: findSub,
+                        schedules: [
+                          {
+                            sectionYear: findSY,
+                            day: schedule.value,
+                            time: time.value
+                          }
+                        ]
+                      })
+    }
+    showTable.value = true
+    console.log( classes.value)
+  }
+}
+
 
 
 const handleClickCreate = ()=>{
   if(name.value !== ''){
-    // console.log(props.departments)
-    // console.log(props.entities)
-    // console.log(shift.value)
-    // console.log(personelType.value)
-    // console.log(name.value)
     errors.value= {}
-    emits('handleCreateClick',{
+    const val = {
       name:name.value,
       entity_id:personelType.value,
       job_type: shift.value
-    })
+    }
+    if(personelType.value == 1 && classes.value.length != 0){
+      errors.value= {}
+      val.classes = classes.value
+    }else{
+      errors.value.class = 'Please Add a Class'
+      console.log(errors.value.class)
+    }
+
+    if(errors.value.length != 0){
+      emits('handleCreateClick',val)
+    }
+ 
   }else{
     errors.value.name = 'name is required'
     console.log(errors.value)

@@ -156,8 +156,15 @@ import { useDrawerStore } from '../../stores/drawerStore';
 import { ref,onMounted } from 'vue';
 import FooterCard from '../../components/FooterCard.vue'
 import { useAuthStore } from "../../stores/auth";
+import { useDepartmentStore } from "../../stores/department";
+import { useEntityStore } from "../../stores/entity";
+import { useSubjectStore } from "../../stores/subject";
+import { useSectionYearStore } from "../../stores/sectionYear"
 
-
+const subjectStore = useSubjectStore()
+const sectionYearStore = useSectionYearStore()
+const entityStore = useEntityStore()
+const departmentStore = useDepartmentStore();
 const drawer = useDrawerStore()
 const dashboardStore = useDashboardStore()
 const res = ref([]);
@@ -171,8 +178,21 @@ onMounted(async()=>{
     const data = await dashboardStore.fetchAdminDashboardData()
     res.value = dashboardStore.adminData
     console.log(res.value)
+    if(!localStorage.getItem('departments')){
+        departmentStore.getDepartments();
+    }
+    if(!localStorage.getItem('entities')){
+        entityStore.fetchAllEntity();
+    }
+    if(!localStorage.getItem('subjects')){
+        subjectStore.fetchAllSubjects()
+    }
+    if(!localStorage.getItem('sectionYears')){
+        sectionYearStore.fetchAllSectionYears()
+    }
 
-    
+
+
 })
 
 </script>

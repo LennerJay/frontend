@@ -3,17 +3,23 @@
     <div class="header py-6 text-white text-center bg-sky-950">
       <div class="font-bold p-1 text-[30px]">
         <span class="inline-block md:hidden pr-5" @click="drawer.toggle">
-          <i class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"></i>
-        </span>Evaluatee List
+          <i
+            class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"
+          ></i> </span
+        >Evaluatee List
       </div>
     </div>
     <div class="card nav">
       <div class="flex flex-col min-h-[43.2rem]">
         <!--navar section -->
         <nav class="bg-gray-200 border-gray-200 dark:bg-gray-900 pb-2">
-          <div class="max-w-full flex flex-wrap items-center justify-between mx-auto pt-4 pr-4">
+          <div
+            class="max-w-full flex flex-wrap items-center justify-between mx-auto pt-4 pr-4"
+          >
             <div class="flex items-center space-x-3 rtl:space-x-reverse">
-              <label for="search" class="block whitespace-nowrap dark:text-white px-2">Search:</label>
+              <label for="search" class="block whitespace-nowrap dark:text-white px-2"
+                >Search:</label
+              >
               <input
                 type="text"
                 id="search"
@@ -21,27 +27,43 @@
                 v-model="searchBar"
               />
             </div>
-            <button data-collapse-toggle="navbar-default"
+            <button
+              data-collapse-toggle="navbar-default"
               @click="navStore.showNavar"
               type="button"
-              class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden 
-              hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700
-              dark:focus:ring-gray-600"
+              class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
               aria-controls="navbar-default"
-              aria-expanded="false">
+              aria-expanded="false"
+            >
               <span class="sr-only">Open main menu</span>
-              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+              <svg
+                class="w-5 h-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 17 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
               </svg>
             </button>
-            <div class="hidden w-full md:block md:w-auto" id="navbar-default" :class="{ 'visible': navStore.navarState }">
-              <ul class="font-medium flex flex-col md:p-0  border border-gray-100 rounded-lg bg-gray-50 
-                md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-200 dark:bg-gray-800 md:dark:bg-gray-900
-                 dark:border-gray-700">
-                 <li>
-                  <div class="selectTags pl-2 pb-2"  v-if="entity == 'instructor'">
-                    <SelectDepartment 
-                    :departments="departments"
+            <div
+              class="hidden w-full md:block md:w-auto"
+              id="navbar-default"
+              :class="{ visible: navStore.navarState }"
+            >
+              <ul
+                class="font-medium flex flex-col md:p-0 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-200 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+              >
+                <li>
+                  <div class="selectTags pl-2 pb-2" v-if="entity == 'instructor'">
+                    <SelectDepartment
+                      :departments="departments"
                       :selectDepartment="selectDepartment"
                       @handleSelectedDepartment="handleSelectedDepartment"
                     />
@@ -49,10 +71,14 @@
                 </li>
                 <li>
                   <div class="selectTags pl-2 pb-2">
-                    <SelectEntity :entities="entities" :entity="entity" @handleSelect="handleSelectEntity"/>        
+                    <SelectEntity
+                      :entities="entities"
+                      :entity="entity"
+                      @handleSelect="handleSelectEntity"
+                    />
                   </div>
                 </li>
-  
+
                 <li>
                   <div class="selectTags pb-2">
                     <SelectJobType
@@ -64,9 +90,9 @@
                 <li>
                   <div class="selectTags pl-2 pb-2">
                     <button
-                      class="bg-sky-950 hover:bg-blue-500 text-white hover:text-blue border
-                    hover:border-transparent rounded w-28"
-                      @click="crudModal.showCreateModal">
+                      class="bg-sky-950 hover:bg-blue-500 text-white hover:text-blue border hover:border-transparent rounded w-28"
+                      @click="crudModal.showCreateModal"
+                    >
                       Create User
                     </button>
                   </div>
@@ -76,7 +102,12 @@
           </div>
           <div>
             <label for="selectPages" class="px-2">Page Size:</label>
-            <select v-model="pageSize" @change="handlePageSizeChange" id="selectPages" class="rounded-2xl text-center">
+            <select
+              v-model="pageSize"
+              @change="handlePageSizeChange"
+              id="selectPages"
+              class="rounded-2xl text-center"
+            >
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="50">50</option>
@@ -95,37 +126,45 @@
         <!-- end table area -->
         <!-- Pagination -->
         <div class="bg-gray-200 px-2">
-            <span class="text-gray-600">{{ status }}</span>
-            <div class="mt-2 flex items-center pb-2">
-                <!-- Previous Button -->
-                <i class="bi bi-arrow-left-square cursor-pointer hover:bg-sky-950 hover:text-white transition duration-300"
-                  @click="gotoPage(currentPage - 1)"
-                  :class="{ '': currentPage > 1, 'mx-1 px-3 py-1': true }"
-                  v-if="currentPage > 1">
-                </i>
+          <span class="text-gray-600">{{ status }}</span>
+          <div class="mt-2 flex items-center pb-2">
+            <!-- Previous Button -->
+            <i
+              class="bi bi-arrow-left-square cursor-pointer hover:bg-sky-950 hover:text-white transition duration-300"
+              @click="gotoPage(currentPage - 1)"
+              :class="{ '': currentPage > 1, 'mx-1 px-3 py-1': true }"
+              v-if="currentPage > 1"
+            >
+            </i>
 
-                <!-- Page Numbers -->
-                <template v-for="pageNumber in displayPageRange">
-                    <span
-                        @click="gotoPage(pageNumber)"
-                        :class="{ 'border-2 border-gray-400': pageNumber === currentPage, 'px-3 py-1 cursor-pointer hover:bg-sky-950 hover:text-white': true }"
-                    >
-                        {{ pageNumber }}
-                    </span>
-                </template>
-                <!-- End Page Numbers -->
+            <!-- Page Numbers -->
+            <template v-for="pageNumber in displayPageRange">
+              <span
+                @click="gotoPage(pageNumber)"
+                :class="{
+                  'border-2 border-gray-400': pageNumber === currentPage,
+                  'px-3 py-1 cursor-pointer hover:bg-sky-950 hover:text-white': true,
+                }"
+              >
+                {{ pageNumber }}
+              </span>
+            </template>
+            <!-- End Page Numbers -->
 
-                <!-- Next Button -->
-                <i class="bi bi-arrow-right-square cursor-pointer hover:bg-sky-950 hover:text-white transition duration-300"
-                  @click="gotoPage(currentPage + 1)"
-                  :class="{ '': currentPage < totalPages, 'mx-1 px-3 py-1': true }"
-                  v-if="currentPage < totalPages">
-                </i>
-            </div>
+            <!-- Next Button -->
+            <i
+              class="bi bi-arrow-right-square cursor-pointer hover:bg-sky-950 hover:text-white transition duration-300"
+              @click="gotoPage(currentPage + 1)"
+              :class="{ '': currentPage < totalPages, 'mx-1 px-3 py-1': true }"
+              v-if="currentPage < totalPages"
+            >
+            </i>
+          </div>
         </div>
         <!-- End Pagination -->
         <!-- Modal area -->
-        <ModalCard v-if="showModal"
+        <ModalCard
+          v-if="showModal"
           :isInstructor="isInstructor"
           :showDetail="showDetail"
           :evaluateeInfo="evaluateeInfo"
@@ -133,34 +172,46 @@
           @close-modal="closeModal"
           class="modal-box"
         />
-        <CreateModal :departments="departments" :entities="entities"  :showCreateModal="crudModal.modalAdd" @handleCloseButton="handleCloseButton" @handleCreateClick="handleCreateClick"/>
-        <EditModal :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen"/>
-        <DeleteModal :deleteOpen="crudModal.modalDelete" @deleteNotOpen="deleteNotOpen"/>
+        <CreateModal
+          :subjects="subjects"
+          :sectionYears="sectionYears"
+          :departments="departments"
+          :entities="entities"
+          :showCreateModal="crudModal.modalAdd"
+          @handleCloseButton="handleCloseButton"
+          @handleCreateClick="handleCreateClick"
+        />
+        <EditModal :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen" />
+        <DeleteModal :deleteOpen="crudModal.modalDelete" @deleteNotOpen="deleteNotOpen" />
       </div>
     </div>
-    <FooterCard/>
+    <FooterCard />
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted, computed, onBeforeMount } from "vue";
 import { useEvaluateeStore } from "../../stores/evaluatee";
-import { useDrawerStore } from '../../stores/drawerStore';
-import { useNavarStore } from '../../stores/navarStore';
-import { ref, onMounted, computed ,onBeforeMount} from "vue";
-import { userModalStore } from '../../stores/modalStore'
+import { useDrawerStore } from "../../stores/drawerStore";
+import { useNavarStore } from "../../stores/navarStore";
+import { userModalStore } from "../../stores/modalStore";
 import { useDepartmentStore } from "../../stores/department";
 import { useEntityStore } from "../../stores/entity";
+import { useSubjectStore } from "../../stores/subject";
+import { useSectionYearStore } from "../../stores/sectionYear";
 import EvaluateeListTable from "../../components/EvaluateeListTable.vue";
 import SelectEntity from "../../components/SelectEntity.vue";
 import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
 import ModalCard from "../../components/ModalCard.vue";
-import CreateModal from '../../components/CreateModal.vue';
-import EditModal from '../../components/EditModal.vue';
-import DeleteModal from '../../components/DeleteModal.vue';
-import FooterCard from '../../components/FooterCard.vue';
+import CreateModal from "../../components/CreateModal.vue";
+import EditModal from "../../components/EditModal.vue";
+import DeleteModal from "../../components/DeleteModal.vue";
+import FooterCard from "../../components/FooterCard.vue";
 
-const entityStore = useEntityStore()
+const subjectStore = useSubjectStore();
+const sectionYearStore = useSectionYearStore();
+const entityStore = useEntityStore();
 const departmentStore = useDepartmentStore();
 const crudModal = userModalStore();
 const navStore = useNavarStore();
@@ -179,15 +230,19 @@ const pageSize = ref("10");
 const currentPage = ref(1);
 const isInstructor = ref(false);
 const entity = ref("All");
-const departments= ref([]);
+const departments = ref([]);
 const entities = ref([]);
-
+const sectionYears = ref([]);
+const subjects = ref([]);
 
 const displayPageRange = computed(() => {
-    const rangeStart = Math.max(currentPage.value - 2, 1);
-    const rangeEnd = Math.min(rangeStart + 4, totalPages.value);
+  const rangeStart = Math.max(currentPage.value - 2, 1);
+  const rangeEnd = Math.min(rangeStart + 4, totalPages.value);
 
-    return Array.from({ length: rangeEnd - rangeStart + 1 }, (_, index) => rangeStart + index);
+  return Array.from(
+    { length: rangeEnd - rangeStart + 1 },
+    (_, index) => rangeStart + index
+  );
 });
 
 const handlePageSizeChange = () => {
@@ -195,16 +250,16 @@ const handlePageSizeChange = () => {
 };
 
 const handleCloseButton = () => {
-  crudModal.modalAdd = false
-}
+  crudModal.modalAdd = false;
+};
 
 const editNotOpen = () => {
-  crudModal.modalEdit = false
-}
+  crudModal.modalEdit = false;
+};
 
 const deleteNotOpen = () => {
-  crudModal.modalDelete = false
-}
+  crudModal.modalDelete = false;
+};
 
 const paginatedData = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize.value;
@@ -236,9 +291,9 @@ const closeModal = () => {
 const selectedEvaluatee = async (id) => {
   showModal.value = true;
   evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
-  if(evaluateeInfo.value.entity.entity_name === 'instructor'){
+  if (evaluateeInfo.value.entity.entity_name === "instructor") {
     isInstructor.value = true;
-    console.log( isInstructor.value )
+    console.log(isInstructor.value);
   }
   showDetail.value = true;
 };
@@ -246,13 +301,11 @@ const selectedEvaluatee = async (id) => {
 const handleActionClick = (id, action) => {
   if (action == "view") {
     selectedEvaluatee(id);
-  }
-  else if (action == "edit"){
-    console.log('Edit Click!');
+  } else if (action == "edit") {
+    console.log("Edit Click!");
     crudModal.modalEdit = true;
-  }
-  else if (action == "delete") {
-    console.log('Delete Click!');
+  } else if (action == "delete") {
+    console.log("Delete Click!");
     crudModal.modalDelete = true;
   }
 };
@@ -267,10 +320,10 @@ const filteredEvaluatees = computed(() => {
   );
 });
 
-const handleSelectEntity = (val)=>{
+const handleSelectEntity = (val) => {
   entity.value = val;
-  if(val === 'instructor'){
-    isInstructor.value = true
+  if (val === "instructor") {
+    isInstructor.value = true;
   }
   evaluatees.value = evaluateeStore.filterEvaluatees(
     entity.value,
@@ -278,8 +331,7 @@ const handleSelectEntity = (val)=>{
     selectTypeJob.value,
     "evaluatee-list"
   );
-
-}
+};
 
 const handleSelectedDepartment = (departmentName) => {
   selectDepartment.value = departmentName;
@@ -302,48 +354,48 @@ const handleJobTypeSelected = (val) => {
 };
 
 const handleCreateClick = async (val) => {
- const res =  await evaluateeStore.saveEvaluatee(val)
- crudModal.modalAdd = false
- evaluatees.value = res.newEvaluatees
- alert(res.message)
-  
-}
+  // console.log(val)
+  const res = await evaluateeStore.saveEvaluatee(val);
+  // crudModal.modalAdd = false;
+  // evaluatees.value = evaluateeStore.allEvaluatees ;
+  // alert(res.message);
+};
 
 onBeforeMount(async () => {
-  if(!localStorage.getItem('entities')){
+  if (!localStorage.getItem("entities")) {
     await entityStore.fetchAllEntity();
   }
+  if (!localStorage.getItem("departments")) {
+    await departmentStore.getDepartments();
+  }
+  if (!localStorage.getItem("subjects")) {
+    subjectStore.fetchAllSubjects();
+  }
+  if (!localStorage.getItem("sectionYears")) {
+    sectionYearStore.fetchAllSectionYears();
+  }
+  subjects.value = subjectStore.subjects;
+  sectionYears.value = sectionYearStore.sectionYears;
   entities.value = entityStore.entities;
-if(!localStorage.getItem("departments")){
-  await departmentStore.getDepartments();
-}
-departments.value = departmentStore.departments;
-
-
+  departments.value = departmentStore.departments;
 });
 onMounted(async () => {
   await evaluateeStore.fetchAllEvaluatees();
+  entities.value = entityStore.entities;
   if (evaluateeStore.errors.length == 0) {
     evaluatees.value = evaluateeStore.filterEvaluatees(
-    entity.value,
-    selectDepartment.value,
-    selectTypeJob.value,
-    "evaluatees"
-  );
+      entity.value,
+      selectDepartment.value,
+      selectTypeJob.value,
+      "evaluatees"
+    );
     isNoData.value = false;
   }
-
-
-  // await evaluateeStore.saveEvaluatee({
-  //   name:'test',
-  //   job_type:1,
-  //   entity_id:1,
-  // });
 });
 </script>
 
 <style scoped>
 .visible {
-    display: block !important;
-  }
+  display: block !important;
+}
 </style>

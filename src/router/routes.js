@@ -25,7 +25,14 @@ const routes = [
         },
 
       },
-
+      {
+        path:'/evaluatees',
+        name: 'evaluatees',
+        component: ()=> import('../views/user/Evaluatees.vue'),
+        meta:{
+          auth:true
+        }
+      },
       {
         path: '/evaluation',
         name: 'evaluation',
@@ -87,21 +94,13 @@ const routes = [
         }
       },
       {
-        path:'/evaluatees',
-        name: 'evaluatees',
-        component: ()=> import('../views/user/Evaluatees.vue'),
-        meta:{
-          auth:true
-        }
-      },
-      {
         path:'/evaluatees-list',
         name: 'evaluatees-list',
         component: ()=> import('../views/admin/EvaluateesList.vue'),
         meta:{
           auth:true,
           admin:true
-        }
+        },
       },
       {
         path:'/:notFound(.*)',

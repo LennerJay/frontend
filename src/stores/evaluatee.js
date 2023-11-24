@@ -88,20 +88,26 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     }
 
     const saveEvaluatee = async (val)=>{
-        const value = {
-            name: val.name,
-            entity_id : val.entity_id,
-            job_type : val.job_type,
-        }
-        const {data,status} = await storeEvaluatee(value)
-        console.log(data,status)        
-        if(status === 200){
-            allEvaluatees.value = data.evaluatees
-            return {
-               message: data.message,
-              newEvaluatees: allEvaluatees.value
-            }
-        }
+      
+        // const value = {
+        //     name: val.name,
+        //     entity_id : val.entity_id,
+        //     job_type : val.job_type,
+        // }
+        const res =  await storeEvaluatee(val)
+        console.log(res)
+        // const {data,status} = await storeEvaluatee(value)
+        // console.log(data,status)        
+        // if(status === 200){
+        //     allEvaluatees.value = data.evaluatees
+        //     return {
+        //        message: data.message,
+        //     }
+        // }else{
+        //     return {
+        //         message: 'Something went wrong',
+        //      }
+        // }
 
     }
 
