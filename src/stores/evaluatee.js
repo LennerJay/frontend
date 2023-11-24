@@ -96,7 +96,11 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         const {data,status} = await storeEvaluatee(value)
         console.log(data,status)        
         if(status === 200){
-            return res.data.message
+            allEvaluatees.value = data.evaluatees
+            return {
+               message: data.message,
+              newEvaluatees: allEvaluatees.value
+            }
         }
 
     }

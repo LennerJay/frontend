@@ -133,7 +133,7 @@
           @close-modal="closeModal"
           class="modal-box"
         />
-        <CreateModal :departments="departments" :entities="entities"  :showCreateModal="crudModal.modalAdd" @addNotOpen="addNotOpen" @handleCreateClick="handleCreateClick"/>
+        <CreateModal :departments="departments" :entities="entities"  :showCreateModal="crudModal.modalAdd" @handleCloseButton="handleCloseButton" @handleCreateClick="handleCreateClick"/>
         <EditModal :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen"/>
         <DeleteModal :deleteOpen="crudModal.modalDelete" @deleteNotOpen="deleteNotOpen"/>
       </div>
@@ -194,7 +194,7 @@ const handlePageSizeChange = () => {
   currentPage.value = 1;
 };
 
-const addNotOpen = () => {
+const handleCloseButton = () => {
   crudModal.modalAdd = false
 }
 
@@ -303,7 +303,10 @@ const handleJobTypeSelected = (val) => {
 
 const handleCreateClick = async (val) => {
  const res =  await evaluateeStore.saveEvaluatee(val)
- alert(res)
+ crudModal.modalAdd = false
+ evaluatees.value = res.newEvaluatees
+ alert(res.message)
+  
 }
 
 onBeforeMount(async () => {

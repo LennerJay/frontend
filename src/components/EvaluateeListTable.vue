@@ -32,7 +32,7 @@
               <td class="md:py-3 md:px-6 text-center">
                 <span
                   class="bg-purple-200 text-purple-600 md:py-1 md:px-3 rounded-full text-xs "
-                  >{{ instructor.job_type == 0 ? "Full Time" : "Part Time" }}</span
+                  >{{ instructor.job_type == 0 ? "Part Time" : "Full Time" }}</span
                 >
               </td>
               <td class="py-3 px-6 text-center">

@@ -171,8 +171,8 @@ onMounted(async()=>{
     const data = await dashboardStore.fetchAdminDashboardData()
     res.value = dashboardStore.adminData
     console.log(res.value)
-    
 
+    
 })
 
 </script>
