@@ -31,8 +31,7 @@
               </td>
               <td class="md:py-3 md:px-6 text-center">
                 <span
-                  class="bg-purple-200 text-purple-600 md:py-1 md:px-3 rounded-full text-xs"
-                  :class="{fullTime: instructor.job_type == 0, partTime: instructor.job_type == 1}"
+                  class="bg-purple-200 text-purple-600 md:py-1 md:px-3 rounded-full text-xs "
                   >{{ instructor.job_type == 0 ? "Full Time" : "Part Time" }}</span
                 >
               </td>
@@ -89,7 +88,7 @@
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                    > 
+                    >
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -139,13 +138,5 @@ onMounted(() => {});
   background-color: rgb(8, 47, 73, 1);
   border-radius: 8px;
   width: 4px;
-}
-.fullTime {
-  color: rgb(133, 33, 226);
-  background-color: rgb(233 213 255 1);
-}
-.partTime {
-  color: rgb(51, 78, 234);
-  background-color: rgb(213, 236, 255);
 }
 </style>

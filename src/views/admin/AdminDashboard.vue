@@ -1,12 +1,13 @@
 <template>
     <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full dashboard-main-header">
         <div class="header pl-2 py-6 text-white text-center bg-sky-950">
+            <h2 class="dashboard">DASHBOARD</h2>
             <div class="font-bold p-1 text-[30px] inline-block">
               <span class="md:hidden pr-5" @click="drawer.toggle">
                 <i class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"></i>
-              </span>DASHBOARD
+              </span>
+                <h1 class="header-name">Cordova Public College</h1>
             </div>
-            <h1 class="header-name">Cordova Public College</h1>
             <div class="empty">
                 <!-- Nothing goes here -->
             </div>
@@ -45,16 +46,16 @@
                     </div>
                 </div>
                 <!-- GRAPH SECTION -->
-                <div class="card-container mt-8 mr-8 grid gap-10 lg:grid-cols-2 sm-grid-cols-1 p-5 m-10">
-                    <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center md:h-96 h-72   
+                <div class="card-container mt-8 grid gap-10 lg:grid-cols-2 sm-grid-cols-1 p-5 m-10">
+                    <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center h-80
                     cursor-pointer border-2 border-indigo-200 bg-white
-                    hover:-translate-y-1 hover:scale-90 overflow-hidden" id="cards">
-                        <canvas ref="barChartRef" id="BarChart" height="500" class="pb-4 md:w-[800px] w-[500px]"></canvas>
+                    hover:-translate-y-1 hover:scale-90" id="cards">
+                        <h1>FIRST GRAPH!!!</h1>
                     </div>
-                    <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center md:h-80 h-72
+                    <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center h-80
                     cursor-pointer border-2 border-indigo-200 bg-white
-                    hover:-translate-y-1 hover:scale-90 overflow-hidden" id="cards">
-                        <canvas ref="pieChartRef" id="PieChart" height="400" class="pb-4 md:w-[800px] w-[500px]"></canvas>
+                    hover:-translate-y-1 hover:scale-90" id="cards">
+                        <h1>SECOND GRAPH!!!</h1>
                     </div>
                 </div>
                 <!-- CHAIRPERSON TABLE SECTION -->
@@ -152,78 +153,28 @@
 <script setup>
 import { useDashboardStore } from '../../stores/dashboard';
 import { useDrawerStore } from '../../stores/drawerStore';
-import { ref, onMounted } from 'vue';
-import Chart from 'chart.js/auto';
-import FooterCard from '../../components/FooterCard.vue';
+import { ref,onMounted } from 'vue';
+import FooterCard from '../../components/FooterCard.vue'
+import { useAuthStore } from "../../stores/auth";
 
-const drawer = useDrawerStore();
-const dashboardStore = useDashboardStore();
+
+const drawer = useDrawerStore()
+const dashboardStore = useDashboardStore()
 const res = ref([]);
-const barChartRef = ref(null);
-const pieChartRef = ref(null);
+const store = useAuthStore()
 
-onMounted(async () => {
-  const data = await dashboardStore.fetchAdminDashboardData();
-  res.value = dashboardStore.adminData;
+console.log(store.isLoggedIn)
+console.log(store.isAdminStaff)
 
-  barChartRef.value = new Chart(barChartRef.value, {
-    type: 'bar',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3], //data pila ka student each section ang mi evaluate
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
 
-  pieChartRef.value = new Chart(pieChartRef.value, {
-    type: 'doughnut',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: 'Graph of The Student Evaluated',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-                ],
-                hoverOffset: 6
-            }]
-        }
-    });
-});
+onMounted(async()=>{
+    const data = await dashboardStore.fetchAdminDashboardData()
+    res.value = dashboardStore.adminData
+    console.log(res.value)
+
+})
 
 </script>
-
 
 <style scoped>
     .dashboard-main-header {
