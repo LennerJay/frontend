@@ -54,14 +54,20 @@
 import {onMounted } from 'vue';
 import { useAuthStore } from "../../stores/auth";
 import { useDrawerStore } from '../../stores/drawerStore';
+import { useEntityStore } from "../../stores/entity";
+import { useDepartmentStore } from "../../stores/department";
 import FooterCard from '../../components/FooterCard.vue'
-const store = useAuthStore()
 
+
+const entityStore = useEntityStore()
+const departmentStore = useDepartmentStore()
+const store = useAuthStore()
 const drawer = useDrawerStore()
 
 
-onMounted(()=>{
-    console.log(store.user)
+onMounted(async()=>{
+    await entityStore.fetchAllEntity();
+    await departmentStore.getDepartments();
 })
 </script>
 

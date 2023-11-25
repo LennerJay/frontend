@@ -45,7 +45,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
               user.value = res.data.user ;
               isAdminStaff.value = user.value.role.name ==='admin'
             }
-            console.log(res)
+            // console.log(res)
         } catch (error) {
            if(error.response.status == 422){
             errors.value =  error.response.data.errors

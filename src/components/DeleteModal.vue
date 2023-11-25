@@ -11,37 +11,17 @@
           </div>
           <!-- Modal body -->
           <div class="mb-4">
-              <div>
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">First Name</label>
-                  <input  class="border rounded w-full py-2 px-3" id="firstName" type="text" placeholder="Enter first name">
-              </div>
-                  
-              <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">Last Name</label>
-                  <input class="border rounded w-full py-2 px-3" id="lastName" type="text" placeholder="Enter last name">
-              </div>
-                  
-              <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="middleName">Middle Name</label>
-                  <input class="border rounded w-full py-2 px-3" id="middleName" type="text" placeholder="Enter middle name">
-              </div>
-                  
-              <div class="mb-4">
-                  <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Gender</label>
-                  <select class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                  </select>
-              </div>
+                <h1>{{ evaluateeDetails.name }}</h1>
+              <h1>Note:</h1>
+              <p>All data from this {{ evaluateeDetails.entity.entity_name }} will also be deleted</p>
           </div>
           <!-- Modal footer -->
           <div class="flex justify-end space-x-4">
-              <button class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  Save
+              <button @click="isNotOpen" class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  cancel
               </button>
-              <button class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  Cancel
+              <button @click="handleDelete" class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Delete
               </button>
           </div>
       </div>
@@ -54,13 +34,19 @@ import { userModalStore } from '../stores/modalStore';
 const deleteModal = userModalStore();
 const { emit } = deleteModal;
 const props = defineProps([
-  'deleteOpen'
+  'deleteOpen',
+  'evaluateeDetails'
 ]);
-const emits = defineEmits(['deleteNotOpen']);
+const emits = defineEmits(['deleteNotOpen','handleDelete']);
 
 const isNotOpen = () => {
-emits('deleteNotOpen');
+    emits('deleteNotOpen');
 }
+
+const handleDelete = ()=>{
+    emits('handleDelete',props.evaluateeDetails.id)
+}
+
 </script>
 <style scoped>
 #close-btn {

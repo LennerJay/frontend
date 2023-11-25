@@ -6,6 +6,7 @@ import { csrfCookie } from "../http/auth-api"
 export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const status = ref([]);
     const errors = ref([]);
+    const savingErrors = ref([]);
     const allEvaluatees = ref([]);
     const allEvaluated = ref([]);
     const evaluateesToRate = ref({})
@@ -85,33 +86,29 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const removeEvaluate = async(userId) => {
         const {data,status} = await deleteEvaluatee(userId);
         console.log({data,status})
+        if(status == 200){
+            allEvaluatees.value = data.evaluatees
+            return data.message
+        }
+        return data.message
+
     }
 
     const saveEvaluatee = async (val)=>{
       
-        // const value = {
-        //     name: val.name,
-        //     entity_id : val.entity_id,
-        //     job_type : val.job_type,
-        // }
-        const res =  await storeEvaluatee(val)
-        console.log(res)
-        // const {data,status} = await storeEvaluatee(value)
-        // console.log(data,status)        
-        // if(status === 200){
-        //     allEvaluatees.value = data.evaluatees
-        //     return {
-        //        message: data.message,
-        //     }
-        // }else{
-        //     return {
-        //         message: 'Something went wrong',
-        //      }
-        // }
+        const {data,status} = await storeEvaluatee(val)
+        console.log(data,status)        
+        if(status === 200){
+            allEvaluatees.value = data.evaluatees
+            return data.message
+        }else{
+            return 'Something went wrong'
+        }
 
     }
 
     return {
+        savingErrors,
         saveEvaluatee,
         fetchAllEvaluatees,
         allEvaluatees,

@@ -1,10 +1,10 @@
 <template>
   <div class="flex  ml-2">
-    <label for="filter" class="block mr-2">Work Status:</label>
+    <label for="work-status" class="block mr-2">Work Status:</label>
     <select
       v-model="selectType"
       @change="handleTag"
-      id="filter"
+      id="work-status"
       class="focus:outline-none rounded-2xl text-black text-center"
     >
       <option value="All">All</option>

@@ -1,14 +1,14 @@
 <template>
   <div class="flex">
     <label
-      for="filter"
+      for="departments"
       class="block{{ isEvaluateeRoute ? 'text-white' : 'text-black' }} mr-2"
       >Departments:</label
     >
     <select
       v-model="selectDepartment"
       @change="handleTag"
-      id="filter"
+      id="departments"
       class="focus:outline-none rounded-2xl text-black text-center"
     >
       <option value="All">All</option>

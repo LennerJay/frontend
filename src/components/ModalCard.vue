@@ -94,7 +94,7 @@
 </div>
 </template>
 <script setup>
-import { ref, getCurrentInstance, onMounted, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useEvaluateeStore } from '../stores/evaluatee';
 import { useRoute } from 'vue-router';
 
@@ -106,11 +106,11 @@ const props = defineProps([
                 'selectedEvaluteeId',
                 'showDetail',
               ]);
-const { emit } = getCurrentInstance();
+const emits = defineEmits(['close-modal'])
 
 const closeModal = () => {
   // Emit an event to inform the parent component to close the modal
-  emit('close-modal');
+  emits('close-modal');
 };
 const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);

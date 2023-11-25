@@ -27,17 +27,17 @@ export const userModalStore = defineStore('modalStore', () => {
 
     const showCreateModal = () => {
       modalAdd.value = !modalAdd.value;
-      console.log('Show Clicked');
+      // console.log('Show Clicked');
     }
 
     const showEditModal = () => {
       modalEdit.value = !modalEdit.value;
-      console.log('Edit Clicked');
+      // console.log('Edit Clicked');
     }
 
     const showDeleteModal = () => {
       modalDelete.value = !modalDelete.value;
-      console.log('delete Clicked');
+      // console.log('delete Clicked');
     }
 
     return {

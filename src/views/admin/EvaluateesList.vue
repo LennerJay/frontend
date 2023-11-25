@@ -181,8 +181,8 @@
           @handleCloseButton="handleCloseButton"
           @handleCreateClick="handleCreateClick"
         />
-        <EditModal :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen" />
-        <DeleteModal :deleteOpen="crudModal.modalDelete" @deleteNotOpen="deleteNotOpen" />
+        <EditModal  :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen" />
+        <DeleteModal :evaluateeDetails="evaluateeDetails" :deleteOpen="crudModal.modalDelete" @deleteNotOpen="deleteNotOpen" @handleDelete="handleDeleteEvaluatee" />
       </div>
     </div>
     <FooterCard />
@@ -234,6 +234,14 @@ const departments = ref([]);
 const entities = ref([]);
 const sectionYears = ref([]);
 const subjects = ref([]);
+const evaluateeDetails = ref('');
+
+const handleDeleteEvaluatee = async(id)=>{
+  const res = await evaluateeStore.removeEvaluate(id);
+  alert(res)
+  evaluatees.value = evaluateeStore.allEvaluatees
+  deleteNotOpen()
+}
 
 const displayPageRange = computed(() => {
   const rangeStart = Math.max(currentPage.value - 2, 1);
@@ -291,6 +299,7 @@ const closeModal = () => {
 const selectedEvaluatee = async (id) => {
   showModal.value = true;
   evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
+  console.log(evaluateeInfo.value)
   if (evaluateeInfo.value.entity.entity_name === "instructor") {
     isInstructor.value = true;
     console.log(isInstructor.value);
@@ -299,13 +308,15 @@ const selectedEvaluatee = async (id) => {
 };
 
 const handleActionClick = (id, action) => {
+  const findEvaluatee = evaluatees.value.find( evaluatee => evaluatee.id === id )
   if (action == "view") {
     selectedEvaluatee(id);
   } else if (action == "edit") {
     console.log("Edit Click!");
     crudModal.modalEdit = true;
   } else if (action == "delete") {
-    console.log("Delete Click!");
+    evaluateeDetails.value = findEvaluatee
+    console.log(evaluateeDetails.value)
     crudModal.modalDelete = true;
   }
 };
@@ -354,11 +365,13 @@ const handleJobTypeSelected = (val) => {
 };
 
 const handleCreateClick = async (val) => {
-  // console.log(val)
+  console.log(val)
   const res = await evaluateeStore.saveEvaluatee(val);
-  // crudModal.modalAdd = false;
-  // evaluatees.value = evaluateeStore.allEvaluatees ;
-  // alert(res.message);
+  alert(res)
+    evaluatees.value = evaluateeStore.allEvaluatees ;
+  crudModal.modalAdd = false;
+
+ 
 };
 
 onBeforeMount(async () => {

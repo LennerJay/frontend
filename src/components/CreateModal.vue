@@ -12,27 +12,27 @@
             <!-- Modal body -->
             <div class="mb-4">
                 <div>
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">Full Name</label>
-                    <input v-model="name" class="border rounded w-full py-2 px-3" id="firstName" type="text" placeholder="Enter Full name">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="fullname">Full Name</label>
+                    <input v-model="name" class="border rounded w-full py-2 px-3" id="fullname" type="text" placeholder="Enter Full name">
                     <p v-if="errors.name">{{ errors.name }}</p>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Shift</label>
-                    <select v-model="shift" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="shift">Shift</label>
+                    <select v-model="shift" class="border rounded text-gray-700 w-full py-2 px-3" id="shift">
                         <option value=0>Part Time</option>
                         <option value=1>Full Time</option>
                     </select>
                 </div>
                 <div class="mb-4 flex">
                    <div class="mr-10">
-                      <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Personal Type</label>
-                      <select v-model="personelType" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                      <label class="block text-gray-700 text-sm font-bold mb-2" for="personal-type">Personal Type</label>
+                      <select v-model="personelType" class="border rounded text-gray-700 w-full py-2 px-3" id="personal-type">
                          <option v-for="entity in entities" :value="entity.id">{{ entity.entity_name }}</option>
                       </select>
                    </div>
                    <div v-if="personelType == 1">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Department</label>
-                    <select v-model="department" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="department">Department</label>
+                    <select v-model="department" class="border rounded text-gray-700 w-full py-2 px-3" id="department">
                         <option v-for="department in departments" :value="department.id">{{ department.department }}</option>
                     </select>
                    </div>
@@ -40,27 +40,27 @@
             </div>
             <div class="mb-4 flex" v-if="personelType == 1">
               <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Subject</label>
-                <select v-model="subject" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="subject">Subject</label>
+                <select v-model="subject" class="border rounded text-gray-700 w-full py-2 px-3" id="subject">
                     <option v-for="subject in subjects" :value="subject.id">{{ subject.name }}</option>
                 </select>
               </div>
               <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">Section & Year</label>
-                <select v-model="sectionYear" class="border rounded text-gray-700 w-full py-2 px-3" id="gender">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="section-year">Section & Year</label>
+                <select v-model="sectionYear" class="border rounded text-gray-700 w-full py-2 px-3" id="section-year">
                     <option v-for="sectionYear in sectionYears" :value="sectionYear.id">{{ sectionYear.year_section }}</option>
                 </select>
               </div>
             </div>
             <div class="mb-4 flex" v-if="personelType == 1">
               <div>
-                <label class=" text-gray-700 text-sm font-bold mb-2" for="firstName">Time</label>
-                <input v-model="time" class="border rounded w-full py-2 px-3" id="firstName" type="text" placeholder="Eg. 1:00-2:30 PM">
+                <label class=" text-gray-700 text-sm font-bold mb-2" for="time">Time</label>
+                <input v-model="time" class="border rounded w-full py-2 px-3" id="time" type="text" placeholder="Eg. 1:00-2:30 PM">
                 <p v-if="timeError">{{ timeError }}</p>
               </div>
               <div>
-                <label class=" text-gray-700 text-sm font-bold mb-2" for="firstName">Schedule</label>
-                <input v-model="schedule" class="border rounded w-full py-2 px-3" id="firstName" type="text" placeholder="Eg. MWF, TTH, SAT">
+                <label class=" text-gray-700 text-sm font-bold mb-2" for="day">Day</label>
+                <input v-model="day" class="border rounded w-full py-2 px-3" id="day" type="text" placeholder="Eg. MWF, TTH, SAT">
                 <p v-if="sYError">{{ sYError }}</p>
               </div>
               
@@ -89,7 +89,7 @@
                 </tr>
               </tbody>
             </table>
-            <p v-if="errors.class">{{ errors.class }}</p>
+            <p v-if="errors.class && personelType == 1">{{ errors.class }}</p>
             <!-- Modal footer -->
             <div class="flex justify-end">
                 <button @click="handleClickCreate" class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -102,7 +102,6 @@
 
 <script setup>
 import {ref} from 'vue'
-
 const timeError = ref('');
 const sYError = ref('');
 const dataExist = ref('');
@@ -114,7 +113,7 @@ const personelType = ref(props.entities[0].id);
 const subject = ref(props.subjects[0].id);
 const sectionYear = ref(props.sectionYears[0].id);
 const time = ref('');
-const schedule = ref('');
+const day = ref('');
 const showTable = ref(false);
 const classes = ref([]);
 const props = defineProps([
@@ -136,7 +135,7 @@ const handleClose = () => {
 const editData = (subjectId,sectionYearId,scheduleData,timeData,parentIndex,childIndex) => {
   subject.value = subjectId
   sectionYear.value = sectionYearId
-  schedule.value= scheduleData
+  day.value= scheduleData
   time.value = timeData
   removeRowData(parentIndex,childIndex)
 }
@@ -152,10 +151,14 @@ const addClassBtn = ()=>{
   if(time.value == ''){
     error = true
     timeError.value = 'Please enter a time'
+  }else{
+    timeError.value = ''
   }
-  if(schedule.value == ''){
+  if(day.value == ''){
     error = true
-    sYError.value = 'Please input the schedule'
+    sYError.value = 'Please input the day'
+  }else{
+    sYError.value = ''
   }
   if(!error){
     sYError.value= ''
@@ -166,7 +169,7 @@ const addClassBtn = ()=>{
         if(!classes.value[index].schedules.some(sched => sched.sectionYear.id == sectionYear.value)){
           classes.value[index].schedules.push({
                               sectionYear: findSY,
-                              day: schedule.value,
+                              day: day.value,
                               time: time.value
                             })
                             dataExist.value = ''
@@ -181,7 +184,7 @@ const addClassBtn = ()=>{
                         schedules: [
                           {
                             sectionYear: findSY,
-                            day: schedule.value,
+                            day: day.value,
                             time: time.value
                           }
                         ]
@@ -200,19 +203,29 @@ const handleClickCreate = ()=>{
     const val = {
       name:name.value,
       entity_id:personelType.value,
-      job_type: shift.value
+      job_type: shift.value,
+      department_id: department.value
     }
-    if(personelType.value == 1 && classes.value.length != 0){
+    if(personelType.value != 1 ){
+           name.value = ''
+      errors.value.class = ''
+      emits('handleCreateClick',val)
+    }else if(personelType.value == 1 && classes.value.length != 0){
       errors.value= {}
       val.classes = classes.value
+      name.value = ''
+      department.value = props.departments[0].id;
+      personelType.value = props.entities[0].id;
+      subject.value = props.subjects[0].id;
+      sectionYear.value = props.sectionYears[0].id;
+      classes.value = {}
+      showTable.value = false
+      emits('handleCreateClick',val)
     }else{
       errors.value.class = 'Please Add a Class'
       console.log(errors.value.class)
     }
 
-    if(errors.value.length != 0){
-      emits('handleCreateClick',val)
-    }
  
   }else{
     errors.value.name = 'name is required'

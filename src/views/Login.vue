@@ -43,7 +43,6 @@ const form = ref({
 
 const handleSubmit = async () =>{
     await handleLogin(form.value)
-    console.log(store.user)
         if(Object.keys(store.errors).length === 0){
             if(store.isLoggedIn){
                 if(store.isAdminStaff){

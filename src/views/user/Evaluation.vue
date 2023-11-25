@@ -155,17 +155,23 @@ const user= ref([]);
 const isDoneRating = ref(false);
 const showLoadingAnimations = ref(true);
 const selectEvaluatee = async (id) => {
+
   const evaluatee = evaluatees.value.find((obj) => obj.id === id);
   await questionaireStore.fetchQuestionaireForEvaluatee(evaluatee.entity.id);
   questionaire.value = questionaireStore.questionaireForEvaluatee;
-  selectedEvaluatee.value = evaluatee;
-  localStorage.setItem("selectedEvaluatee", JSON.stringify(evaluatee));
-  name.value = evaluatee.name;
-  showProfileCards.value = false;
-    window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+  if(questionaire.value){
+    selectedEvaluatee.value = evaluatee;
+    localStorage.setItem("selectedEvaluatee", JSON.stringify(evaluatee));
+    name.value = evaluatee.name;
+    showProfileCards.value = false;
+      window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }else{
+    alert('No questionaire for this instructor')
+  }
+
 };
 
 const handleBackButton = async() => {
