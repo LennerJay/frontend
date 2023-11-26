@@ -16,25 +16,28 @@
             <div class="mb-4">
                 <!-- Modal content header -->
                 <div class="mb-4 flex flex-col">
-                  <div class="grid gap-x-2 lg:grid-cols-2 sm-grid-cols-2 grid-cols-2">
+                  <div class="grid gap-x-2 lg:grid-cols-1 sm-grid-cols-1 grid-cols-1">
                     <div>
                       <label class="flex text-gray-700 text-sm font-bold mb-2" for="fullname">Full Name</label>
                       <input v-model="name" class="border rounded w-full py-2 px-3 md:h-10" id="fullname" type="text" placeholder="Enter Full name">
                       <p v-if="errors.name">{{ errors.name }}</p>
                     </div>
-                    <div>
-                      <label class="flex text-gray-700 text-sm font-bold mb-2" for="shift">Shift</label>
-                      <select v-model="shift" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10" id="shift">
+                    <div class="grid gap-x-2 lg:grid-cols-2 sm-grid-cols-2 grid-cols-2 pt-2">
+                      <div>
+                        <label class="flex text-gray-700 text-sm font-bold pb-1" for="shift">Shift</label>
+                        <select v-model="shift" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10" id="shift">
                           <option value=0>Part Time</option>
                           <option value=1>Full Time</option>
-                      </select>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="flex text-gray-700 text-sm font-bold pb-1" for="personal-type">Personal Type</label>
+                        <select v-model="personelType" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10" id="personal-type">
+                          <option v-for="entity in entities" :value="entity.id">{{ capitalizeFirstLetter(entity.entity_name) }}</option>
+                        </select>
+                      </div>                    
                     </div>
-                    <div class="pt-2">
-                      <label class="flex text-gray-700 text-sm font-bold pb-2" for="personal-type">Personal Type</label>
-                      <select v-model="personelType" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10" id="personal-type">
-                        <option v-for="entity in entities" :value="entity.id">{{ capitalizeFirstLetter(entity.entity_name) }}</option>
-                      </select>
-                    </div>
+                    
                   </div>            
                 </div>  
                 <!-- End modal content body -->           
