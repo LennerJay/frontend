@@ -1,12 +1,11 @@
 <template>
   <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full">
-    <div class="header py-6 text-white text-center bg-sky-950">
+    <div class="header md:py-6 md:pb-1 pb-2 text-white text-center bg-sky-900">
+      <span class="md:hidden flex pt-2 pl-2">
+        <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
+      </span> 
       <div class="font-bold p-1 text-[30px]">
-        <span class="inline-block md:hidden pr-5" @click="drawer.toggle">
-          <i
-            class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"
-          ></i> </span
-        >Evaluatee List
+        Evaluatee List
       </div>
     </div>
     <div class="card nav">

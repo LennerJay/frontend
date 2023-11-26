@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex md:pb-0 pb-2">
     <label
       for="entity"
       class="block{{ isEvaluateeRoute ? 'text-white' : 'text-black' }} mr-2"
@@ -10,7 +10,7 @@
       name="entity"
       id="entity"
       @change="$emit('handleSelect', entity)"
-      class="focus:outline-none rounded-2xl text-black text-center "
+      class="focus:outline-none md:w-44 h-6 text-center border text-black border-gray-300 rounded-md"
     >
       <option value="All">All</option>
       <option

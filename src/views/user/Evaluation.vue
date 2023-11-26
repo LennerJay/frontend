@@ -1,11 +1,13 @@
 <template>
-  <div class="md:ml-[250px] ml-0 font-serif px-0 w-full text-center">
-    <div class="header pl-2 pt-2 bg-sky-950 text-white text-center">
-      <div class="font-bold p-1 text-[20px]">
-        <span class="inline-block md:hidden" @click="drawer.toggle">
-          <i class="bi bi-filter-left px-5 p-1 bg-blue-700 rounded-md cursor-pointer"></i>
-        </span>
+  <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full text-center">
+    <div class="header pl-2 md:py-6 bg-sky-900 text-white text-center">
+      <span class="md:hidden flex pt-2">
+        <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
+      </span> 
+      <div class="font-bold p-1 text-[30px]">
         <h1 class="header-name">Evaluation for: {{ name }}</h1>
+      </div>
+      <div class="empty pb-4 md:pb-0">
       </div>
     </div>
     <div v-if="showProfileCards" class="min-h-[44rem] card overflow-x-auto">
@@ -383,8 +385,6 @@ onMounted(async () => {
 
 .header {
   background-color: #0c4a6e;
-  padding: 25px 15px;
-  font-family: Helvetica, Georgia, "Times New Roman";
 }
 
 .header-name {

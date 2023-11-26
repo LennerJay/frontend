@@ -1,14 +1,14 @@
 <template>
-  <div class="md:ml-[250px] ml-0 bg-sky-900 font-Times New Roman px-0 w-full">
-    <div class="header pl-2  text-white ml-5">
-        <div class="font-bold text-[30px]">
-          <span class="inline-block md:hidden" @click="drawer.toggle">
-            <i class="bi bi-filter-left px-5 p-1 bg-blue-800 rounded-md cursor-pointer"></i>
-          </span>
-            Cordova Public College
-          <p class="text-lg">2023</p>
+  <div class="md:ml-[250px] ml-0 bg-sky-900 font-poppins px-0 w-full">
+    <div class="header pl-2 md:py-0 text-white ml-5">
+      <span class="md:hidden flex pt-2">
+        <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px]" @click="drawer.toggle"></i>
+      </span> 
+        <div class="font-bold text-[30px] md:py-0 py-2">
+          <h1 class="header-name">Cordova Public College</h1>
+          <p class="text-lg md:text-left text-center">2023</p>
         </div>
-      <div class="flex items-center pb-2">
+      <div class="flex items-center pb-2 pt-2">
         <label for="search" class="block text-whitepl-2 mr-2">Search:</label>
         <input
           type="text"
@@ -17,7 +17,7 @@
           v-model="searchBar"
         />
       </div>
-      <div class="selectTags flex items-center">
+      <div class="selectTags md:flex md:items-center">
         <div>
           <SelectEntity :entities="entities" :entity="entity" @handleSelect="handleSelectEntity"/>        
         </div>

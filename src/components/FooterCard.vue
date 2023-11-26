@@ -29,27 +29,27 @@
                     </div> -->
                     <div class="important-links">
                         <div class="soc-links">
-                            <a href="#">Lenner Jay Soliano</a>
-                            <div class="icons">
-                                <i class='fab fa-facebook'></i>
-                                <i class="fa fa-envelope"></i>
-                                <i class='fab fa-github'></i>
+                            <a href="https://www.facebook.com/lennersoliano">Lenner Jay Soliano</a>
+                            <div class="icons cursor-pointer">
+                                <i class='fab fa-facebook hover:text-blue-500'></i>
+                                <i class="fa fa-envelope hover:text-blue-500"></i>
+                                <i class='fab fa-github hover:text-blue-500'></i>
                             </div>
                         </div>
                         <div class="soc-links">
-                            <a href="#">Ranel Soliano</a>
-                            <div class="icons">
-                                <i class='fab fa-facebook'></i>
-                                <i class="fa fa-envelope"></i>
-                                <i class='fab fa-github'></i>
+                            <a href="https://www.facebook.com/xLenar30/">Ranel Soliano</a>
+                            <div class="icons cursor-pointer">
+                                <i class='fab fa-facebook hover:text-blue-500'></i>
+                                <i class="fa fa-envelope hover:text-blue-500"></i>
+                                <i class='fab fa-github hover:text-blue-500'></i>
                             </div>
                         </div>
                         <div class="soc-links">
-                            <a href="#">Eric Redolosa</a>
-                            <div class="icons">
-                                <i class='fab fa-facebook'></i>
-                                <i class="fa fa-envelope"></i>
-                                <i class='fab fa-github'></i>
+                            <a href="https://www.facebook.com/EhrickRhed">Eric Redolosa</a>
+                            <div class="icons cursor-pointer">
+                                <i class='fab fa-facebook hover:text-blue-500'></i>
+                                <i class="fa fa-envelope hover:text-blue-500"></i>
+                                <i class='fab fa-github hover:text-blue-500'></i>
                             </div>
                         </div>
                         <!-- <a href="#">Batch 2023-2024</a> -->
