@@ -5,7 +5,7 @@
         <table class="min-w-[250px] md:w-full table-auto">
           <thead>
             <tr class="bg-sky-950 text-white uppercase text-sm leading-normal">
-              <th class="py-3 md:px-6 text-left">Name</th>
+              <th class="py-3 md:px-6 md:text-left text-center">Name</th>
               <th class="py-3 md:px-6 text-center">Work Status</th>
               <th class="py-3 md:px-6 text-center">Actions</th>
             </tr>
