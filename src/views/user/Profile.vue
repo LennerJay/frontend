@@ -1,11 +1,11 @@
 <template>
-  <div class="md:ml-[250px] ml-0 bg-sky-950 font-Times New Roman px-0 w-full">
+  <div class="md:ml-[250px] ml-0 bg-sky-900 font-poppins px-0 w-full">
     <div class="header pt-2 text-white text-center">
-      <div class="flex justify-center items-center font-bold text-[20px] my-6">
-        <span class="md:hidden pr-2" @click="drawer.toggle">
-          <i class="bi bi-filter-left px-5 p-1 bg-blue-900 rounded-md cursor-pointer"></i>
-        </span>
-        <h1 class="text-2xl text-white">Student Profile</h1>
+      <span class="md:hidden flex text-white">
+        <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-0" @click="drawer.toggle"></i>
+      </span>
+      <div class="font-bold text-[30px] my-6 text-center text-white">
+        <h1>Student Profile</h1>
       </div>
     </div>
     <div class="bg-stone-200 min-h-[44rem] card overflow-x-auto">
@@ -69,7 +69,7 @@
               class="w-full text-sm text-left rtl:text-right text-black dark:text-gray-400 border bg-white"
             >
               <thead
-                class="text-xs text-gray-700 uppercase bg-sky-950 shadow-inner shadow-sky-950 text-center"
+                class="text-xs text-gray-700 uppercase bg-sky-950 shadow-inner shadow-sky-950 md:text-left text-center"
               >
                 <tr class="text-white">
                   <th scope="col" class="py-2">Subject</th>
@@ -78,7 +78,7 @@
                   <th scope="col" class="py-2">Instructor</th>
                 </tr>
               </thead>
-              <tbody class="text-center">
+              <tbody class="md:text-left text-center">
                 <tr
                   class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border dark:border-gray-700"
                   v-for="(yearSection, index) in user.year_sections"

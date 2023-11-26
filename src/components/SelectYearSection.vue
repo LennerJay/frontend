@@ -2,7 +2,7 @@
   <div class="flex">
     <label for="section-year md:pr-2">Section & Year: </label>
     <select v-model="sY" name="section-year" id="section-year" @change="handleClick" class="focus:outline-none 
-    rounded-2xl text-center">
+    rounded-2xl text-center overflow-y-auto">
       <option value="All">All</option>
       <option v-for="sy in sys" :value="sy.year_section">{{ sy.year_section }}</option>
     </select>
@@ -31,4 +31,20 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+}
+.overflow-y-auto:hover::-webkit-scrollbar {
+  display: block;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgb(8, 47, 73, 1);
+  border-radius: 8px;
+  width: 4px;
+}
+</style>
