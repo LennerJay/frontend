@@ -33,46 +33,48 @@
                       <div>
                         <label class="flex text-gray-700 text-sm font-bold pb-1" for="personal-type">Personal Type</label>
                         <select v-model="personelType" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10" id="personal-type">
-                          <option v-for="entity in entities" :value="entity.id">{{ capitalizeFirstLetter(entity.entity_name) }}</option>
+                          <option v-for="entity in entities" :value="entity.id">{{ entity.entity_name }}</option>
                         </select>
                       </div>                    
                     </div>
                     
                   </div>            
                 </div>  
-                <!-- End modal content body -->           
+                <!-- End modal content header -->           
                 <!-- Modal content body -->
                 <div class="mb-4 flex flex-col">
                   <div class="grid md:gap-x-2 md:lg:grid-cols-3 md:sm-grid-cols-3 gap-x-2 gap-y-2 grid-cols-3 sm-grid-cols-3">                  
                     <div v-if="personelType == 1">
-                      <label class="flex text-gray-700 text-sm font-bold" for="subject">Subject</label>
+                      <label class="flex text-gray-700 text-sm font-bold pb-1" for="subject">Subject</label>
                         <select v-model="subject" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 pr-2" id="subject">
-                          <option v-for="subject in subjects" :value="subject.id">{{ capitalizeFirstLetter(subject.name) }}</option>
+                          <option v-for="subject in subjects" :value="subject.id">{{ subject.name.toUpperCase() }}</option>
                       </select>   
                     </div>
                     <div v-if="personelType == 1">
-                      <label class="flex text-gray-700 text-sm font-bold w-40" for="section-year">Section & Year</label>
+                      <label class="flex text-gray-700 text-sm font-bold w-40 pb-1" for="section-year">Section & Year</label>
                       <select v-model="sectionYear" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3" id="section-year">
                           <option v-for="sectionYear in sectionYears" :value="sectionYear.id">{{ sectionYear.year_section }}</option>
                       </select>
                     </div>
                     <div v-if="personelType == 1">
-                      <label class="block text-gray-700 text-sm font-bold" for="department">Department</label>
+                      <label class="block text-gray-700 text-sm font-bold pb-1" for="department">Department</label>
                       <select v-model="department" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3" id="department">
                         <option v-for="department in departments" :value="department.id">{{ department.department.toUpperCase() }}</option>
                       </select>
-                    </div>
-                    <div v-if="personelType == 1">
-                      <label class="flex text-gray-700 text-sm font-bold" for="time">Time</label>
+                    </div>         
+                  </div>
+                  <div v-if="personelType == 1" class="pt-2 grid md:gap-x-2 md:lg:grid-cols-2 md:sm-grid-cols-2 gap-x-2 gap-y-2 grid-cols-2 sm-grid-cols-2">
+                    <div>
+                      <label class="flex text-gray-700 text-sm font-bold pb-1" for="time">Time</label>
                       <input v-model="time" class="border rounded w-full h-9 px-3" id="time" type="text" placeholder="Eg. 1:00-2:30 PM">
                       <p v-if="timeError">{{ timeError }}</p>
                     </div>
-                    <div v-if="personelType == 1">
-                      <label class="flex text-gray-700 text-sm font-bold" for="day">Day</label>
+                    <div>
+                      <label class="flex text-gray-700 text-sm font-bold pb-1" for="day">Day</label>
                       <input v-model="day" class="border rounded w-full h-9 px-3" id="day" type="text" placeholder="Eg. MWF, TTH, SAT">
                       <p v-if="sYError">{{ sYError }}</p>
-                    </div>  
-                  </div>
+                    </div> 
+                  </div>    
                   <div class="md:pl-[329px] pl-[200px] mt-2" v-if="personelType == 1">
                     <button @click="addClassBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl">Add Class</button>
                   </div>
