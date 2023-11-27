@@ -33,8 +33,12 @@ const capitalizeFirstLetter = (str) => {
 const sort = ref(props.sort);
 
 onMounted(async () => {
-  await roleStore.fetchAllRoles();
-  roles.value = roleStore.roles;
+  if(!localStorage.getItem('roles')){
+    await roleStore.fetchAllRoles();
+  }
+roles.value = roleStore.roles;
+
+
 });
 </script>
 

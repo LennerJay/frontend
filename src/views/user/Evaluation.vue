@@ -234,29 +234,29 @@ const isSubmitButtonEnabled = computed(() => {
 });
 
 const handleSubmit = async () => {
-  selectedRatings.value.map((val) => {
-    val.evaluator_id = user.id_number;
-  });
-  const value = {
-    instructorId: selectedEvaluatee.value.id,
-    user_id: user.id_number,
-    val: [...selectedRatings.value],
-  };
-  await ratingStore.save(value);
-  if (ratingStore.response.data.code === 201) {
-    clearLocalStorage();
-    selectedRatings.value = [];
-    evaluatees.value = evaluatees.value.filter( evaluatee => evaluatee.id !== selectedEvaluatee.value.id);
-    name.value = "";
-    alert('successfully RATED')
-    showProfileCards.value = true;
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  } else {
-    alert("something went wrong");
-  }
+  // selectedRatings.value.map((val) => {
+  //   val.evaluator_id = user.id_number;
+  // });
+  // const value = {
+  //   instructorId: selectedEvaluatee.value.id,
+  //   user_id: user.id_number,
+  //   val: [...selectedRatings.value],
+  // };
+  // await ratingStore.save(value);
+  // if (ratingStore.response.data.code === 201) {
+  //   clearLocalStorage();
+  //   selectedRatings.value = [];
+  //   evaluatees.value = evaluatees.value.filter( evaluatee => evaluatee.id !== selectedEvaluatee.value.id);
+  //   name.value = "";
+  //   alert('successfully RATED')
+  //   showProfileCards.value = true;
+  //   window.scrollTo({
+  //     top: 0,
+  //     behavior: 'smooth'
+  //   });
+  // } else {
+  //   alert("something went wrong");
+  // }
 };
 
 const updateSelectedRatings = (val) => {
@@ -326,6 +326,7 @@ onBeforeMount(async()=>{
 });
 
 onMounted(async () => {
+  await userStore.fetchUser();
   if (localStorage.getItem("selectedEvaluatee")) {
     selectedEvaluatee.value = JSON.parse(localStorage.getItem("selectedEvaluatee"));
     if (localStorage.getItem("questionaire-for-evaluatee")) {
@@ -363,7 +364,7 @@ onMounted(async () => {
     name.value = selectedEvaluatee.value.name;
     showProfileCards.value = false;
   } else {
-    await userStore.fetchUser();
+    
     user.value = userStore.user
     await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
     evaluatees.value = evaluateeStore.isRatedEvaluatees(false);

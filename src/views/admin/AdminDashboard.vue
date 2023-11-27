@@ -161,7 +161,9 @@ import { useDepartmentStore } from "../../stores/department";
 import { useEntityStore } from "../../stores/entity";
 import { useSubjectStore } from "../../stores/subject";
 import { useSectionYearStore } from "../../stores/sectionYear"
+import { useRoleStore } from "../../stores/role";
 
+const roleStore = useRoleStore();
 const subjectStore = useSubjectStore()
 const sectionYearStore = useSectionYearStore()
 const entityStore = useEntityStore()
@@ -180,18 +182,6 @@ onMounted(async()=>{
     const data = await dashboardStore.fetchAdminDashboardData()
     res.value = dashboardStore.adminData
     console.log(res.value)
-    if(!localStorage.getItem('departments')){
-        departmentStore.getDepartments();
-    }
-    if(!localStorage.getItem('entities')){
-        entityStore.fetchAllEntity();
-    }
-    if(!localStorage.getItem('subjects')){
-        subjectStore.fetchAllSubjects()
-    }
-    if(!localStorage.getItem('sectionYears')){
-        sectionYearStore.fetchAllSectionYears()
-    }
 
     barChartRef.value = new Chart(barChartRef.value, {
         type: 'bar',
@@ -247,6 +237,22 @@ onMounted(async()=>{
                 }]
             }
     });
+
+    if(!localStorage.getItem('departments')){
+        departmentStore.getDepartments();
+    }
+    if(!localStorage.getItem('entities')){
+        entityStore.fetchAllEntity();
+    }
+    if(!localStorage.getItem('subjects')){
+        subjectStore.fetchAllSubjects()
+    }
+    if(!localStorage.getItem('sectionYears')){
+        sectionYearStore.fetchAllSectionYears()
+    }
+    if(!localStorage.getItem('roles')){
+        await roleStore.fetchAllRoles();
+    }
 
 })
 

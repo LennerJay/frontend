@@ -22,13 +22,13 @@
         :key="index"
         :to="component.path"
       >
-        <hr v-if="index === 3" class="my-2 text-gray-600" />
+        <hr v-if="index % 3 == 0 && index != 0" class="my-2 text-gray-600" />
         <div class="router">
           <i :class="component.icon"></i>
           <span class="router-name">{{ component.name }}</span>
         </div>
       </router-link>
-
+      <hr v-if="showHr && components.length % 3 == 0" class="my-2 text-gray-600" />
       <div class="router" @click="handleLogout">
         <i class="bi bi-box-arrow-right"></i>
         <span class="router-name">Logout</span>
@@ -48,6 +48,7 @@ const store = useAuthStore();
 const components = ref();
 const toggleShow = ref(false);
 const drawer = useDrawerStore();
+const showHr = ref(false);
 const userComponent = [
   {
     name: "Dashboard",
@@ -101,6 +102,11 @@ const adminStaffComponent = [
     icon: "bi bi-people-fill",
     path: "/users-list",
   },
+  {
+    name: "Advance Options",
+    icon: "bi bi-people-fill",
+    path: "/advance-options",
+  },
 ];
 
 const handleLogout = async () => {
@@ -117,11 +123,13 @@ const showToggle = () => {
 };
 
 onMounted(() => {
+  showHr.value = false;
   if (store.isAdminStaff) {
     components.value = adminStaffComponent;
   } else {
     components.value = userComponent;
   }
+  showHr.value = true;
 });
 </script>
 

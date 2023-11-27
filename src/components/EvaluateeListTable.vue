@@ -3,7 +3,7 @@
     <div class="w-full lg:w-5/6 max-h-[550px] md:max-h-[550px] overflow-y-auto">
       <div class="transparent shadow-md rounded my-6">
         <table class="min-w-[250px] md:w-full table-auto">
-          <thead>
+          <thead class="sticky top-0 left-0 z-10">
             <tr class="bg-sky-950 text-white uppercase text-sm leading-normal">
               <th class="py-3 md:px-6 md:text-left text-center">Name</th>
               <th class="py-3 md:px-6 text-center">Work Status</th>
@@ -11,7 +11,7 @@
             </tr>
           </thead>
           <tbody class="text-gray-600 text-sm font-light">
-            <tr v-if="isNoData" class="border-b border-gray-200 hover:bg-gray-100">
+            <tr v-if="isNoData" class="border-b border-gray-200 hover:bg-gray-100 z-0">
               <td
                 class="py-3 px-6 text-left whitespace-nowrap flex justify-center row-span-3"
               >

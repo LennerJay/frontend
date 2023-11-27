@@ -14,10 +14,10 @@
       <option value="All">All</option>
       <option
         v-for="(department, departmentIndex) in departments"
-        :value="department.department"
+        :value="department.name"
         :key="departmentIndex"
       >
-        {{ department.department }}
+        {{ department.name }}
       </option>
     </select>
   </div>

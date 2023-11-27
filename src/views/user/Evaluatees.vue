@@ -49,6 +49,7 @@
           />
         </div>
         <ModalCard v-if="showModal"
+          :noData ="noData"
           :isInstructor="isInstructor"
           :showDetail="showDetail"
           :evaluateeInfo="evaluateeInfo"
@@ -104,7 +105,7 @@ const entity = ref("All");
 const isInstructor= ref(false);
 const departments= ref([]);
 const entities = ref([]);
-
+const noData = ref(false)
 const loadedData = () => {
 isLoaded.value = false;
 // setTimeout(() => {
@@ -119,12 +120,20 @@ const closeModal = () => {
 };
 const selectedEvaluatee = async (id) => {
   showModal.value = true;
-  evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
-  if(evaluateeInfo.value.entity.entity_name === 'instructor'){
-    isInstructor.value = true;
-  }
+  noData.value = false;
+   await evaluateeStore.fetchEvaluateeInfo(id);
+   if(Object.keys(evaluateeStore.infoErrors).length == 0) {
+      evaluateeInfo.value = evaluateeStore.evaluateeInfo
+      if(evaluateeInfo.value.entity.entity_name === 'instructor'){
+        isInstructor.value = true;
+      }
+        showDetail.value = true;
+   }else{
+    noData.value = true;
+   }
 
-  showDetail.value = true;
+
+
 };
 
 const handleSelectEntity = (val)=>{

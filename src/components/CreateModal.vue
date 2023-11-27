@@ -83,7 +83,7 @@
                 <!-- Modal content footer -->
                 <div class="mb-4">
                   <p v-if="dataExist">{{ dataExist }}</p>
-                  <div v-if="showTable" class="shadow-md sm:rounded-lg mt-4 overflow-auto md:max-h-[111px] max-h-[200px] border-2 border-sky-950">
+                  <div v-if="showTable " class="shadow-md sm:rounded-lg mt-4 overflow-auto md:max-h-[111px] max-h-[200px] border-2 border-sky-950">
                     <table class="max-w-screen w-full">
                       <thead class="border-2 border-sky-950 text-center bg-sky-950 text-white">
                         <th>Subject</th>
@@ -123,7 +123,13 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref} from 'vue';
+import { useEvaluateeStore } from '../stores/evaluatee';
+
+
+const evaluateeStore = useEvaluateeStore();
+const status = ref()
+const message = ref('');
 const timeError = ref('');
 const sYError = ref('');
 const dataExist = ref('');
@@ -146,6 +152,14 @@ const props = defineProps([
     'sectionYears'
 ]);
 const emits = defineEmits(['handleCloseButton','handleCreateClick']);
+
+const handleChange = ()=>{
+  if(personelType.value !== 1){
+    showTable.value = false
+  }else{
+    showTable.value = true
+  }
+}
 
 const handleClose = () => {
   //  shift.value = ref(0)
@@ -197,7 +211,6 @@ const addClassBtn = ()=>{
                             dataExist.value = ''
         }else{
           dataExist.value = 'The data already exists'
-          console.log(dataExist.value)
         }
     }else{
       const findSub =  props.subjects.find(sub => sub.id == subject.value)
@@ -217,48 +230,53 @@ const addClassBtn = ()=>{
   }
 }
 
+
 // const capitalizeFirstLetter = (str) => {
 //     return str.charAt(0).toUpperCase() + str.slice(1);
 // };
 
-const handleClickCreate = ()=>{
-  if(name.value !== ''){
-    errors.value= {}
-    const val = {
-      name:name.value,
-      entity_id:personelType.value,
-      job_type: shift.value,
-      department_id: department.value
-    }
-    if(personelType.value != 1 ){
-           name.value = ''
-      errors.value.class = ''
-      emits('handleCreateClick',val)
-    }else if(personelType.value == 1 && classes.value.length != 0){
-      errors.value= {}
-      val.classes = classes.value
-      name.value = ''
-      department.value = props.departments[0].id;
-      personelType.value = props.entities[0].id;
-      subject.value = props.subjects[0].id;
-      sectionYear.value = props.sectionYears[0].id;
-      classes.value = {}
-      showTable.value = false
-      emits('handleCreateClick',val)
-    }else{
-      errors.value.class = 'Please Add a Class'
-      console.log(errors.value.class)
-    }
 
- 
-  }else{
+
+const handleClickCreate = async()=>{
+  const val ={}
+  if(name.value == ''){
     errors.value.name = 'name is required'
-    console.log(errors.value)
+    return
+  }
+  if(personelType.value == 1 && classes.value.length != 0){
+      val.classes = classes.value
+  }else{
+      errors.value.class = 'Please Add a Class'
+      return 
+  }
+  val.name = name.value,
+  val.entity_id = personelType.value,
+  val.job_type =  shift.value,
+  val.department_id =  department.value
+  
+  try{
+    const res = await evaluateeStore.saveEvaluatee(val);
+    console.log(res);
+
+  }catch(e){
+    console.log(e);
+    status.value = e.response.status
+    message.value = e.response.data.message
   }
 
-
+  // name.value = ''
+  // errors.value.class = ''personelType.value != 1
+  // errors.value= {}
+  //     name.value = ''
+  //     department.value = props.departments[0].id;
+  //     personelType.value = props.entities[0].id;
+  //     subject.value = props.subjects[0].id;
+  //     sectionYear.value = props.sectionYears[0].id;
+  //     classes.value = {}
+  //     showTable.value = false
 
 }
+
 </script>
 <style scoped>
 #close-btn {
@@ -348,3 +366,4 @@ const handleClickCreate = ()=>{
   width: 4px;
 }
 </style>
+

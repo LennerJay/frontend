@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref ,watch} from "vue";
 import { getAllRoles } from "../http/role-api"
 
 export const useRoleStore = defineStore('roleStore',() =>{
@@ -15,6 +15,21 @@ export const useRoleStore = defineStore('roleStore',() =>{
             errors.value = error.response
         }
     }
+
+    if(localStorage.getItem('roles')){
+        roles.value = JSON.parse(localStorage.getItem('roles'));
+    }
+
+
+    watch(
+        roles,
+        function(rolesVal){
+            localStorage.setItem('roles', JSON.stringify(rolesVal));
+        },
+        {
+            deep: true,
+        }
+    )
 
 
     return{
