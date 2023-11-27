@@ -47,7 +47,7 @@
                     <div v-if="personelType == 1">
                       <label class="flex text-gray-700 text-sm font-bold pb-1" for="subject">Subject</label>
                         <select v-model="subject" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 pr-2" id="subject">
-                          <option v-for="subject in subjects" :value="subject.id">{{ subject.name.toUpperCase() }}</option>
+                          <option v-for="subject in subjects" :value="subject.id">{{ subject.name }}</option>
                       </select>   
                     </div>
                     <div v-if="personelType == 1">
@@ -59,7 +59,7 @@
                     <div v-if="personelType == 1">
                       <label class="block text-gray-700 text-sm font-bold pb-1" for="department">Department</label>
                       <select v-model="department" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3" id="department">
-                        <option v-for="department in departments" :value="department.id">{{ department.department.toUpperCase() }}</option>
+                        <option v-for="department in departments" :value="department.id">{{ department.department }}</option>
                       </select>
                     </div>         
                   </div>
@@ -96,10 +96,10 @@
                         <tr v-for="(sched,schedIndex) in klass.schedules"
                           class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700
                           border-b border-gray-200 hover:bg-gray-100">
-                          <td v-if="schedIndex == 0" :rowspan="klass.schedules.length">{{ capitalizeFirstLetter(klass.subject.name) }}</td>
+                          <td v-if="schedIndex == 0" :rowspan="klass.schedules.length">{{ klass.subject.name }}</td>
                           <td>{{ sched.sectionYear.year_section }}</td>
-                          <td>{{ sched.day.toUpperCase() }}</td>
-                          <td>{{ sched.time.toUpperCase() }}</td>
+                          <td>{{ sched.day }}</td>
+                          <td>{{ sched.time }}</td>
                           <td>
                             <button @click="editData(klass.subject.id,sched.sectionYear.id,sched.day,sched.time,klassIndex,schedIndex)">Edit</button>
                             <button @click="removeRowData(klassIndex,schedIndex)">Remove</button>
@@ -217,9 +217,9 @@ const addClassBtn = ()=>{
   }
 }
 
-const capitalizeFirstLetter = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-};
+// const capitalizeFirstLetter = (str) => {
+//     return str.charAt(0).toUpperCase() + str.slice(1);
+// };
 
 const handleClickCreate = ()=>{
   if(name.value !== ''){
