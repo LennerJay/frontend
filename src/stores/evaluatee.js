@@ -10,13 +10,21 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const allEvaluatees = ref([]);
     const allEvaluated = ref([]);
     const evaluateesToRate = ref({})
-
+    const infoErrors = ref([])
+    const evaluateeInfo = ref([])
     const fetchEvaluateeInfo = async(evaluateeId)=>{
         const id = {
             evaluatee_id: evaluateeId
         }
-        const {data} = await getEvaluateeInfo(id)
-        return data;
+        try{
+            const {data} = await getEvaluateeInfo(id)
+            console.log(data)
+            evaluateeInfo.value = data
+            infoErrors.value = []
+        }catch(e){
+            evaluateeInfo.value =[]
+            infoErrors.value = e.response
+        }
     }
 
     const fetchAllEvaluatees = async (userId) =>{
@@ -25,7 +33,6 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
             allEvaluatees.value = data
             errors.value = []
         }catch(e){
-
             allEvaluatees.value = []
             errors.value = e.response
             console.log(errors.value)
@@ -58,7 +65,7 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
             if(entity !== "All"){
                 evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.entity.entity_name === entity)
                 if(departmentName !== "All"){
-                    evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.departments[0].department === departmentName)
+                    evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.departments[0].name === departmentName)
                 }
            
             }
@@ -108,6 +115,8 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     }
 
     return {
+        evaluateeInfo,
+        infoErrors,
         savingErrors,
         saveEvaluatee,
         fetchAllEvaluatees,

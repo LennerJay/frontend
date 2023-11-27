@@ -1,6 +1,6 @@
 <template>
 <!-- Modal -->
-<div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman">
+<div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman z-20">
   <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
     <button @click="closeModal">
       <i class="bi bi-x-lg"></i>
@@ -69,6 +69,9 @@
           </p>
         </div>
     </div>
+    <div v-else-if="noData">
+      No data Found
+    </div>
     <div v-else class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex">
       <div class="loader">
         <svg viewBox="0 0 80 80">
@@ -105,6 +108,7 @@ const props = defineProps([
                 'evaluateeInfo',
                 'selectedEvaluteeId',
                 'showDetail',
+                'noData',
               ]);
 const emits = defineEmits(['close-modal'])
 

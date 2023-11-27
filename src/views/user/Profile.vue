@@ -177,8 +177,11 @@ const capitalizeFirstLetter = (str) => {
 };
 
 onMounted(async () => {
-  user.value = await userStore.fetchUserInfo();
-  showProfile.value = true;
+   await userStore.fetchUserInfo();
+   if(!userStore.errors){
+    user.value = userStore.userInfo
+   }
+  // showProfile.value = true;
   //  console.log(!!userStore.userInfo)
   //  if(!!userStore.userInfo){
   //     user.value = userStore.userInfo

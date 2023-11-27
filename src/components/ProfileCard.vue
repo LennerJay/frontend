@@ -12,7 +12,7 @@
               <div v-for="(departments,index) in evaluatee.departments" :key="index" class="text-[15px] ml-2
               mt-2 md:w-52 rounded-2xl h-6
               bg-sky-950 text-white details">
-                <span>Department : </span>{{ capitalizeFirstLetter(departments.department) }}
+                <span>Department : </span>{{ capitalizeFirstLetter(departments.name) }}
               </div>
               <div class="text-[15px] ml-2 pb-2 mt-2 md:w-52 rounded-2xl h-6
                 bg-sky-950 text-white details">

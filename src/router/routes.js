@@ -103,6 +103,15 @@ const routes = [
         },
       },
       {
+        path:'/advance-options',
+        name: 'advance-options',
+        component: ()=> import('../views/admin/AdvanceOptions.vue'),
+        meta:{
+          auth:true,
+          admin:true
+        },
+      },
+      {
         path:'/:notFound(.*)',
         name:'error.404',
         component:NotFoundErrorPage

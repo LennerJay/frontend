@@ -164,6 +164,7 @@
         <!-- Modal area -->
         <ModalCard
           v-if="showModal"
+          :noData="noData"
           :isInstructor="isInstructor"
           :showDetail="showDetail"
           :evaluateeInfo="evaluateeInfo"
@@ -234,11 +235,17 @@ const entities = ref([]);
 const sectionYears = ref([]);
 const subjects = ref([]);
 const evaluateeDetails = ref('');
+const noData = ref(false)
 
 const handleDeleteEvaluatee = async(id)=>{
   const res = await evaluateeStore.removeEvaluate(id);
   alert(res)
-  evaluatees.value = evaluateeStore.allEvaluatees
+  evaluatees.value  = evaluateeStore.filterEvaluatees(
+      entity.value,
+      selectDepartment.value,
+      selectTypeJob.value,
+      "evaluatees"
+    );
   deleteNotOpen()
 }
 
@@ -297,13 +304,16 @@ const closeModal = () => {
 
 const selectedEvaluatee = async (id) => {
   showModal.value = true;
-  evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
-  console.log(evaluateeInfo.value)
-  if (evaluateeInfo.value.entity.entity_name === "instructor") {
-    isInstructor.value = true;
-    console.log(isInstructor.value);
+  if(Object.keys(evaluateeStore.infoErrors).length == 0) {
+
   }
-  showDetail.value = true;
+  // evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
+  // console.log(evaluateeInfo.value)
+  // if (evaluateeInfo.value.entity.entity_name === "instructor") {
+  //   isInstructor.value = true;
+  //   console.log(isInstructor.value);
+  // }
+  // showDetail.value = true;
 };
 
 const handleActionClick = (id, action) => {
@@ -363,14 +373,11 @@ const handleJobTypeSelected = (val) => {
   );
 };
 
-const handleCreateClick = async (val) => {
-  console.log(val)
-  const res = await evaluateeStore.saveEvaluatee(val);
+const handleCreateClick = async (res) => {
   alert(res)
-    evaluatees.value = evaluateeStore.allEvaluatees ;
+  evaluatees.value = evaluateeStore.allEvaluatees ;
   crudModal.modalAdd = false;
 
- 
 };
 
 onBeforeMount(async () => {
@@ -393,9 +400,8 @@ onBeforeMount(async () => {
 });
 onMounted(async () => {
   await evaluateeStore.fetchAllEvaluatees();
-  entities.value = entityStore.entities;
   if (evaluateeStore.errors.length == 0) {
-    evaluatees.value = evaluateeStore.filterEvaluatees(
+      evaluatees.value = evaluateeStore.filterEvaluatees(
       entity.value,
       selectDepartment.value,
       selectTypeJob.value,

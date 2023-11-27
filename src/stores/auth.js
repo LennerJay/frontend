@@ -5,17 +5,18 @@ import {  csrfCookie, login, logout, getUser,getUserInfo ,test,testCreateApi} fr
 
 export const useAuthStore = defineStore('authStore', ()=>{
     const user = ref({})
-    const errors = ref({})
+    const errors = ref([])
     const isAdminStaff = ref(false)
-    // const isLoggedIn = computed(()=> !!user.value)
     const isLoggedIn = ref(false)
     const token = ref([]);
+    const userInfo = ref({});
 
   if(localStorage.getItem('jwt_token')){
       isLoggedIn.value = true;
       const tmp = localStorage.getItem('jwt_token')
       isAdminStaff.value = atob(tmp.split('.')[1]) === 'admin';
   }else{
+    localStorage.clear();
     isLoggedIn.value = false;
   }
   watch(
@@ -44,6 +45,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
               token.value = res.data.token  ;
               user.value = res.data.user ;
               isAdminStaff.value = user.value.role.name ==='admin'
+              errors.value = [];
             }
             // console.log(res)
         } catch (error) {
@@ -70,8 +72,17 @@ export const useAuthStore = defineStore('authStore', ()=>{
       const user = {
         id_number: id,
       }
-      const {data} = await getUserInfo(user);
-      return data;
+
+      try{
+
+        const {data} = await getUserInfo(user);
+        userInfo.value = data
+        errors.value = []
+      } catch($e){
+        userInfo.value = []
+        errors.value = $e
+      }
+
     }
 
     const testApi = async () => {
@@ -87,6 +98,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
       testCreate,
       testApi,
       fetchUserInfo,
+      userInfo,
       user, 
       errors, 
       isAdminStaff,

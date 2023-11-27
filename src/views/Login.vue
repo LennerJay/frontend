@@ -51,12 +51,14 @@ const handleSubmit = async () =>{
                     router.push( {name:'dashboard'})
                 }
             }
+        }else{
+            
         }
 };
 
 onMounted(async()=>{
-    // const res = await store.testApi()
-    // console.log(res)
+    const res = await store.testApi()
+    console.log(res)
     // console.log(res.section_years)
     // let classesId = []
     // res.section_years.forEach(sy => {
