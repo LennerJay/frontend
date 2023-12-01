@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-100 flex justify-center font-sans h-screen">
+  <div class="w-full flex justify-center font-sans h-screen mt-6">
     <div class="w-full lg:w-5/6">
       <div class="bg-white shadow-md rounded my-6">
         <table class="min-w-max w-full table-auto">
@@ -34,8 +34,9 @@
               </td>
               <td class="py-3 px-6 text-center">
                 <div class="flex item-center justify-center gap-2">
-                  <button @click="handleClickAction(questionaire.id,'details')" class="border-solid border-2 border-indigo-300">Details</button>
-                  <button @click="handleClickAction(questionaire.id,'questions')" class="border-solid border-2 border-indigo-300">Questions</button>
+                  <button @click="handleClickAction(questionaire.id,'details')" id="details">Details</button>
+                  <!--class="border-solid border-2 border-indigo-300"-->
+                  <button @click="handleClickAction(questionaire.id,'questions')" id="questions">Questions</button>
                 </div>
               </td>
             </tr>
@@ -56,17 +57,43 @@ const props = defineProps({
 });
 const emits = defineEmits(['handleAction']);
 
-
 const handleClickAction = (id,action)=>{
   emits('handleAction',id,action)
 }
 </script>
 
 <style scoped>
-.un-used{
-  @apply bg-gray-200 text-gray-600
-}
-.used{
-  @apply bg-green-200 text-green-600
-}
+  .un-used{
+    @apply bg-gray-200 text-gray-600
+  }
+  .used{
+    @apply bg-green-200 text-green-600
+  }
+
+  #details {
+    outline: none;
+    padding: 6px 12px;
+    background-color: #0C4A6E;
+    color: #ffffff;
+  }
+
+  #questions {
+    outline: none;
+    padding: 6px 12px;
+    background-color: #0C4A6E;
+    color: #ffffff;
+  }
+
+  #details:hover {
+    background-color: #1885F2;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  #questions:hover {
+    background-color: orange;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
 </style>
