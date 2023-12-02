@@ -12,7 +12,7 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     const fetchQuestionaire = async ()=>{
         try{
             const {data}  = await allQuestionaires();
-            questionaires.value =  data
+            questionaires.value =  data.data
         }catch(e){
             questionaires.value = null;
             errors.value = e.response

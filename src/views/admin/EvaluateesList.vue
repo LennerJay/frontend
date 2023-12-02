@@ -2,11 +2,12 @@
   <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full">
     <div class="header md:py-6 md:pb-1 pb-2 text-white text-center bg-sky-900">
       <span class="md:hidden flex pt-2 pl-2">
-        <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
-      </span> 
-      <div class="font-bold p-1 text-[30px]">
-        Evaluatee List
-      </div>
+        <i
+          class="bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2"
+          @click="drawer.toggle"
+        ></i>
+      </span>
+      <div class="font-bold p-1 text-[30px]">Evaluatee List</div>
     </div>
     <div class="card nav">
       <div class="flex flex-col min-h-[43.2rem]">
@@ -90,9 +91,14 @@
                   <div class="selectTags pl-2 pb-2">
                     <button
                       class="bg-sky-950 hover:bg-blue-500 text-white hover:text-blue border hover:border-transparent rounded w-28"
-                      @click="crudModal.showCreateModal"
+                      @click="HandleCreateButton"
                     >
-                      Create User
+                      Create
+                      {{
+                        entity === "All" || entity === "Instructor"
+                          ? "Instructor"
+                          : entity
+                      }}
                     </button>
                   </div>
                 </li>
@@ -173,16 +179,24 @@
           class="modal-box"
         />
         <CreateModal
+          v-if="crudModal.modalAdd"
           :subjects="subjects"
           :sectionYears="sectionYears"
           :departments="departments"
           :entities="entities"
+          :entityId="entityId"
+          :entity="entity"
           :showCreateModal="crudModal.modalAdd"
           @handleCloseButton="handleCloseButton"
           @handleCreateClick="handleCreateClick"
         />
-        <EditModal  :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen" />
-        <DeleteModal :evaluateeDetails="evaluateeDetails" :deleteOpen="crudModal.modalDelete" @deleteNotOpen="deleteNotOpen" @handleDelete="handleDeleteEvaluatee" />
+        <EditModal :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen" />
+        <DeleteModal
+          :evaluateeDetails="evaluateeDetails"
+          :deleteOpen="crudModal.modalDelete"
+          @deleteNotOpen="deleteNotOpen"
+          @handleDelete="handleDeleteEvaluatee"
+        />
       </div>
     </div>
     <FooterCard />
@@ -234,20 +248,21 @@ const departments = ref([]);
 const entities = ref([]);
 const sectionYears = ref([]);
 const subjects = ref([]);
-const evaluateeDetails = ref('');
-const noData = ref(false)
+const evaluateeDetails = ref("");
+const noData = ref(false);
+const entityId = ref(1);
 
-const handleDeleteEvaluatee = async(id)=>{
+const handleDeleteEvaluatee = async (id) => {
   const res = await evaluateeStore.removeEvaluate(id);
-  alert(res)
-  evaluatees.value  = evaluateeStore.filterEvaluatees(
-      entity.value,
-      selectDepartment.value,
-      selectTypeJob.value,
-      "evaluatees"
-    );
-  deleteNotOpen()
-}
+  alert(res);
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluatees"
+  );
+  deleteNotOpen();
+};
 
 const displayPageRange = computed(() => {
   const rangeStart = Math.max(currentPage.value - 2, 1);
@@ -304,28 +319,30 @@ const closeModal = () => {
 
 const selectedEvaluatee = async (id) => {
   showModal.value = true;
-  if(Object.keys(evaluateeStore.infoErrors).length == 0) {
+  await evaluateeStore.fetchEvaluateeInfo(id);
 
+  if (Object.keys(evaluateeStore.infoErrors).length == 0) {
+    noData.value = false;
+    evaluateeInfo.value = evaluateeStore.evaluateeInfo;
+    if (evaluateeInfo.value.entity_name == "instructor") {
+      isInstructor.value = true;
+    }
+    showDetail.value = true;
+  } else {
+    noData.value = true;
   }
-  // evaluateeInfo.value = await evaluateeStore.fetchEvaluateeInfo(id);
-  // console.log(evaluateeInfo.value)
-  // if (evaluateeInfo.value.entity.entity_name === "instructor") {
-  //   isInstructor.value = true;
-  //   console.log(isInstructor.value);
-  // }
-  // showDetail.value = true;
 };
 
 const handleActionClick = (id, action) => {
-  const findEvaluatee = evaluatees.value.find( evaluatee => evaluatee.id === id )
+  const findEvaluatee = evaluatees.value.find((evaluatee) => evaluatee.id === id);
   if (action == "view") {
     selectedEvaluatee(id);
   } else if (action == "edit") {
     console.log("Edit Click!");
     crudModal.modalEdit = true;
   } else if (action == "delete") {
-    evaluateeDetails.value = findEvaluatee
-    console.log(evaluateeDetails.value)
+    evaluateeDetails.value = findEvaluatee;
+    console.log(evaluateeDetails.value);
     crudModal.modalDelete = true;
   }
 };
@@ -344,6 +361,8 @@ const handleSelectEntity = (val) => {
   entity.value = val;
   if (val === "instructor") {
     isInstructor.value = true;
+  } else {
+    selectDepartment.value = "All";
   }
   evaluatees.value = evaluateeStore.filterEvaluatees(
     entity.value,
@@ -374,10 +393,19 @@ const handleJobTypeSelected = (val) => {
 };
 
 const handleCreateClick = async (res) => {
-  alert(res)
-  evaluatees.value = evaluateeStore.allEvaluatees ;
+  alert(res);
+  evaluatees.value = evaluateeStore.allEvaluatees;
   crudModal.modalAdd = false;
+};
 
+const HandleCreateButton = () => {
+  entityId.value = 1;
+  if (entity.value != "All") {
+    const tmp = entities.value.find((obj) => obj.entity_name == entity.value);
+    entityId.value = tmp.id;
+  }
+
+  crudModal.showCreateModal();
 };
 
 onBeforeMount(async () => {
@@ -399,9 +427,12 @@ onBeforeMount(async () => {
   departments.value = departmentStore.departments;
 });
 onMounted(async () => {
-  await evaluateeStore.fetchAllEvaluatees();
+  if (!localStorage.getItem("allEvaluatees")) {
+    await evaluateeStore.fetchAllEvaluatees();
+  }
+  console.log(evaluateeStore.allEvaluatees);
   if (evaluateeStore.errors.length == 0) {
-      evaluatees.value = evaluateeStore.filterEvaluatees(
+    evaluatees.value = evaluateeStore.filterEvaluatees(
       entity.value,
       selectDepartment.value,
       selectTypeJob.value,

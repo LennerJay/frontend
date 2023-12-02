@@ -2,7 +2,10 @@
   <div class="md:ml-[250px] ml-0 bg-sky-900 font-poppins px-0 w-full">
     <div class="header pt-2 text-white text-center">
       <span class="md:hidden flex text-white">
-        <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-0" @click="drawer.toggle"></i>
+        <i
+          class="bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-0"
+          @click="drawer.toggle"
+        ></i>
       </span>
       <div class="font-bold text-[30px] my-6 text-center text-white">
         <h1>Student Profile</h1>
@@ -177,10 +180,11 @@ const capitalizeFirstLetter = (str) => {
 };
 
 onMounted(async () => {
-   await userStore.fetchUserInfo();
-   if(!userStore.errors){
-    user.value = userStore.userInfo
-   }
+  await userStore.fetchUserInfo();
+
+  user.value = userStore.userInfo;
+
+  console.log(user.value);
   // showProfile.value = true;
   //  console.log(!!userStore.userInfo)
   //  if(!!userStore.userInfo){

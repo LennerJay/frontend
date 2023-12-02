@@ -12,14 +12,15 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const evaluateesToRate = ref({})
     const infoErrors = ref([])
     const evaluateeInfo = ref([])
+
     const fetchEvaluateeInfo = async(evaluateeId)=>{
+        await csrfCookie()
         const id = {
             evaluatee_id: evaluateeId
         }
         try{
             const {data} = await getEvaluateeInfo(id)
-            console.log(data)
-            evaluateeInfo.value = data
+            evaluateeInfo.value = data.data
             infoErrors.value = []
         }catch(e){
             evaluateeInfo.value =[]
@@ -28,9 +29,11 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     }
 
     const fetchAllEvaluatees = async (userId) =>{
+        await csrfCookie()
         try{
             const { data } = await getAllEvaluatees(userId);
-            allEvaluatees.value = data
+            allEvaluatees.value = data.data
+            console.log(data)
             errors.value = []
         }catch(e){
             allEvaluatees.value = []
@@ -40,19 +43,19 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     }
     
 
-    if(localStorage.getItem('allEvaluatees')){
-        allEvaluatees.value = JSON.parse(localStorage.getItem('allEvaluatees'))
-    }
+    // if(localStorage.getItem('allEvaluatees')){
+    //     allEvaluatees.value = JSON.parse(localStorage.getItem('allEvaluatees'))
+    // }
 
-    watch(
-        allEvaluatees,
-        (evaluateesVal)=>{
-            localStorage.setItem('allEvaluatees', JSON.stringify(evaluateesVal))
-        },
-        {
-            deep:true
-        }
-    );
+    // watch(
+    //     allEvaluatees,
+    //     (evaluateesVal)=>{
+    //         localStorage.setItem('allEvaluatees', JSON.stringify(evaluateesVal))
+    //     },
+    //     {
+    //         deep:true
+    //     }
+    // );
 
     const filterEvaluatees = (entity, departmentName,jobType,path=null)=>{
         const evaluatees = ref(); 
@@ -63,9 +66,9 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
             }
             
             if(entity !== "All"){
-                evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.entity.entity_name === entity)
+                evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.entity_name === entity)
                 if(departmentName !== "All"){
-                    evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.departments[0].name === departmentName)
+                    evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.departments.includes(departmentName))
                 }
            
             }
@@ -78,8 +81,9 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     }
     
     const fetchEvaluateesToRate = async(userId)=>{
+        await csrfCookie()
         const { data } = await getEvaluateesToRate(userId)
-        evaluateesToRate.value = data
+        evaluateesToRate.value = data.data
       }
     
       const isRatedEvaluatees = (isDone) => {
@@ -91,18 +95,23 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
       }
 
     const removeEvaluate = async(userId) => {
-        const {data,status} = await deleteEvaluatee(userId);
-        console.log({data,status})
-        if(status == 200){
-            allEvaluatees.value = data.evaluatees
+        await csrfCookie()
+        try{
+            const {data,status} = await deleteEvaluatee(userId);
+            console.log({data,status})
+            if(status == 200){
+                allEvaluatees.value = data.evaluatees
+                return data.message
+            }
             return data.message
+    
+        }catch(e){
+            console.log(e)
         }
-        return data.message
-
     }
 
     const saveEvaluatee = async (val)=>{
-      
+        await csrfCookie()
         const {data,status} = await storeEvaluatee(val)
         console.log(data,status)        
         if(status === 200){

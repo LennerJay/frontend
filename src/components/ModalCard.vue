@@ -13,49 +13,30 @@
             <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
                 <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name.split(' ').slice(0, 2).join(' ') }}</span>
                 <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Part time':'Full Time' }}</span>
-                <span>Personnel Type: {{ evaluateeInfo.entity.entity_name }}</span>
-                <span v-if="isInstructor"><i class="bi bi-bank2 mr-1"></i>Department : {{ capitalizeFirstLetter(evaluateeInfo.departments[0].department.split('-')[0]) }}</span>
+                <span>Personnel Type: {{ evaluateeInfo.entity_name }}</span>
+                <span v-if="isInstructor"><i class="bi bi-bank2 mr-1"></i>Department : <span v-for="department in evaluateeInfo.departments" >{{ department }}</span></span>
               </div>
         </div>
 
         <!-- Modal Body -->
           <div v-if="isInstructor" class="mb-4">
-            <table class="max-w-screen w-full border">
+            
+            <table class="max-w-screen w-full border" v-for="(klass,klassIndex) in evaluateeInfo.klasses" :key="klassIndex">
+            <caption>{{ klass.department }}</caption>
               <thead>
                 <tr>
                   <th class="border">Subject</th>
                   <th class="border">Sections</th>
                   <th class="border">Schedule</th>
                   <th class="border">Time</th>
-            
                 </tr>
               </thead>
               <tbody class="text-center">
-                <tr v-for="(klass, index) in evaluateeInfo.klasses" :key="index">
-                  <td class="border">{{ capitalizeFirstLetter(klass.subject.name) }}</td>
-                  <td class="border">
-                    <span v-for="(sectionYear, syIndex) in klass.section_years" :key="syIndex" 
-                        v-if="klass.section_years && klass.section_years.length > 0" >
-                        {{ sectionYear.s_y }}
-                      <hr v-if="syIndex < klass.section_years.length - 1">
-                    </span>
-                  </td>
-                  <td class="border">
-                    <span v-for="(sectionYear, pivotIndex) in klass.section_years" :key="pivotIndex">
-                      <span v-for="(day, dayIndex) in sectionYear.pivot.day" :key="dayIndex">
-                        {{ day.toUpperCase() }}
-                      </span>
-                      <hr v-if="pivotIndex < klass.section_years.length - 1">
-                    </span>
-                  </td>
-                  <td class="border">
-                    <span v-for="(sectionYear, pivotIndex) in klass.section_years" :key="pivotIndex">
-                      <span v-for="(time, timeIndex) in sectionYear.pivot.time" :key="timeIndex">
-                        {{ time.toUpperCase() }}
-                      </span>
-                      <hr v-if="pivotIndex < klass.section_years.length - 1">
-                    </span>
-                  </td>
+                <tr v-for="(section,sectionIndex) in klass.sections" :key="sectionIndex">
+                  <td v-if="sectionIndex === 0" :rowspan="klass.sections.length">{{ klass.subject }}</td>
+                  <td>{{ section.section_year }}</td>
+                  <td>{{ section.day }}</td>
+                  <td>{{ section.time }}</td>
                 </tr>
               </tbody>
             </table>
@@ -123,12 +104,6 @@ const isHistoryRoute = computed(() => route.name === 'history');
 
 onMounted(()=>{
   
-  // const id = {
-  //           evaluatee_id: evaluatee.id
-  //       }
-  //       const {data} = await getEvaluateeInfo(id)
-  //       console.log(data)
-  // console.log(props.evaluateeInfo);
 })
 </script>
 

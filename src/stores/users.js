@@ -9,7 +9,7 @@ export const useUserStore = defineStore('userStore', ()=>{
     const fetchAllUsers = async ()=>{
         try{
             const {data}  = await getAllUsers();
-            users.value =  data
+            users.value =  data.data
             errors.value = []
         }catch(error){
             users.value = []

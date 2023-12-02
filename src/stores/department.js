@@ -10,7 +10,7 @@ export const useDepartmentStore = defineStore('departmentStore',() =>{
     const getDepartments = async () =>{
         try{
             const {data}  = await getAllDepartments();
-            departments.value =  data
+            departments.value =  data.data
         }catch(error){
             departments.value = null
             errors.value =  error.response

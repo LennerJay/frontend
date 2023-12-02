@@ -1,6 +1,6 @@
 <template>
     <!-- Modal container -->
-  <div v-if="deleteOpen" class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman">
+  <div v-if="deleteOpen" class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman z-20">
       <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
           <button @click="isNotOpen" id="close-btn">
               <i class="bi bi-x-lg"></i>
@@ -13,7 +13,7 @@
           <div class="mb-4">
                 <h1>{{ evaluateeDetails.name }}</h1>
               <h1>Note:</h1>
-              <p>All data from this {{ evaluateeDetails.entity.entity_name }} will also be deleted</p>
+              <p>All data from this {{ evaluateeDetails.entity_name }} will also be deleted</p>
           </div>
           <!-- Modal footer -->
           <div class="flex justify-end space-x-4">

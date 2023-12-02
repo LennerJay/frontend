@@ -1,6 +1,6 @@
 <template>
       <!-- Modal container -->
-    <div v-if="showCreateModal" class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-poppins">
+    <div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-poppins z-20">
         <div class="bg-white p-8 md:max-w-lg max-w-sm mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
             <button @click="handleClose" id="close-btn">
                 <i class="bi bi-x-lg"></i>
@@ -8,16 +8,14 @@
             </button>
             <!-- Modal header -->
             <div class="mb-4 flex flex-col">
-              <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2" v-if="personelType == 1">Create Instructor</h2>
-              <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2" v-if="personelType == 2">Create Guard</h2>
-              <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2" v-if="personelType == 3">Create Canteen-staff</h2>
+              <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2" >Create {{ entityName == 'All' ? 'instructor': entityName }}</h2>
             </div>
             <!-- Modal body -->
             <div class="mb-4">
                 <!-- Modal content header -->
                 <div class="mb-4 flex flex-col">
                   <div class="grid gap-x-2 lg:grid-cols-1 sm-grid-cols-1 grid-cols-1">
-                    <div>
+                    <div ref="nameInputElement">
                       <label class="flex text-gray-700 text-sm font-bold mb-2" for="fullname">Full Name</label>
                       <input v-model="name" class="border rounded w-full py-2 px-3 md:h-10" id="fullname" type="text" placeholder="Enter Full name">
                       <p v-if="errors.name">{{ errors.name }}</p>
@@ -32,34 +30,33 @@
                       </div>
                       <div>
                         <label class="flex text-gray-700 text-sm font-bold pb-1" for="personal-type">Personal Type</label>
-                        <select v-model="personelType" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10" id="personal-type">
+                        <select v-model="personelType" @change="handleChange" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10" id="personal-type">
                           <option v-for="entity in entities" :value="entity.id">{{ entity.entity_name }}</option>
                         </select>
                       </div>                    
                     </div>
-                    
                   </div>            
                 </div>  
                 <!-- End modal content header -->           
                 <!-- Modal content body -->
                 <div class="mb-4 flex flex-col">
-                  <div class="grid md:gap-x-2 md:lg:grid-cols-3 md:sm-grid-cols-3 gap-x-2 gap-y-2 grid-cols-3 sm-grid-cols-3">                  
-                    <div v-if="personelType == 1">
+                  <div v-if="personelType == 1" class="grid md:gap-x-2 md:lg:grid-cols-3 md:sm-grid-cols-3 gap-x-2 gap-y-2 grid-cols-3 sm-grid-cols-3">                  
+                    <div >
                       <label class="flex text-gray-700 text-sm font-bold pb-1" for="subject">Subject</label>
                         <select v-model="subject" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 pr-2" id="subject">
                           <option v-for="subject in subjects" :value="subject.id">{{ subject.name }}</option>
                       </select>   
                     </div>
-                    <div v-if="personelType == 1">
+                    <div >
                       <label class="flex text-gray-700 text-sm font-bold w-40 pb-1" for="section-year">Section & Year</label>
                       <select v-model="sectionYear" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3" id="section-year">
                           <option v-for="sectionYear in sectionYears" :value="sectionYear.id">{{ sectionYear.year_section }}</option>
                       </select>
                     </div>
-                    <div v-if="personelType == 1">
+                    <div >
                       <label class="block text-gray-700 text-sm font-bold pb-1" for="department">Department</label>
                       <select v-model="department" class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3" id="department">
-                        <option v-for="department in departments" :value="department.id">{{ department.department }}</option>
+                        <option v-for="department in departments" :value="department.id">{{ department.name.toUpperCase() }}</option>
                       </select>
                     </div>         
                   </div>
@@ -114,8 +111,8 @@
             </div>
             <!-- Modal footer -->
             <div class="flex justify-end">
-                <button @click="handleClickCreate" class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Create
+                <button @click="handleSaveButton" class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Save
                 </button>
             </div>
         </div>
@@ -123,30 +120,37 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, computed} from 'vue';
 import { useEvaluateeStore } from '../stores/evaluatee';
 
 
 const evaluateeStore = useEvaluateeStore();
+const nameInputElement =ref(null)
 const status = ref()
 const message = ref('');
 const timeError = ref('');
 const sYError = ref('');
 const dataExist = ref('');
 const errors = ref({});
+const entities = ref(props.entities)
 const name = ref('');
 const shift = ref(0);
-const department = ref(props.departments[0].id);
-const personelType = ref(props.entities[0].id);
-const subject = ref(props.subjects[0].id);
-const sectionYear = ref(props.sectionYears[0].id);
+const department = ref(1);
+const personelType = ref(props.entityId);
+const subject = ref(1);
+const sectionYear = ref(1);
 const time = ref('');
 const day = ref('');
 const showTable = ref(false);
 const classes = ref([]);
+const entityName = ref(props.entity)
+
+
 const props = defineProps([
     'showCreateModal',
     'entities',
+    'entity',
+    'entityId',
     'departments',
     'subjects',
     'sectionYears'
@@ -159,6 +163,13 @@ const handleChange = ()=>{
   }else{
     showTable.value = true
   }
+
+  entityName.value = entities.value.find(entity => entity.id == personelType.value).entity_name
+}
+
+const handleClick = (val)=>{
+  alert(val)
+  console.log(val)
 }
 
 const handleClose = () => {
@@ -179,6 +190,7 @@ const editData = (subjectId,sectionYearId,scheduleData,timeData,parentIndex,chil
 const removeRowData = (parentIndex,childIndex) => {
   console.log(parentIndex,childIndex)
   classes.value[parentIndex].schedules.splice(childIndex,1)
+  
 }
 
 const addClassBtn = ()=>{
@@ -237,32 +249,39 @@ const addClassBtn = ()=>{
 
 
 
-const handleClickCreate = async()=>{
-  const val ={}
-  if(name.value == ''){
-    errors.value.name = 'name is required'
-    return
-  }
-  if(personelType.value == 1 && classes.value.length != 0){
-      val.classes = classes.value
-  }else{
-      errors.value.class = 'Please Add a Class'
-      return 
-  }
-  val.name = name.value,
-  val.entity_id = personelType.value,
-  val.job_type =  shift.value,
-  val.department_id =  department.value
-  
-  try{
-    const res = await evaluateeStore.saveEvaluatee(val);
-    console.log(res);
+const handleSaveButton = async()=>{
+    console.log(classes.value.length)
+    console.log(classes.value)
+    const val ={}
+    if(name.value == ''){
+      errors.value.name = 'name is required'
+      console.log(nameInputElement.value)
+      nameInputElement.value.scrollIntoView({ behavior: 'smooth' });
+      return
+    }
 
-  }catch(e){
-    console.log(e);
-    status.value = e.response.status
-    message.value = e.response.data.message
-  }
+    if(personelType.value == 1 && classes.value.length != 0){
+        val.classes = classes.value
+    }else{
+        errors.value.class = 'Please Add a Class'
+        return 
+    }
+
+    val.name = name.value,
+    val.entity_id = personelType.value,
+    val.job_type =  shift.value,
+    val.department_id =  department.value
+    
+    try{
+      
+      const res = await evaluateeStore.saveEvaluatee(val);
+      console.log(res);
+
+    }catch(e){
+      console.log(e);
+      status.value = e.response.status
+      message.value = e.response.data.message
+    }
 
   // name.value = ''
   // errors.value.class = ''personelType.value != 1

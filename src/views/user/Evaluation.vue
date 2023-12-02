@@ -2,21 +2,28 @@
   <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full text-center">
     <div class="header pl-2 md:py-6 bg-sky-900 text-white text-center">
       <span class="md:hidden flex pt-2">
-        <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
-      </span> 
+        <i
+          class="bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2"
+          @click="drawer.toggle"
+        ></i>
+      </span>
       <div class="font-bold p-1 text-[30px]">
         <h1 class="header-name">Evaluation for: {{ name }}</h1>
       </div>
-      <div class="empty pb-4 md:pb-0">
-      </div>
+      <div class="empty pb-4 md:pb-0"></div>
     </div>
     <div v-if="showProfileCards" class="min-h-[44rem] card overflow-x-auto">
-      <div class="selectTags flex p-4">       
-       <div>
-          <SelectEntity :entities="entities" :entity="entity" @handleSelect="handleEntity"/>        
+      <div class="selectTags flex p-4">
+        <div>
+          <SelectEntity
+            :entities="entities"
+            :entity="entity"
+            @handleSelect="handleEntity"
+          />
         </div>
         <div>
-          <SelectDepartment v-if="entity === 'instructor'"
+          <SelectDepartment
+            v-if="entity === 'instructor'"
             :departments="departments"
             :selectDepartment="selectDepartment"
             @handleSelectedDepartment="handleSelectedDepartment"
@@ -41,9 +48,7 @@
           @selectedEvaluatee="selectEvaluatee"
         />
       </div>
-      <div v-else-if="isDoneRating">
-        Done Rating
-      </div>
+      <div v-else-if="isDoneRating">Done Rating</div>
       <div v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20">
         <div class="loader3 mt-10 pt-24">
           <div class="circle1">
@@ -124,7 +129,7 @@ import FooterCard from "../../components/FooterCard.vue";
 import { useAuthStore } from "../../stores/auth";
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { useQuestionaireStore } from "../../stores/questionaire";
-import { onBeforeMount,onMounted, ref, computed } from "vue";
+import { onBeforeMount, onMounted, ref, computed } from "vue";
 import { useRatingStore } from "../../stores/rating";
 import { useDrawerStore } from "../../stores/drawerStore";
 import { useEntityStore } from "../../stores/entity";
@@ -133,13 +138,13 @@ import SelectJobType from "../../components/SelectJobType.vue";
 import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectEntity from "../../components/SelectEntity.vue";
 
-const entityStore = useEntityStore()
-const departmentStore = useDepartmentStore()
+const entityStore = useEntityStore();
+const departmentStore = useDepartmentStore();
 const drawer = useDrawerStore();
 const userStore = useAuthStore();
 const evaluateeStore = useEvaluateeStore();
 const questionaireStore = useQuestionaireStore();
-const {  errors } = userStore;
+const { errors } = userStore;
 const ratingStore = useRatingStore();
 const selectedEvaluatee = ref("");
 const selectedRatings = ref([]);
@@ -153,63 +158,60 @@ const selectDepartment = ref("All");
 const entity = ref("All");
 const entities = ref([]);
 const departments = ref([]);
-const user= ref([]);
+const user = ref([]);
 const isDoneRating = ref(false);
 const showLoadingAnimations = ref(true);
-const selectEvaluatee = async (id) => {
 
+const selectEvaluatee = async (id) => {
   const evaluatee = evaluatees.value.find((obj) => obj.id === id);
   await questionaireStore.fetchQuestionaireForEvaluatee(evaluatee.entity.id);
   questionaire.value = questionaireStore.questionaireForEvaluatee;
-  if(questionaire.value){
+  if (questionaire.value) {
     selectedEvaluatee.value = evaluatee;
     localStorage.setItem("selectedEvaluatee", JSON.stringify(evaluatee));
     name.value = evaluatee.name;
     showProfileCards.value = false;
-      window.scrollTo({
+    window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
-  }else{
-    alert('No questionaire for this instructor')
+  } else {
+    alert("No questionaire for this instructor");
   }
-
 };
 
-const handleBackButton = async() => {
-  if(selectedRatings.value.length > 0) {
-    if(confirm('Changes you made may not be saved.') == true){
+const handleBackButton = async () => {
+  if (selectedRatings.value.length > 0) {
+    if (confirm("Changes you made may not be saved.") == true) {
       clearLocalStorage();
       name.value = "";
       showProfileCards.value = true;
-      showProfileCard.value = false
-      if(evaluatees.value.length == 0) {
-          if(!user.value.id_numbe  ){
-            await userStore.fetchUser();
-            user.value = userStore.user
-          }
-          await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
-          evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
-      }
-      showProfileCard.value = true;
-    }
-  }else{
-    localStorage.removeItem("selectedEvaluatee");
-    name.value = "";
-    showProfileCards.value = true;
-    showProfileCard.value = false
-    if(evaluatees.value.length == 0) {
-        if(!user.value.id_numbe  ){
+      showProfileCard.value = false;
+      if (evaluatees.value.length == 0) {
+        if (!user.value.id_numbe) {
           await userStore.fetchUser();
-          user.value = userStore.user
+          user.value = userStore.user;
         }
         await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
         evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
+      }
+      showProfileCard.value = true;
+    }
+  } else {
+    localStorage.removeItem("selectedEvaluatee");
+    name.value = "";
+    showProfileCards.value = true;
+    showProfileCard.value = false;
+    if (evaluatees.value.length == 0) {
+      if (!user.value.id_numbe) {
+        await userStore.fetchUser();
+        user.value = userStore.user;
+      }
+      await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
+      evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
     }
     showProfileCard.value = true;
   }
-
-
 };
 const isSubmitButtonEnabled = computed(() => {
   if (!questionaire.value || !questionaire.value.criterias) {
@@ -270,7 +272,7 @@ const updateSelectedRatings = (val) => {
   }
 };
 
-const handleEntity = (val)=>{
+const handleEntity = (val) => {
   entity.value = val;
   evaluatees.value = evaluateeStore.filterEvaluatees(
     entity.value,
@@ -278,8 +280,7 @@ const handleEntity = (val)=>{
     selectTypeJob.value,
     "evaluations"
   );
-
-}
+};
 
 const handleSelectedDepartment = (departmentName) => {
   selectDepartment.value = departmentName;
@@ -301,28 +302,32 @@ const handleJobTypeSelected = (val) => {
   );
 };
 
-const clearLocalStorage = ()=>{
+const clearLocalStorage = () => {
   const keys = Object.keys(localStorage);
-    const keepKeys = ["instructors", "questionaires","entities","departments","jwt_token"];
-    for (const key of keys) {
-      if (keepKeys.includes(key)) {
-        continue;
-      }
-      localStorage.removeItem(key);
+  const keepKeys = [
+    "instructors",
+    "questionaires",
+    "entities",
+    "departments",
+    "jwt_token",
+  ];
+  for (const key of keys) {
+    if (keepKeys.includes(key)) {
+      continue;
     }
-}
+    localStorage.removeItem(key);
+  }
+};
 
-
-onBeforeMount(async()=>{
-  if(!localStorage.getItem('entities')){
+onBeforeMount(async () => {
+  if (!localStorage.getItem("entities")) {
     await entityStore.fetchAllEntity();
   }
   entities.value = entityStore.entities;
-  if(!localStorage.getItem("departments")){
+  if (!localStorage.getItem("departments")) {
     await departmentStore.getDepartments();
   }
   departments.value = departmentStore.departments;
-
 });
 
 onMounted(async () => {
@@ -364,18 +369,17 @@ onMounted(async () => {
     name.value = selectedEvaluatee.value.name;
     showProfileCards.value = false;
   } else {
-    
-    user.value = userStore.user
+    user.value = userStore.user;
     await evaluateeStore.fetchEvaluateesToRate(user.value.id_number);
     evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
-    if(evaluatees.value.length > 0){
+    if (evaluatees.value.length > 0) {
       showProfileCard.value = true;
-    }else{
+    } else {
       isDoneRating.value = true;
-      console.log(isDoneRating)
     }
-
   }
+
+  console.log("yawa");
 });
 </script>
 

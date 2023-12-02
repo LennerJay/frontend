@@ -76,7 +76,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
       try{
 
         const {data} = await getUserInfo(user);
-        userInfo.value = data
+        userInfo.value = data.data
         errors.value = []
       } catch($e){
         userInfo.value = []
