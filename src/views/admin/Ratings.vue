@@ -1,5 +1,5 @@
 <template>
-    <div class="main-container md:ml-[250px] w-full h-screen w-screen">
+    <div class="md:ml-[250px] w-full h-screen">
         <div class="header-container">
             <header id="main-header">
                 <h1>Ratings</h1>
@@ -8,10 +8,6 @@
         </div><!-- End of header-container -->
 
         <A_Commitment />
-        <B_Knowledge />
-        <C_Teaching />
-        <D_Management />
-        <E_Personality />
         <FooterCard />
 
     </div><!-- End of main-container -->
@@ -21,10 +17,6 @@
 
     /* Code Blocks Here */
     import A_Commitment from "../../components/A_Commitment.vue";
-    import B_Knowledge from "../../components/B_Knowledge.vue";
-    import C_Teaching from "../../components/C_Teaching.vue";
-    import D_Management from "../../components/D_Management.vue";
-    import E_Personality from "../../components/E_Personality.vue";
     import FooterCard from "../../components/footercard.vue";
 
 </script>
