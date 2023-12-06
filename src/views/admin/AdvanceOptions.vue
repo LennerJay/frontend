@@ -1,5 +1,5 @@
 <template>
-   <div class="main-container md:ml-[250px] w-full h-screen w-screen">
+   <div class="md:ml-[250px] w-full h-screen w-screen">
         <div class="header-container">
             <header id="main-header">
                 <h1>Advance Options</h1>

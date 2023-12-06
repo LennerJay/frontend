@@ -60,3 +60,9 @@
     width: 100%;
     margin: auto;
 }
+
+@media screen and (max-width: 768px) {
+    .ratings-container .main-table {
+        overflow: scroll;
+    }
+}
