@@ -378,8 +378,6 @@ onMounted(async () => {
       isDoneRating.value = true;
     }
   }
-
-  console.log("yawa");
 });
 </script>
 

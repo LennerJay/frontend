@@ -5,10 +5,10 @@ import SideBar from "@/components/SideBar.vue";
 import LoadingAnimation from "./components/LoadingAnimation.vue";
 
 const route = useRoute();
-const showSideBar = ref();
+const showSideBar = ref(false);
 
 watch(route, (to) => {
-  if (to.path === "/login" || to.path === "/about-us") {
+  if (to.path == "/login" || to.path == "/about-us") {
     showSideBar.value = false;
   } else {
     showSideBar.value = true;
@@ -18,16 +18,17 @@ watch(route, (to) => {
 
 <template>
   <div class="flex font-poppins">
-    <SideBar v-if="showSideBar" />
-
+    <Transition name="fade" mode="out-in">
+      <SideBar v-if="showSideBar" />
+    </Transition>
     <router-view v-slot="{ Component }">
       <Transition name="fade" mode="out-in">
         <component :is="Component" />
       </Transition>
     </router-view>
+    <!-- <router-view></router-view> -->
   </div>
 </template>
-
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
@@ -38,5 +39,4 @@ watch(route, (to) => {
 .fade-leave-to {
   opacity: 0;
 }
-
 </style>

@@ -18,22 +18,23 @@ export const useAuthStore = defineStore('authStore', ()=>{
   }else{
     localStorage.clear();
     isLoggedIn.value = false;
+    isAdminStaff.value = false;
   }
   watch(
     token,
     (tokenVal)=>{
-      localStorage.setItem('jwt_token', tokenVal +'.'+ btoa(user.value.role.name)) 
+      localStorage.setItem('jwt_token', tokenVal + '.' + btoa(user.value.role.name)) 
     }
   );
   
     const fetchUser = async ()=>{
       const {data,status}  = await getUser();
-    
-      if(status === 200){
-        user.value = await data;
-      }else{
-        errors.value = data
-      }
+    console.log(data)
+      // if(status === 200){
+      //   user.value =  data.user;
+      // }else{
+      //   errors.value = data
+      // }
     }
     
     const handleLogin = async (credentials) => {
@@ -44,17 +45,17 @@ export const useAuthStore = defineStore('authStore', ()=>{
               isLoggedIn.value = true;
               token.value = res.data.token  ;
               user.value = res.data.user ;
-              isAdminStaff.value = user.value.role.name ==='admin'
+              isAdminStaff.value = user.value.role.name === 'admin'
               errors.value = [];
             }
-            // console.log(res)
+      
         } catch (error) {
+          isLoggedIn.value = false;
            if(error.response.status == 422){
             errors.value =  error.response.data.errors
            }else{
             errors.value =  error.response
            }
-           console.log(errors.value)
         }
 
     };
