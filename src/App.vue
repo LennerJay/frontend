@@ -2,7 +2,6 @@
 import { RouterView, useRoute } from "vue-router";
 import { ref, watch } from "vue";
 import SideBar from "@/components/SideBar.vue";
-import LoadingAnimation from "./components/LoadingAnimation.vue";
 
 const route = useRoute();
 const showSideBar = ref(false);
@@ -18,15 +17,15 @@ watch(route, (to) => {
 
 <template>
   <div class="flex font-poppins">
+    <!-- <RouterView /> -->
     <Transition name="fade" mode="out-in">
       <SideBar v-if="showSideBar" />
     </Transition>
-    <!-- <router-view v-slot="{ Component }">
-      <Transition name="fade" mode="out-in">
+    <router-view v-slot="{ Component }">
+      <Transition name="fade">
         <component :is="Component" />
       </Transition>
-    </router-view> -->
-    <router-view></router-view>
+    </router-view>
   </div>
 </template>
 <style scoped>
