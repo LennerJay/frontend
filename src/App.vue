@@ -21,12 +21,12 @@ watch(route, (to) => {
     <Transition name="fade" mode="out-in">
       <SideBar v-if="showSideBar" />
     </Transition>
-    <router-view v-slot="{ Component }">
+    <!-- <router-view v-slot="{ Component }">
       <Transition name="fade" mode="out-in">
         <component :is="Component" />
       </Transition>
-    </router-view>
-    <!-- <router-view></router-view> -->
+    </router-view> -->
+    <router-view></router-view>
   </div>
 </template>
 <style scoped>

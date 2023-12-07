@@ -110,11 +110,11 @@ const adminStaffComponent = [
 ];
 
 const handleLogout = async () => {
-
-    await store.handleLogout();
-    localStorage.clear();
-    store.isLoggedIn = false
-    router.push("/login");
+  await store.get;
+  await store.handleLogout();
+  localStorage.clear();
+  store.isLoggedIn = false;
+  router.push("/login");
 };
 
 const showToggle = () => {
