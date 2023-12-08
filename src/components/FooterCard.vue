@@ -27,7 +27,7 @@
             <!-- End of contact-location -->
           </div>
           <!-- End of left-side content -->
-          <div class="bookmarks">
+          <div v-if="showBookmarks" class="bookmarks">
             <a href="#">Dashboard</a>
             <a href="#">Evaluatees</a>
             <a href="#">Evaluation</a>
@@ -80,7 +80,7 @@
     </div>
     <!-- End of main-content -->
     <div class="copyrights">
-      <p>&copy; All Rights Reserved 2023 - 2024</p>
+      <p>&copy; All Rights Reserved {{ currentYear }} - {{ currentYear + 1 }}</p>
       <p>Developed by Group Tactical Minds</p>
     </div>
     <!-- End of copyrights -->
@@ -88,7 +88,23 @@
   <!-- End of main-container -->
 </template>
 
-<script></script>
+<script setup>
+import { useRoute } from "vue-router";
+import { ref, onMounted } from "vue";
+const currentYear = ref(null);
+const showBookmarks = ref(false);
+
+const route = useRoute();
+
+onMounted(() => {
+  const date = new Date();
+  currentYear.value = date.getFullYear();
+  console.log(route.path);
+  if (route.path != "/login") {
+    showBookmarks.value = true;
+  }
+});
+</script>
 
 <style scoped>
 * {

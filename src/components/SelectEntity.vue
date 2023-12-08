@@ -15,7 +15,7 @@
       <option value="All">All</option>
       <option
         v-for="(entity, entityIndex) in entities"
-        :key="entityIndex"
+        :key="entity + entityIndex"
         :value="entity.entity_name"
       >
         {{ entity.entity_name }}
@@ -29,13 +29,11 @@ import { ref, computed } from "vue";
 
 const props = defineProps({
   entity: String,
-  entities:Object
+  entities: Object,
 });
 
 const entity = ref(props.entity);
 const isEvaluateeRoute = computed(() => route.name === "evaluatees");
-
-
 </script>
 
 <style lang="scss" scoped></style>

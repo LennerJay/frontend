@@ -142,6 +142,7 @@ const isInstructor = ref(false);
 const departments = ref([]);
 const entities = ref([]);
 const noData = ref(false);
+const evaluateeClasses = ref([]);
 const loadedData = () => {
   isLoaded.value = false;
   // setTimeout(() => {
@@ -160,6 +161,25 @@ const selectedEvaluatee = async (id) => {
   await evaluateeStore.fetchEvaluateeInfo(id);
   if (Object.keys(evaluateeStore.infoErrors).length == 0) {
     evaluateeInfo.value = evaluateeStore.evaluateeInfo;
+    const klasses = evaluateeStore.groupByDepartment(
+      evaluateeInfo.value.classes,
+      (klass) => klass.department
+    );
+    console.log(typeof klasses);
+    // klasses.forEach((element) => {
+    //   console.log(element);
+    // });
+    // console.log(klasses);
+    // evaluateeClasses.value.push(klasses);
+    // console.log(evaluateeClasses.value);
+    // klasses.forEach((department) => {
+    //   const subjects = evaluateeStore.groupByDepartment(
+    //     department,
+    //     (klass) => klass.subject
+    //   );
+    //   evaluateeClasses.value.push(subjects);
+    // });
+    // console.log(evaluateeClasses.value);
     if (evaluateeInfo.value.entity_name === "instructor") {
       isInstructor.value = true;
     }
@@ -170,6 +190,9 @@ const selectedEvaluatee = async (id) => {
 };
 
 const handleSelectEntity = (val) => {
+  if (val != "instructor") {
+    selectDepartment.value = "All";
+  }
   entity.value = val;
   evaluatees.value = evaluateeStore.filterEvaluatees(
     entity.value,
@@ -191,6 +214,7 @@ const handleSelectedDepartment = (departmentName) => {
 
 const handleJobTypeSelected = (val) => {
   selectTypeJob.value = val;
+
   evaluatees.value = evaluateeStore.filterEvaluatees(
     entity.value,
     selectDepartment.value,
@@ -228,7 +252,6 @@ onBeforeMount(async () => {
     selectTypeJob.value,
     "evaluatees"
   );
-  console.log(entities.value);
   showEvaluatee.value = true;
 
   loadedData();

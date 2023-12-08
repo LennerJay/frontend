@@ -14,12 +14,19 @@
           <span>Name : </span>{{ evaluatee.name.split(" ").slice(0, 2).join(" ") }}
         </div>
         <div
-          v-for="(departments, index) in evaluatee.departments"
-          :key="index"
           class="text-[15px] ml-2 mt-2 md:w-52 rounded-2xl h-6 bg-sky-950 text-white details"
+          v-if="evaluatee.departments.length > 0"
         >
           <span>Department : </span>
-          <span> {{ capitalizeFirstLetter(departments) }}</span>
+          <span v-for="(department, index) in evaluatee.departments" :key="index">{{
+            department.toUpperCase()
+          }}</span>
+        </div>
+        <div
+          v-else
+          class="text-[15px] ml-2 mt-2 md:w-52 rounded-2xl h-6 bg-sky-950 text-white details"
+        >
+          {{ evaluatee.entity_name }}
         </div>
         <div
           class="text-[15px] ml-2 pb-2 mt-2 md:w-52 rounded-2xl h-6 bg-sky-950 text-white details"
@@ -44,9 +51,6 @@ const props = defineProps({
 
 const modalStore = userModalStore();
 const selectedEvaluatee = computed(() => modalStore.selectedEvaluatee);
-const capitalizeFirstLetter = (str) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
 
 const handleClick = (evaluatee_id) => {
   emit("selectedEvaluatee", evaluatee_id);

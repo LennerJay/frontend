@@ -11,17 +11,17 @@
         <div class="mb-4 flex flex-col">
             <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2">Details</h2>
             <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
-                <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name.split(' ').slice(0, 2).join(' ') }}</span>
+                <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name }}</span>
                 <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Part time':'Full Time' }}</span>
                 <span>Personnel Type: {{ evaluateeInfo.entity_name }}</span>
-                <span v-if="isInstructor"><i class="bi bi-bank2 mr-1"></i>Department : <span v-for="department in evaluateeInfo.departments" >{{ department }}</span></span>
+                <span v-if="isInstructor"><i class="bi bi-bank2 mr-1"></i>Department : <span v-for="department in evaluateeInfo.instructorsDepartments" >{{ department.toUpperCase() }}</span></span>
               </div>
         </div>
 
         <!-- Modal Body -->
           <div v-if="isInstructor" class="mb-4">
             
-            <table class="max-w-screen w-full border" v-for="(klass,klassIndex) in evaluateeInfo.klasses" :key="klassIndex">
+            <table class="max-w-screen w-full border" v-for="(klass,klassIndex) in evaluateeInfo.classes" :key="klassIndex">
             <caption>{{ klass.department }}</caption>
               <thead>
                 <tr>
@@ -78,7 +78,7 @@
 </div>
 </template>
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useEvaluateeStore } from '../stores/evaluatee';
 import { useRoute } from 'vue-router';
 
@@ -97,14 +97,9 @@ const closeModal = () => {
   // Emit an event to inform the parent component to close the modal
   emits('close-modal');
 };
-const capitalizeFirstLetter = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-};
 const isHistoryRoute = computed(() => route.name === 'history');
 
-onMounted(()=>{
-  
-})
+
 </script>
 
 <style scoped>

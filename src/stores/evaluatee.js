@@ -21,6 +21,8 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         try{
             const {data} = await getEvaluateeInfo(id)
             evaluateeInfo.value = data.data
+            // groupByDepartment(evaluateeInfo.value)
+            console.log(evaluateeInfo.value)
             infoErrors.value = []
         }catch(e){
             evaluateeInfo.value =[]
@@ -33,7 +35,6 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         try{
             const { data } = await getAllEvaluatees(userId);
             allEvaluatees.value = data.data
-            console.log(data)
             errors.value = []
         }catch(e){
             allEvaluatees.value = []
@@ -123,6 +124,14 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
 
     }
 
+    const groupByDepartment = (values, keySelector) => {
+        return values.reduce(function (accumulator, current) {
+            const key = keySelector(current);
+            (accumulator[key] = accumulator[key] || []).push(current);
+            return accumulator;
+          }, {});
+    }
+
     return {
         evaluateeInfo,
         infoErrors,
@@ -138,6 +147,7 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         fetchEvaluateeInfo,
         errors,
         status,
-        removeEvaluate
+        removeEvaluate,
+        groupByDepartment
     }
 })
