@@ -21,22 +21,22 @@
         <!-- Modal Body -->
           <div v-if="isInstructor" class="mb-4">
             
-            <table class="max-w-screen w-full border" v-for="(klass,klassIndex) in evaluateeInfo.classes" :key="klassIndex">
-            <caption>{{ klass.department }}</caption>
+            <table class="max-w-screen w-full border" v-for="(evaluateeClass,classesIndex) in evaluateeClasses" :key="classesIndex">
+            <caption>{{ evaluateeClass.department }}</caption>
               <thead>
                 <tr>
                   <th class="border">Subject</th>
                   <th class="border">Sections</th>
-                  <th class="border">Schedule</th>
+                  <th class="border">Day</th>
                   <th class="border">Time</th>
                 </tr>
               </thead>
-              <tbody class="text-center">
-                <tr v-for="(section,sectionIndex) in klass.sections" :key="sectionIndex">
-                  <td v-if="sectionIndex === 0" :rowspan="klass.sections.length">{{ klass.subject }}</td>
-                  <td>{{ section.section_year }}</td>
-                  <td>{{ section.day }}</td>
-                  <td>{{ section.time }}</td>
+              <tbody class="text-center" v-for="(klasses,classIndex) in evaluateeClass.classes" :key="classIndex">
+                <tr v-for="(klass,klassKey) in klasses">
+                  <td v-if="klassKey === 0" :rowspan="klasses.length ">{{ klass.subject }}</td>
+                 <td>{{ klass.section_year }}</td>
+                 <td>{{ klass.day }}</td>
+                 <td>{{ klass.time }}</td>
                 </tr>
               </tbody>
             </table>
@@ -90,6 +90,7 @@ const props = defineProps([
                 'selectedEvaluteeId',
                 'showDetail',
                 'noData',
+                'evaluateeClasses'
               ]);
 const emits = defineEmits(['close-modal'])
 

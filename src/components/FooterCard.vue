@@ -99,7 +99,6 @@ const route = useRoute();
 onMounted(() => {
   const date = new Date();
   currentYear.value = date.getFullYear();
-  console.log(route.path);
   if (route.path != "/login") {
     showBookmarks.value = true;
   }

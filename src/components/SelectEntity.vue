@@ -15,7 +15,7 @@
       <option value="All">All</option>
       <option
         v-for="(entity, entityIndex) in entities"
-        :key="entity + entityIndex"
+        :key="entityIndex"
         :value="entity.entity_name"
       >
         {{ entity.entity_name }}

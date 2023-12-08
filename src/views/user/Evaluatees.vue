@@ -60,6 +60,7 @@
           :noData="noData"
           :isInstructor="isInstructor"
           :showDetail="showDetail"
+          :evaluateeClasses="evaluateeClasses"
           :evaluateeInfo="evaluateeInfo"
           @close-modal="closeModal"
           class="modal-box"
@@ -160,26 +161,24 @@ const selectedEvaluatee = async (id) => {
   noData.value = false;
   await evaluateeStore.fetchEvaluateeInfo(id);
   if (Object.keys(evaluateeStore.infoErrors).length == 0) {
+    evaluateeClasses.value = [];
     evaluateeInfo.value = evaluateeStore.evaluateeInfo;
     const klasses = evaluateeStore.groupByDepartment(
       evaluateeInfo.value.classes,
       (klass) => klass.department
     );
-    console.log(typeof klasses);
-    // klasses.forEach((element) => {
-    //   console.log(element);
-    // });
-    // console.log(klasses);
-    // evaluateeClasses.value.push(klasses);
-    // console.log(evaluateeClasses.value);
-    // klasses.forEach((department) => {
-    //   const subjects = evaluateeStore.groupByDepartment(
-    //     department,
-    //     (klass) => klass.subject
-    //   );
-    //   evaluateeClasses.value.push(subjects);
-    // });
-    // console.log(evaluateeClasses.value);
+    for (const klass in klasses) {
+      const newValue = evaluateeStore.groupByDepartment(
+        klasses[klass],
+        (klass) => klass.subject
+      );
+      evaluateeClasses.value.push({
+        department: klass,
+        classes: newValue,
+      });
+    }
+    console.log(evaluateeClasses.value);
+
     if (evaluateeInfo.value.entity_name === "instructor") {
       isInstructor.value = true;
     }
