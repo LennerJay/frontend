@@ -33,7 +33,7 @@
               </thead>
               <tbody class="text-center" v-for="(klasses,classIndex) in evaluateeClass.classes" :key="classIndex">
                 <tr v-for="(klass,klassKey) in klasses">
-                  <td v-if="klassKey === 0" :rowspan="klasses.length ">{{ klass.subject }}</td>
+                 <td v-if="klassKey === 0" :rowspan="klasses.length ">{{ klass.subject }}</td>
                  <td>{{ klass.section_year }}</td>
                  <td>{{ klass.day }}</td>
                  <td>{{ klass.time }}</td>
