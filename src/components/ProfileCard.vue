@@ -11,7 +11,7 @@
         <div
           class="text-[15px] ml-2 pb-2 md:w-52 rounded-2xl h-6 bg-sky-950 text-white details"
         >
-          <span>Name : </span>{{ evaluatee.name.split(" ").slice(0, 2).join(" ") }}
+          <span>Name: </span> {{ evaluatee.name.split(" ").slice(0, 2).join(" ") }}
         </div>
         <div
           class="text-[15px] ml-2 mt-2 md:w-52 rounded-2xl h-6 bg-sky-950 text-white details"

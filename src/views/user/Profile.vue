@@ -37,28 +37,28 @@
                   Cordova Public College
                 </h1>
                 <h2 class="text-2xl text-white font-bold mt-2">
-                  {{ user.infos.fullname }}
+                  {{ user.fullname }}
                 </h2>
                 <p class="text-md text-white mt-2">Student ID: {{ user.id_number }}</p>
                 <h2 class="text-base md:text-xl text-white font-bold">
-                  Course: {{ user.infos.course }}
+                  Course: {{ user.course }}
                 </h2>
                 <h3 class="text-base md:text-xl text-white font-bold">
-                  <span v-for="(ys, index) in user.year_sections" :key="index">
-                    Section: {{ ys.year_section }}
+                  <span v-for="(ys, index) in user.section_yaers" :key="index">
+                    Section: {{ ys }}
                   </span>
                 </h3>
                 <ul class="flex flex-row mt-2 items-center justify-center">
                   <li class="mx-2 text-white hover:text-sky-600">
                     <a href="" target="_blank" aria-label="mobile_number">
                       <i class="fas fa-mobile-alt marker:mr-2 h-6 pr-2"></i
-                      >{{ user.infos.mobile_number }}
+                      >{{ user.mobile_number }}
                     </a>
                   </li>
                   <li class="mx-2 text-white hover:text-sky-600">
                     <a href="" target="_blank" aria-label="email">
                       <i class="fas fa-envelope h-6 mr-2"></i>Email:
-                      {{ user.infos.email }}
+                      {{ user.email }}
                     </a>
                   </li>
                 </ul>
@@ -69,8 +69,15 @@
             class="max-w-full items-center flex overflow-x-auto border-2 shadow-md rounded-2xl"
           >
             <table
+              v-for="(userClass, classIndex) in userClasses"
+              :key="classIndex"
               class="w-full text-sm text-left rtl:text-right text-black dark:text-gray-400 border bg-white"
             >
+              <caption class="text-white">
+                {{
+                  userClass.department
+                }}
+              </caption>
               <thead
                 class="text-xs text-gray-700 uppercase bg-sky-950 shadow-inner shadow-sky-950 md:text-left text-center"
               >
@@ -81,39 +88,23 @@
                   <th scope="col" class="py-2">Instructor</th>
                 </tr>
               </thead>
-              <tbody class="md:text-left text-center">
+              <tbody
+                class="md:text-left text-center"
+                v-for="(klasses, klassIndex) in userClass.classes"
+                :key="klassIndex"
+              >
                 <tr
                   class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border dark:border-gray-700"
-                  v-for="(yearSection, index) in user.year_sections"
-                  :key="index"
+                  v-for="(klass, klassIndex) in klasses"
+                  :key="klassIndex"
                 >
-                  <td
-                    class="py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    <span v-for="(classLoad, index) in yearSection.classes" :key="index">
-                      {{ capitalizeFirstLetter(classLoad.subject.name) }}
-                      <!-- Add a line break if there are multiple subjects -->
-                      <br v-if="index < yearSection.classes.length - 1" />
-                    </span>
+                  <td class="td" v-if="klassIndex === 0" :rowspan="klasses.length">
+                    {{ klass.subject }}
                   </td>
-                  <td class="border">
-                    <span v-for="(classLoad, index) in yearSection.classes" :key="index">
-                      {{ classLoad.schedule.day.toUpperCase() }}
-                      <br v-if="index < yearSection.classes.length - 1" />
-                    </span>
-                  </td>
-                  <td class="border">
-                    <span v-for="(classLoad, index) in yearSection.classes" :key="index">
-                      {{ classLoad.schedule.time.toUpperCase() }}
-                      <br v-if="index < yearSection.classes.length - 1" />
-                    </span>
-                  </td>
-                  <td class="border">
-                    <span v-for="(classLoad, index) in yearSection.classes" :key="index">
-                      {{ classLoad.evaluatee.name }}
-                      <br v-if="index < yearSection.classes.length - 1" />
-                    </span>
-                  </td>
+
+                  <td class="td">{{ klass.day }}</td>
+                  <td class="td">{{ klass.time }}</td>
+                  <td class="td">{{ klass.evaluatee_name }}</td>
                 </tr>
               </tbody>
             </table>
@@ -169,32 +160,49 @@ import { onMounted, ref, computed } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import FooterCard from "../../components/FooterCard.vue";
 import { useDrawerStore } from "../../stores/drawerStore";
+import { useEvaluateeStore } from "../../stores/evaluatee";
 
+const evaluateeStore = useEvaluateeStore();
+const drawer = useDrawerStore();
 const userStore = useAuthStore();
 const user = ref({});
 const showProfile = ref(false);
-const drawer = useDrawerStore();
+const userClasses = ref([]);
 
 const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
 onMounted(async () => {
-  await userStore.fetchUserInfo();
+  if (userStore.userInfo.length == 0) {
+    await userStore.fetchUserInfo();
+  }
 
   user.value = userStore.userInfo;
-
-  console.log(user.value);
-  // showProfile.value = true;
-  //  console.log(!!userStore.userInfo)
-  //  if(!!userStore.userInfo){
-  //     user.value = userStore.userInfo
-  //     showProfile.value = true
-  //  }
+  console.log(userStore.userInfo);
+  showProfile.value = true;
+  const klasses = evaluateeStore.groupByDepartment(
+    user.value.classes,
+    (klass) => klass.department
+  );
+  for (const klass in klasses) {
+    const newValue = evaluateeStore.groupByDepartment(
+      klasses[klass],
+      (klass) => klass.subject
+    );
+    userClasses.value.push({
+      department: klass,
+      classes: newValue,
+    });
+  }
+  console.log(userClasses.value);
 });
 </script>
 
 <style scoped>
+.td {
+  @apply py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white;
+}
 .header {
   @apply py-4 px-6 text-left text-gray-400 font-bold uppercase;
 }

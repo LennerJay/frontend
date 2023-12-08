@@ -4,12 +4,12 @@ import {  csrfCookie, login, logout, getUser,getUserInfo ,test,testCreateApi} fr
 
 
 export const useAuthStore = defineStore('authStore', ()=>{
-    const user = ref({})
+    const user = ref([])
     const errors = ref([])
     const isAdminStaff = ref(false)
     const isLoggedIn = ref(false)
     const token = ref([]);
-    const userInfo = ref({});
+    const userInfo = ref([]);
 
   if(localStorage.getItem('jwt_token')){
       isLoggedIn.value = true;
@@ -28,13 +28,14 @@ export const useAuthStore = defineStore('authStore', ()=>{
   );
   
     const fetchUser = async ()=>{
-      const {data,status}  = await getUser();
-    console.log(data)
-      // if(status === 200){
-      //   user.value =  data.user;
-      // }else{
-      //   errors.value = data
-      // }
+      try{
+        const {data,status}  = await getUser();
+        user.value = data
+        errors.value = []
+      }catch(e){
+        errors.value = e
+        user.value = []
+      }
     }
     
     const handleLogin = async (credentials) => {

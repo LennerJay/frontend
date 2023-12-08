@@ -9,7 +9,7 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const savingErrors = ref([]);
     const allEvaluatees = ref([]);
     const allEvaluated = ref([]);
-    const evaluateesToRate = ref({})
+    const evaluateesToRate = ref([])
     const infoErrors = ref([])
     const evaluateeInfo = ref([])
 
@@ -59,13 +59,15 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     // );
 
     const filterEvaluatees = (entity, departmentName,jobType,path=null)=>{
-        const evaluatees = ref(); 
+        const evaluatees = ref([]); 
             if(path === 'evaluations'){
                 evaluatees.value = evaluateesToRate.value
             }else{
                 evaluatees.value = allEvaluatees.value
             }
-            
+            if(evaluatees.value.length == 0){
+                return;
+            }
             if(entity !== "All"){
                 evaluatees.value = evaluatees.value.filter(evaluatee => evaluatee.entity_name === entity)
                 if(departmentName !== "All"){
@@ -89,10 +91,10 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     
       const isRatedEvaluatees = (isDone) => {
         if(!isDone){
-          return evaluateesToRate.value.filter(evaluatee => evaluatee.pivot.is_done === 0)
+          return evaluateesToRate.value.filter(evaluatee => evaluatee.is_done === 0)
         }
   
-        return evaluateesToRate.value.filter(evaluatee => evaluatee.pivot.is_done === 1)
+        return evaluateesToRate.value.filter(evaluatee => evaluatee.is_done === 1)
       }
 
     const removeEvaluate = async(userId) => {

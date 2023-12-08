@@ -77,8 +77,14 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         const id = {
             entity_id : entityId
         }
-        const {data} = await getQuestionaireForEvaluatee(id);
-        questionaireForEvaluatee.value = data.questionaires[0];
+        try{
+            const {data} = await getQuestionaireForEvaluatee(id);
+            questionaireForEvaluatee.value = data.data.questionaires[0];
+            errors.value = [];
+        }catch(e){
+            questionaireForEvaluatee.value = [];
+            errors.value = e;
+        }
     }
 
 

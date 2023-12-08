@@ -177,8 +177,6 @@ const selectedEvaluatee = async (id) => {
         classes: newValue,
       });
     }
-    console.log(evaluateeClasses.value);
-
     if (evaluateeInfo.value.entity_name === "instructor") {
       isInstructor.value = true;
     }

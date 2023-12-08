@@ -9,7 +9,7 @@ export const getAllEvaluated = user => api.post(resource + "/evaluated",user)
 
 export const getEvaluateeInfo = (evaluateeId) => api.post(resource + "/evaluatee-info",evaluateeId)
 
-export const getEvaluateesToRate = (userId) => api.post(resource + `/${userId}/evaluatees-to-rate`)
+export const getEvaluateesToRate = () => api.get(apiPath + '/users/evaluatees-to-rate')
 
 export const storeEvaluatee = (data) => api.post(resource,data)
 
