@@ -66,8 +66,9 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const handleLogout = async() => {
         await csrfCookie()
         await logout()
-        user.value = null
-        isAdminStaff.value = null
+        user.value = []
+        userInfo.value =[]
+        isAdminStaff.value = false
     };
 
     const fetchUserInfo = async(id) =>{

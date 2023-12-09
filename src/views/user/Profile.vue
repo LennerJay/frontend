@@ -177,9 +177,7 @@ onMounted(async () => {
   if (userStore.userInfo.length == 0) {
     await userStore.fetchUserInfo();
   }
-
   user.value = userStore.userInfo;
-  console.log(userStore.userInfo);
   showProfile.value = true;
   const klasses = evaluateeStore.groupByDepartment(
     user.value.classes,
@@ -195,7 +193,6 @@ onMounted(async () => {
       classes: newValue,
     });
   }
-  console.log(userClasses.value);
 });
 </script>
 

@@ -83,8 +83,12 @@ const store = useAuthStore();
 const drawer = useDrawerStore();
 
 onMounted(async () => {
-  //   await entityStore.fetchAllEntity();
-  //   await departmentStore.getDepartments();
+  if (entityStore.entities.length == 0) {
+    await entityStore.fetchAllEntity();
+  }
+  if (departmentStore.departments.length == 0) {
+    await departmentStore.getDepartments();
+  }
 });
 </script>
 

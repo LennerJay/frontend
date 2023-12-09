@@ -9,7 +9,6 @@ export const useEntityStore = defineStore('entityStore',()=>{
     const fetchAllEntity = async()=>{
         try{
             const {data} = await getAllEntity();
-            console.log(data);
             entities.value = data.data
             errors.value = [];
         }catch(e){

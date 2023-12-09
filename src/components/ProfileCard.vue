@@ -33,6 +33,11 @@
         >
           <span> {{ evaluatee.job_type == 0 ? "Part Time" : "Full Time" }}</span>
         </div>
+        <div v-if="evaluatee.is_done == 0">
+          Limit:{{ evaluatee.users_done_rating }} /
+          {{ getMaxRespondents(evaluatee.entity_name) }}
+        </div>
+        <div v-else>Rated on : {{ evaluatee.date_rated }}</div>
       </div>
     </div>
     <div class="card-effect"></div>
@@ -43,14 +48,20 @@
 import { ref, computed } from "vue";
 import { userModalStore } from "../stores/modalStore";
 
+const modalStore = userModalStore();
+const selectedEvaluatee = computed(() => modalStore.selectedEvaluatee);
 const emit = defineEmits(["selectedEvaluatee"]);
 const props = defineProps({
   evaluatee: Object,
   option: String,
+  maxRespondents: Object,
 });
 
-const modalStore = userModalStore();
-const selectedEvaluatee = computed(() => modalStore.selectedEvaluatee);
+const getMaxRespondents = (entity_name) => {
+  const res = props.maxRespondents.find((obj) => obj[entity_name]);
+  // return res;
+  return res[entity_name];
+};
 
 const handleClick = (evaluatee_id) => {
   emit("selectedEvaluatee", evaluatee_id);

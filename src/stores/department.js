@@ -6,7 +6,7 @@ import { getAllDepartments } from "../http/department-api"
 export const useDepartmentStore = defineStore('departmentStore',() =>{
 
     const departments = ref([]);
-    const errors = ref({});
+    const errors = ref([]);
     const getDepartments = async () =>{
         try{
             const {data}  = await getAllDepartments();

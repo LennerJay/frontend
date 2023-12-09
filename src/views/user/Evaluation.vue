@@ -44,6 +44,7 @@
           v-for="(evaluatee, index) in evaluatees"
           :evaluatee="evaluatee"
           :key="index"
+          :maxRespondents="maxRespondents"
           option="Select"
           @selectedEvaluatee="selectEvaluatee"
         />
@@ -160,6 +161,7 @@ const entities = ref([]);
 const departments = ref([]);
 const user = ref([]);
 const isDoneRating = ref(false);
+const maxRespondents = ref([]);
 const showLoadingAnimations = ref(true);
 
 const selectEvaluatee = async (id) => {
@@ -238,23 +240,23 @@ const handleSubmit = async () => {
     user_id: user.value.id_number,
     val: [...selectedRatings.value],
   };
-  console.log(value);
-  // console.log(selectedEvaluatee.value.id);
-  // await ratingStore.save(value);
-  // if (ratingStore.response.data.code === 201) {
-  //   clearLocalStorage();
-  //   selectedRatings.value = [];
-  //   evaluatees.value = evaluatees.value.filter( evaluatee => evaluatee.id !== selectedEvaluatee.value.id);
-  //   name.value = "";
-  //   alert('successfully RATED')
-  //   showProfileCards.value = true;
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: 'smooth'
-  //   });
-  // } else {
-  //   alert("something went wrong");
-  // }
+  await ratingStore.save(value);
+  if (ratingStore.response.data.success) {
+    clearLocalStorage();
+    selectedRatings.value = [];
+    evaluatees.value = evaluatees.value.filter(
+      (evaluatee) => evaluatee.id !== selectedEvaluatee.value.id
+    );
+    name.value = "";
+    alert("successfully RATED");
+    showProfileCards.value = true;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  } else {
+    alert("something went wrong");
+  }
 };
 
 const updateSelectedRatings = (val) => {
@@ -327,6 +329,10 @@ onBeforeMount(async () => {
 });
 
 onMounted(async () => {
+  if (questionaireStore.maxRespondents.length == 0) {
+    await questionaireStore.fetchMaxRespondents();
+  }
+  maxRespondents.value = questionaireStore.maxRespondents;
   if (localStorage.getItem("selectedEvaluatee")) {
     selectedEvaluatee.value = JSON.parse(localStorage.getItem("selectedEvaluatee"));
     if (localStorage.getItem("questionaire-for-evaluatee")) {
@@ -374,7 +380,9 @@ onMounted(async () => {
       showProfileCard.value = false;
     }
   }
-  await userStore.fetchUser();
+  if (userStore.user.length == 0) {
+    await userStore.fetchUser();
+  }
   user.value = userStore.user;
 });
 </script>

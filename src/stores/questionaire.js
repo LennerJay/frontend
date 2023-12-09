@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee } from "../http/questionaire-api";
+import { allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents } from "../http/questionaire-api";
 import { ref, watch } from "vue";
 
 export const useQuestionaireStore = defineStore('questionaireStore',()=>{
@@ -7,7 +7,7 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     const latestQuestionaire = ref([]);
     const errors = ref([]);
     const questionaireForEvaluatee = ref([]);
-
+    const maxRespondents= ref([]);
 
     const fetchQuestionaire = async ()=>{
         try{
@@ -42,6 +42,7 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         questionaireForEvaluatee.value = JSON.parse(localStorage.getItem('questionaire-for-evaluatee'))
     }
 
+
     watch(
         questionaires,
         (questionairesVal)=>{
@@ -72,7 +73,15 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         }
 
     );
-
+    // watch(
+    //     maxRespondents,
+    //     (maxRespondentsVal)=>{
+    //         localStorage.setItem('max-repondents',JSON.stringify(maxRespondentsVal))
+    //     },
+    //     {
+    //         deep:true
+    //     }
+    // )
     const fetchQuestionaireForEvaluatee = async(entityId)=>{
         const id = {
             entity_id : entityId
@@ -87,6 +96,16 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         }
     }
 
+    const fetchMaxRespondents = async()=>{
+      try{
+        const {data} = await getMaxRespondents();
+        maxRespondents.value = data.data
+        errors.value = []
+      }catch(e){
+        errors.value = e
+        maxRespondents.value= []
+      }
+    }
 
 
     return {
@@ -95,6 +114,8 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         latestQuestionaire,
         fetchLatestQuestionaire,
         questionaireForEvaluatee,
-        fetchQuestionaireForEvaluatee
+        fetchQuestionaireForEvaluatee,
+        fetchMaxRespondents,
+        maxRespondents
     }
 })
