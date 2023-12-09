@@ -8,7 +8,7 @@
                 :name="id"
                 :id="id"
                 :value="value"   
-                v-model="checked[value]" 
+                v-model="checked[value]"  
                 />
              
             <label
