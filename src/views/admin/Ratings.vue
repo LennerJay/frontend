@@ -24,7 +24,6 @@
 <style scoped>
 
     /* Code Blocks Here */
-
     .main-container {
         overflow-y: scroll;
     }
