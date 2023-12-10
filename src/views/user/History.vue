@@ -88,6 +88,7 @@ const isNoData = ref(false);
 const user = ref([]);
 
 onMounted(async () => {
+  console.log(evaluateeStore.evaluateesToRate.length);
   if (evaluateeStore.evaluateesToRate.length == 0) {
     await evaluateeStore.fetchEvaluateesToRate();
   }

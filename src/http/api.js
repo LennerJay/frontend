@@ -16,13 +16,17 @@ api.interceptors.request.use((config) => {
     // console.log(error)
     return Promise.reject(error);
 });
-// api.interceptors.response.use((response) => {
-//     // console.log(response)
-//     return response;
-// }, (error) => {
-//     // console.log(error.response)
-//     return Promise.reject(error);
-// });
+api.interceptors.response.use((response) => {
+    // console.log(response)
+    return response;
+}, (error) => {
+    console.log(error.response.status)
+    if(error.response.status == 401){
+        localStorage.removeItem('jwt_token')
+        window.location.reload();
+    }
+    return Promise.reject(error);
+});
 
 
 
