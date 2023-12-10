@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore ,getActivePinia  } from 'pinia';
 import { computed, ref,watch } from 'vue';
 import {  csrfCookie, login, logout, getUser,getUserInfo ,test,testCreateApi} from '../http/auth-api';
 
@@ -38,6 +38,9 @@ export const useAuthStore = defineStore('authStore', ()=>{
       }
     }
     
+
+
+
     const handleLogin = async (credentials) => {
         await csrfCookie();
         try {
@@ -60,15 +63,11 @@ export const useAuthStore = defineStore('authStore', ()=>{
         }
 
     };
-
-
-
     const handleLogout = async() => {
         await csrfCookie()
         await logout()
-        user.value = []
-        userInfo.value =[]
-        isAdminStaff.value = false
+        const pinia = getActivePinia()
+        pinia._s.forEach((store) => store.$reset())
     };
 
     const fetchUserInfo = async(id) =>{

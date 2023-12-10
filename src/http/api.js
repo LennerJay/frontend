@@ -17,14 +17,17 @@ api.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 api.interceptors.response.use((response) => {
-    // console.log(response)
+
+    if(response.config.url == 'api/auth/logout'){
+        window.location.href = '/login';
+    }
     return response;
 }, (error) => {
-    console.log(error.response.status)
     if(error.response.status == 401){
         localStorage.removeItem('jwt_token')
-        window.location.reload();
+        window.location.href = '/login';
     }
+    // console.log(error)
     return Promise.reject(error);
 });
 

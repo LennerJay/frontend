@@ -12,6 +12,7 @@
       </div>
       <div class="empty pb-4 md:pb-0"></div>
     </div>
+
     <div v-if="showProfileCards" class="min-h-[44rem] card overflow-x-auto">
       <div class="selectTags flex p-4">
         <div>
@@ -179,7 +180,7 @@ const selectEvaluatee = async (id) => {
       behavior: "smooth",
     });
   } else {
-    alert("No questionaire for this instructor");
+    alert("No questionaire available");
   }
 };
 
@@ -238,22 +239,24 @@ const handleSubmit = async () => {
   const value = {
     instructorId: selectedEvaluatee.value.id,
     user_id: user.value.id_number,
+    questionaire_id: questionaire.value.id,
     val: [...selectedRatings.value],
   };
   await ratingStore.save(value);
   if (ratingStore.response.data.success) {
     clearLocalStorage();
-    selectedRatings.value = [];
-    evaluatees.value = evaluatees.value.filter(
-      (evaluatee) => evaluatee.id !== selectedEvaluatee.value.id
-    );
-    name.value = "";
     alert("successfully RATED");
-    showProfileCards.value = true;
+    selectedRatings.value = [];
+    name.value = "";
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+    showProfileCards.value = true;
+    showProfileCard.value = false;
+    await evaluateeStore.fetchEvaluateesToRate();
+    evaluatees.value = evaluateeStore.isRatedEvaluatees(false);
+    showProfileCard.value = true;
   } else {
     alert("something went wrong");
   }
@@ -333,6 +336,7 @@ onMounted(async () => {
     await questionaireStore.fetchMaxRespondents();
   }
   maxRespondents.value = questionaireStore.maxRespondents;
+
   if (localStorage.getItem("selectedEvaluatee")) {
     selectedEvaluatee.value = JSON.parse(localStorage.getItem("selectedEvaluatee"));
     if (localStorage.getItem("questionaire-for-evaluatee")) {

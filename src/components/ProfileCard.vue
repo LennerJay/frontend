@@ -34,10 +34,13 @@
           <span> {{ evaluatee.job_type == 0 ? "Part Time" : "Full Time" }}</span>
         </div>
         <div v-if="evaluatee.is_done == 0">
-          Limit:{{ evaluatee.users_done_rating }} /
-          {{ getMaxRespondents(evaluatee.entity_name) }}
+          <div v-if="isAvaliable(evaluatee.entity_name)">
+            Limit:{{ evaluatee.users_done_rating }} /
+            {{ getMaxRespondents(evaluatee.entity_name) }}
+          </div>
+          <div v-else>No Questionaire Available</div>
         </div>
-        <div v-else>Rated on : {{ evaluatee.date_rated }}</div>
+        <div v-else-if="evaluatee.date_rated">Rated on : {{ evaluatee.date_rated }}</div>
       </div>
     </div>
     <div class="card-effect"></div>
@@ -57,9 +60,11 @@ const props = defineProps({
   maxRespondents: Object,
 });
 
+const isAvaliable = (entity_name) => {
+  return props.maxRespondents.some((data) => data[entity_name]);
+};
 const getMaxRespondents = (entity_name) => {
   const res = props.maxRespondents.find((obj) => obj[entity_name]);
-  // return res;
   return res[entity_name];
 };
 
