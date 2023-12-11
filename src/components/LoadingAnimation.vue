@@ -1,26 +1,29 @@
 <template>
-    <div v-if="isLoading" class="fixed inset-0 p-[10px] pl-5 pr-32 max-w-full mx-auto m-h-full flex items-center justify-center bg-white">
-        <div class="loader">
-        <svg viewBox="0 0 80 80">
-          <circle id="test" cx="40" cy="40" r="32"></circle>
-        </svg>
-      </div>
-
-      <div class="loader triangle">
-        <svg viewBox="0 0 86 80">
-          <polygon points="43 8 79 72 7 72"></polygon>
-        </svg>
-      </div>
-
-      <div class="loader">
-        <svg viewBox="0 0 80 80">
-          <rect x="8" y="8" width="64" height="64"></rect>
-        </svg>
-      </div>
+  <div
+    v-if="isLoading"
+    class="fixed inset-0 p-[10px] pl-5 pr-32 max-w-full mx-auto m-h-full flex items-center justify-center bg-white"
+  >
+    <div class="loader">
+      <svg viewBox="0 0 80 80">
+        <circle id="test" cx="40" cy="40" r="32"></circle>
+      </svg>
     </div>
+
+    <div class="loader triangle">
+      <svg viewBox="0 0 86 80">
+        <polygon points="43 8 79 72 7 72"></polygon>
+      </svg>
+    </div>
+
+    <div class="loader">
+      <svg viewBox="0 0 80 80">
+        <rect x="8" y="8" width="64" height="64"></rect>
+      </svg>
+    </div>
+  </div>
 </template>
 <script setup>
-    const  isLoading = true
+const isLoading = true;
 </script>
 <style scoped>
 .loader {
@@ -35,7 +38,7 @@
 }
 
 .loader:before {
-  content: '';
+  content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -54,7 +57,9 @@
   height: 100%;
 }
 
-.loader svg rect, .loader svg polygon, .loader svg circle {
+.loader svg rect,
+.loader svg polygon,
+.loader svg circle {
   fill: none;
   stroke: var(--path);
   stroke-width: 10px;

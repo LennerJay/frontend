@@ -44,9 +44,9 @@
                   Course: {{ user.course }}
                 </h2>
                 <h3 class="text-base md:text-xl text-white font-bold">
-                  <span v-for="(ys, index) in user.section_yaers" :key="index">
-                    Section: {{ ys }}
-                  </span>
+                  <span>{{
+                    isRegular(user.section_years) ? "Regular" : "Irregular"
+                  }}</span>
                 </h3>
                 <ul class="flex flex-row mt-2 items-center justify-center">
                   <li class="mx-2 text-white hover:text-sky-600">
@@ -82,6 +82,7 @@
                 class="text-xs text-gray-700 uppercase bg-sky-950 shadow-inner shadow-sky-950 md:text-left text-center"
               >
                 <tr class="text-white">
+                  <th scope="col" class="py-2">Year & Section</th>
                   <th scope="col" class="py-2">Subject</th>
                   <th scope="col" class="py-2">Schedule</th>
                   <th scope="col" class="py-2">Time</th>
@@ -99,9 +100,11 @@
                   :key="klassIndex"
                 >
                   <td class="td" v-if="klassIndex === 0" :rowspan="klasses.length">
+                    {{ klass.section_year }}
+                  </td>
+                  <td class="td">
                     {{ klass.subject }}
                   </td>
-
                   <td class="td">{{ klass.day }}</td>
                   <td class="td">{{ klass.time }}</td>
                   <td class="td">{{ klass.evaluatee_name }}</td>
@@ -169,10 +172,9 @@ const user = ref({});
 const showProfile = ref(false);
 const userClasses = ref([]);
 
-const capitalizeFirstLetter = (str) => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+const isRegular = (sectionYears) => {
+  return sectionYears.length == 1 ? true : false;
 };
-
 onMounted(async () => {
   if (userStore.userInfo.length == 0) {
     await userStore.fetchUserInfo();
@@ -186,13 +188,14 @@ onMounted(async () => {
   for (const klass in klasses) {
     const newValue = evaluateeStore.groupByDepartment(
       klasses[klass],
-      (klass) => klass.subject
+      (klass) => klass.section_year
     );
     userClasses.value.push({
       department: klass,
       classes: newValue,
     });
   }
+  console.log(userClasses.value);
 });
 </script>
 
