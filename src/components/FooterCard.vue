@@ -27,47 +27,51 @@
             <!-- End of contact-location -->
           </div>
           <!-- End of left-side content -->
-          <div class="bookmarks">
-            <a href="#">Dashboard</a>
-            <a href="#">Evaluatees</a>
-            <a href="#">Evaluation</a>
-            <a href="#">History</a>
-            <a href="#">Profile</a>
+          <div v-if="showBookmarks" class="bookmarks">
+            <router-link to="/">Dashboard</router-link>
+            <router-link to="/evaluatees">Evaluatees</router-link>
+            <router-link to="/evaluation">Evaluation</router-link>
+            <router-link to="/history">History</router-link>
+            <router-link to="/profile">Profile</router-link>
           </div>
           <div class="soc-meds-content">
-            <a href="https://www.facebook.com/EhrickRhed">Eric Redolosa</a>
+            <a href="https://www.facebook.com/EhrickRhed" target="_blank"
+              >Eric Redolosa</a
+            >
             <div class="soc-med-links">
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="https://www.facebook.com/EhrickRhed" target="_blank"
                 ><i class="fab fa-facebook"></i
               ></a>
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="https://www.facebook.com/EhrickRhed" target="_blank"
                 ><i class="fa fa-envelope"></i
               ></a>
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="https://www.facebook.com/EhrickRhed" target="_blank"
                 ><i class="fab fa-github"></i
               ></a>
             </div>
-            <a href="https://www.facebook.com/lennersoliano">Lenner Jay Soliano</a>
+            <a href="https://www.facebook.com/lennersoliano" target="_blank"
+              >Lenner Jay Soliano</a
+            >
             <div class="soc-med-links">
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="https://www.facebook.com/lennersoliano" target="_blank"
                 ><i class="fab fa-facebook"></i
               ></a>
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="mailto:lennersoliano@gmail.com" target="_blank"
                 ><i class="fa fa-envelope"></i
               ></a>
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="https://github.com/LennerJay" target="_blank"
                 ><i class="fab fa-github"></i
               ></a>
             </div>
-            <a href="https://www.facebook.com/xLenar30/">Ranel Soliano</a>
+            <a href="https://www.facebook.com/xLenar30/" target="_blank">Ranel Soliano</a>
             <div class="soc-med-links">
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="https://www.facebook.com/EhrickRhed" target="_blank"
                 ><i class="fab fa-facebook"></i
               ></a>
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="https://www.facebook.com/EhrickRhed" target="_blank"
                 ><i class="fa fa-envelope"></i
               ></a>
-              <a href="https://www.facebook.com/EhrickRhed"
+              <a href="https://www.facebook.com/EhrickRhed" target="_blank"
                 ><i class="fab fa-github"></i
               ></a>
             </div>
@@ -80,7 +84,7 @@
     </div>
     <!-- End of main-content -->
     <div class="copyrights">
-      <p>&copy; All Rights Reserved 2023 - 2024</p>
+      <p>&copy; All Rights Reserved {{ currentYear }} - {{ currentYear + 1 }}</p>
       <p>Developed by Group Tactical Minds</p>
     </div>
     <!-- End of copyrights -->
@@ -88,8 +92,19 @@
   <!-- End of main-container -->
 </template>
 
-<script>
-/* Code Goes Here */
+<script setup>
+import { useRoute } from "vue-router";
+import { ref, onMounted } from "vue";
+const currentYear = ref(null);
+const showBookmarks = ref(false);
+const route = useRoute();
+onMounted(() => {
+  const date = new Date();
+  currentYear.value = date.getFullYear();
+  if (route.path != "/login") {
+    showBookmarks.value = true;
+  }
+});
 </script>
 
 <style scoped>

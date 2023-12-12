@@ -24,14 +24,14 @@
   </aside><!-- End of aside tag -->
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import { useDrawerStore } from "../stores/drawerStore";
 import { onMounted, ref } from "vue";
 
 const router = useRouter();
-const store = useAuthStore();
+const authStore = useAuthStore();
 const components = ref();
 const toggleShow = ref(false);
 const drawer = useDrawerStore();
@@ -97,10 +97,8 @@ const adminStaffComponent = [
 ];
 
 const handleLogout = async () => {
-  await store.get;
-  await store.handleLogout();
+  await authStore.handleLogout();
   localStorage.clear();
-  store.isLoggedIn = false;
   router.push("/login");
 };
 
@@ -111,7 +109,7 @@ const showToggle = () => {
 
 onMounted(() => {
   showHr.value = false;
-  if (store.isAdminStaff) {
+  if (authStore.isAdminStaff) {
     components.value = adminStaffComponent;
   } else {
     components.value = userComponent;

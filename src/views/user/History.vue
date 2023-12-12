@@ -21,6 +21,7 @@
             v-for="(evaluatee, index) in evaluatees"
             :evaluatee="evaluatee"
             :key="index"
+            @selectedEvaluatee="selectedEvaluatee"
           />
         </div>
       </div>
@@ -74,21 +75,21 @@
 <script setup>
 import ProfileCard from "../../components/ProfileCard.vue";
 import { ref, onMounted } from "vue";
-import { useAuthStore } from "../../stores/auth";
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { useDrawerStore } from "../../stores/drawerStore";
 import FooterCard from "../../components/FooterCard.vue";
 
 const evaluatees = ref([]);
-const userStore = useAuthStore();
 const drawer = useDrawerStore();
 const evaluateeStore = useEvaluateeStore();
 const showProfileCard = ref(false);
 const isNoData = ref(false);
-const user = ref([]);
+
+const selectedEvaluatee = () => {
+  console.log("test");
+};
 
 onMounted(async () => {
-  console.log(evaluateeStore.evaluateesToRate.length);
   if (evaluateeStore.evaluateesToRate.length == 0) {
     await evaluateeStore.fetchEvaluateesToRate();
   }
