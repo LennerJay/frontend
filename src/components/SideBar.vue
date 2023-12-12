@@ -1,27 +1,14 @@
 <template>
   <aside class="w-0 font-Times New Roman">
-    <div
-      class="sidebar min-h-screen fixed top-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center bg-sky-900"
-      :class="{ 'left-0': !drawer.drawerState, 'left-[-250px]': drawer.drawerState }"
-    >
-      <div class="text-gray-100 text-x1">
+    <div class="sidebar min-h-screen fixed top-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center" :class="{ 'left-0': !drawer.drawerState, 'left-[-250px]': drawer.drawerState }">
+      <div class="text-white-100 text-x1">
         <div class="p-2 mt-1 flex items-center justify-between">
-          <img
-            src="../assets/cpc_logo.png"
-            class="h-32 pb-2 animate-bounce hover:animate-spin"
-          />
-          <i
-            class="bi bi-x text-[50px] pb-20 cursor-pointer lg:hidden"
-            @click="drawer.toggle"
-          ></i>
+          <img src="../assets/cpc_logo.png" height="90" width="90" class="animate-bounce hover:animate-spin"/>
+          <i class="bi bi-x text-[50px] pb-20 cursor-pointer lg:hidden" @click="drawer.toggle"></i>
         </div>
-        <hr class="my-2 text-gray-600" />
+        <hr class="my-2 text-black-600" />
       </div>
-      <router-link
-        v-for="(component, index) in components"
-        :key="index"
-        :to="component.path"
-      >
+      <router-link v-for="(component, index) in components" :key="index" :to="component.path">
         <hr v-if="index % 3 == 0 && index != 0" class="my-2 text-gray-600" />
         <div class="router">
           <i :class="component.icon"></i>
@@ -34,7 +21,7 @@
         <span class="router-name">Logout</span>
       </div>
     </div>
-  </aside>
+  </aside><!-- End of aside tag -->
 </template>
 
 <script setup>
@@ -134,16 +121,36 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.router-link-active {
-  font-size: x-large;
-}
-.router {
-  @apply p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600;
-}
-.router-name {
-  @apply text-[15px] ml-4 text-gray-200;
-}
-aside {
-  z-index: 1000;
-}
+
+    .sidebar {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    .sidebar img {
+      display: block;
+      margin: auto;
+    }
+
+    .router i {
+      color: #000000;
+    }
+
+    .router .router-name {
+      color: #000000;
+    }
+
+    .router-link-active {
+      font-size: x-large;
+    }
+    .router {
+      @apply p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600;
+    }
+    .router-name {
+      @apply text-[15px] ml-4 text-gray-200;
+    }
+    aside {
+      z-index: 1000;
+    }
+
 </style>
