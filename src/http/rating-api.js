@@ -7,4 +7,4 @@ const resource = apiPath +  "/ratings"
 
 export const saveRatings = (value) => api.post(resource,value)
 
-// export const fetchRatingsSu
+export const fetchRatingsSummary = (value)=>api.post(resource + "/summary",value)

@@ -16,22 +16,24 @@ watch(route, (to) => {
 </script>
 
 <template>
-  <div class="flex font-poppins">
-    <!-- <RouterView /> -->
     <Transition name="fade" mode="out-in">
       <SideBar v-if="showSideBar" />
     </Transition>
-    <router-view v-slot="{ Component }">
-      <Transition name="fade">
-        <component :is="Component" />
+    <router-view  v-slot="{ Component,route }">
+      <Transition  name="fade" mode="out-in">
+         <div :key="route.fullPath">
+          <component  :is="Component" />
+         </div>
       </Transition>
     </router-view>
-  </div>
 </template>
 <style scoped>
+main{
+  will-change: transform, opacity;
+}
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease-out;
 }
 
 .fade-enter-from,

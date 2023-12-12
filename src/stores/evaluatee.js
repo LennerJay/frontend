@@ -21,8 +21,6 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         try{
             const {data} = await getEvaluateeInfo(id)
             evaluateeInfo.value = data.data
-            // groupByDepartment(evaluateeInfo.value)
-            console.log(evaluateeInfo.value)
             infoErrors.value = []
         }catch(e){
             evaluateeInfo.value =[]

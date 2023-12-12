@@ -11,6 +11,7 @@
         <h1 class="header-name">Evaluation for: {{ name }}</h1>
       </div>
       <div class="empty pb-4 md:pb-0"></div>
+  
     </div>
 
     <div v-if="showProfileCards" class="min-h-[44rem] card overflow-x-auto">
@@ -41,56 +42,21 @@
         v-if="showProfileCard"
         class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5 hover:cursor-pointer"
       >
-        <ProfileCard
-          v-for="(evaluatee, index) in evaluatees"
-          :evaluatee="evaluatee"
-          :key="index"
-          :maxRespondents="maxRespondents"
-          option="Select"
-          @selectedEvaluatee="selectEvaluatee"
-        />
+      <ProfileCard
+            v-for="(evaluatee, index) in evaluatees"
+            :evaluatee="evaluatee"
+            :key="index"
+            :maxRespondents="maxRespondents"
+            option="Select"
+            @selectedEvaluatee="selectEvaluatee"
+          />
       </div>
       <div v-else-if="isDoneRating">Done Rating</div>
       <div v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20">
-        <div class="loader3 mt-10 pt-24">
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >L</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >O</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >A</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >D</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >I</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >N</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >G</span
-            >
-          </div>
-        </div>
+       <LoadingAnimation/>
       </div>
     </div>
+    <div v-else-if="showLoadingAnimations" class="w-16 h-16 border-8 border-dashed rounded-full animate-spin border-blue-600"></div>
     <div v-else class="questions min-h-[44rem] card">
       <button
         @click="handleBackButton"
@@ -125,9 +91,7 @@
 </template>
 
 <script setup>
-import QuestionFormTable from "../../components/QuestionFormTable.vue";
-import ProfileCard from "../../components/ProfileCard.vue";
-import FooterCard from "../../components/FooterCard.vue";
+
 import { useAuthStore } from "../../stores/auth";
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { useQuestionaireStore } from "../../stores/questionaire";
@@ -139,6 +103,11 @@ import { useDepartmentStore } from "../../stores/department";
 import SelectJobType from "../../components/SelectJobType.vue";
 import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectEntity from "../../components/SelectEntity.vue";
+import LoadingAnimation from "../../components/LoadingAnimation.vue"
+import QuestionFormTable from "../../components/QuestionFormTable.vue";
+import ProfileCard from "../../components/ProfileCard.vue";
+import FooterCard from "../../components/FooterCard.vue";
+
 
 const entityStore = useEntityStore();
 const departmentStore = useDepartmentStore();
@@ -163,18 +132,19 @@ const departments = ref([]);
 const user = ref([]);
 const isDoneRating = ref(false);
 const maxRespondents = ref([]);
-const showLoadingAnimations = ref(true);
+const showLoadingAnimations = ref(false);
 
 const selectEvaluatee = async (id) => {
+  showLoadingAnimations.value = true;
+  showProfileCards.value = false;
   const evaluatee = evaluatees.value.find((obj) => obj.id === id);
   await questionaireStore.fetchQuestionaireForEvaluatee(evaluatee.entity_id);
   questionaire.value = questionaireStore.questionaireForEvaluatee;
-  console.log(questionaire.value);
   if (questionaire.value) {
     selectedEvaluatee.value = evaluatee;
     localStorage.setItem("selectedEvaluatee", JSON.stringify(evaluatee));
     name.value = evaluatee.name;
-    showProfileCards.value = false;
+    showLoadingAnimations.value = false;
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -210,29 +180,16 @@ const handleBackButton = async () => {
     selectedRatings.value = [];
   }
 };
-const isSubmitButtonEnabled = computed(() => {
-  if (!questionaire.value || !questionaire.value.criterias) {
-    return false;
-  }
-
-  for (const criteria of questionaire.value.criterias) {
-    for (const question of criteria.questions) {
-      const foundObj = selectedRatings.value.find(
-        (obj) => obj["question_id"] === question.id
-      );
-
-      // If any question is not rated or rated as undefined, return false
-      if (!foundObj || foundObj.rating === undefined || foundObj.rating === null) {
-        return false;
-      }
-    }
-
-    // If all questions have been rated, return true
-    return true;
-  }
-});
 
 const handleSubmit = async () => {
+  let questionsCount = 0;
+  for(const criteria of questionaire.value.criterias){
+    questionsCount += criteria.questions_count
+  }
+  if(selectedRatings.value.length != questionsCount){
+    alert("please rate all the questions")
+    return;
+  }
   selectedRatings.value.map((val) => {
     val.evaluator_id = user.value.id_number;
   });

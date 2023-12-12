@@ -49,6 +49,7 @@
                 id="password"
                 name="student_password"
                 placeholder="Password"
+                autocomplete="on"
               />
             </div>
             <i class="fa fa-eye eye-show" id="eye-show" @click="hideShow()"></i>
@@ -138,7 +139,9 @@ const handleSubmit = async () => {
         router.push({ name: "admin" });
       } else {
         router.push({ name: "dashboard" });
+        
       }
+
     }
   } else {
   }
