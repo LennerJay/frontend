@@ -34,7 +34,7 @@
           <span> {{ evaluatee.job_type == 0 ? "Part Time" : "Full Time" }}</span>
         </div>
         <div v-if="evaluatee.is_done == 0">
-          <div v-if="isAvaliable(evaluatee.entity_name)">
+          <div v-if="isQuestionaireAvaliable(evaluatee.entity_name)">
             Limit:{{ evaluatee.users_done_rating }} /
             {{ getMaxRespondents(evaluatee.entity_name) }}
           </div>
@@ -48,9 +48,11 @@
 </template>
 
 <script setup>
+import { useRoute } from "vue-router";
 import { ref, computed } from "vue";
 import { userModalStore } from "../stores/modalStore";
 
+const route = useRoute();
 const modalStore = userModalStore();
 const selectedEvaluatee = computed(() => modalStore.selectedEvaluatee);
 const emit = defineEmits(["selectedEvaluatee"]);
@@ -60,7 +62,7 @@ const props = defineProps({
   maxRespondents: Object,
 });
 
-const isAvaliable = (entity_name) => {
+const isQuestionaireAvaliable = (entity_name) => {
   return props.maxRespondents.some((data) => data[entity_name]);
 };
 const getMaxRespondents = (entity_name) => {
@@ -69,7 +71,18 @@ const getMaxRespondents = (entity_name) => {
 };
 
 const handleClick = (evaluatee_id) => {
-  emit("selectedEvaluatee", evaluatee_id);
+  if(route.path != '/evaluation'){
+    emit("selectedEvaluatee", evaluatee_id,props.evaluatee.name);
+  }else{
+    if(props.evaluatee.users_done_rating != getMaxRespondents(props.evaluatee.entity_name)){
+      emit("selectedEvaluatee", evaluatee_id);
+    }else{
+      alert('limit reached')
+    }
+  }
+
+
+
 };
 </script>
 

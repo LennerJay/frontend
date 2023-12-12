@@ -1,107 +1,80 @@
 <template>
-<!-- Modal -->
-<div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman z-20">
-  <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
-    <button @click="closeModal">
-      <i class="bi bi-x-lg"></i>
-        <span></span>
-    </button>
-    <div v-if="showDetail">
-        <!-- Modal Header -->
-        <div class="mb-4 flex flex-col">
-            <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2">Details</h2>
-            <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
-                <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name }}</span>
-                <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Part time':'Full Time' }}</span>
-                <span>Personnel Type: {{ evaluateeInfo.entity_name }}</span>
-                <span v-if="isInstructor"><i class="bi bi-bank2 mr-1"></i>Department : <span v-for="department in evaluateeInfo.instructorsDepartments" >{{ department.toUpperCase() }}</span></span>
-              </div>
-        </div>
-
-        <!-- Modal Body -->
-          <div v-if="isInstructor" class="mb-4">
-            
-            <table class="max-w-screen w-full border" v-for="(evaluateeClass,classesIndex) in evaluateeClasses" :key="classesIndex">
-            <caption>{{ evaluateeClass.department }}</caption>
+    <div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman z-20">
+      <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
+        <button @click="closeModal">
+          <i class="bi bi-x-lg"></i>
+            <span></span>
+        </button>
+        <div class="m-4"> {{evaluateeName }}</div>
+        <div v-if="showDetail">
+          <div>
+            <div>Title:{{ questionaire.title }}</div>
+            <div>Description: {{ questionaire.description }}</div>
+            <div>Semester: {{ questionaire.semester }}</div>
+            <div>School Year:{{ questionaire.school_year }}</div>
+          </div>
+          <div>
+            <table v-for="summary in ratingSummary">
+              <caption>{{summary.criteria}}</caption>
               <thead>
                 <tr>
-                  <th class="border">Subject</th>
-                  <th class="border">Sections</th>
-                  <th class="border">Day</th>
-                  <th class="border">Time</th>
+                    <th>Question</th>
+                    <th>Rated</th>
                 </tr>
               </thead>
-              <tbody class="text-center" v-for="(klasses,classIndex) in evaluateeClass.classes" :key="classIndex">
-                <tr v-for="(klass,klassKey) in klasses">
-                 <td v-if="klassKey === 0" :rowspan="klasses.length ">{{ klass.subject }}</td>
-                 <td>{{ klass.section_year }}</td>
-                 <td>{{ klass.day }}</td>
-                 <td>{{ klass.time }}</td>
+              <tbody>
+                <tr v-for="infoSummary in summary.summary">
+                  <td>
+                    {{ infoSummary.question }}
+                  </td>
+                  <td>{{ infoSummary.rating }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-
-        <!-- Modal Footer -->
-        <div class="flex justify-between items-center" v-if="isHistoryRoute">
-          <p class="mb-2">Date Evaluated 
-            <hr>
-            <span class="flex ml-5">11-12-23</span>
-          </p>
         </div>
-    </div>
-    <div v-else-if="noData">
-      No data Found
-    </div>
-    <div v-else class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex">
-      <div class="loader">
-        <svg viewBox="0 0 80 80">
-          <circle id="test" cx="40" cy="40" r="32"></circle>
-        </svg>
+        <div v-else-if="props.noData">
+          No data Found
+        </div>
+        <div v-else class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex">
+          <div class="loader">
+            <svg viewBox="0 0 80 80">
+              <circle id="test" cx="40" cy="40" r="32"></circle>
+            </svg>
+          </div>
+    
+          <div class="loader triangle">
+            <svg viewBox="0 0 86 80">
+              <polygon points="43 8 79 72 7 72"></polygon>
+            </svg>
+          </div>
+    
+          <div class="loader">
+            <svg viewBox="0 0 80 80">
+              <rect x="8" y="8" width="64" height="64"></rect>
+            </svg>
+          </div>
+        </div>
       </div>
-
-      <div class="loader triangle">
-        <svg viewBox="0 0 86 80">
-          <polygon points="43 8 79 72 7 72"></polygon>
-        </svg>
-      </div>
-
-      <div class="loader">
-        <svg viewBox="0 0 80 80">
-          <rect x="8" y="8" width="64" height="64"></rect>
-        </svg>
-      </div>
+    
     </div>
-  </div>
-
-</div>
 </template>
-<script setup>
-import { ref, computed } from 'vue';
-import { useEvaluateeStore } from '../stores/evaluatee';
-import { useRoute } from 'vue-router';
-
-const store = useEvaluateeStore();
-const route = useRoute();
-const props = defineProps([
-                'isInstructor', 
-                'evaluateeInfo',
-                'selectedEvaluteeId',
-                'showDetail',
-                'noData',
-                'evaluateeClasses'
-              ]);
-const emits = defineEmits(['close-modal'])
-
-const closeModal = () => {
-  // Emit an event to inform the parent component to close the modal
-  emits('close-modal');
-};
-const isHistoryRoute = computed(() => route.name === 'history');
-
-
-</script>
-
+  <script setup>
+    const props = defineProps([
+                    'questionaire',
+                    'ratingSummary',
+                    'evaluateeName',
+                    'showDetail',
+                    'noData',
+                  ]);
+    const emits = defineEmits(['close-modal'])
+    
+    const closeModal = () => {
+      emits('close-modal');
+    };
+  // console.log(props.ratingSummary)
+  </script>
+    
 <style scoped>
 .loader {
   --path: #2f3545;
@@ -257,7 +230,7 @@ const isHistoryRoute = computed(() => route.name === 'history');
   margin: 0 16px;
 }
 
- 
+  
 button {
   border: none;
   display: block;

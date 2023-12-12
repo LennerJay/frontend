@@ -12,7 +12,7 @@ const routes = [
         path:'/login',
         name: 'login',
         meta:{
-          guest:true
+          guest:true,
         },
         component: Login,
       },
@@ -21,7 +21,7 @@ const routes = [
       name: 'dashboard',
       component: Dashboard,
       meta:{
-            auth:true
+            auth:true,
         },
 
       },

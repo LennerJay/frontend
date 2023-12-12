@@ -15,7 +15,7 @@
       <div class="empty pb-2"></div>
     </div>
     <div class="bg-stone-200 min-h-[44rem] card overflow-x-auto">
-      <div v-if="showProfileCard">
+      <div v-if="showProfileCards">
         <div class="mt-8 grid gap-10 lg:grid-cols-3 sm-grid-cols-2 p-5">
           <ProfileCard
             v-for="(evaluatee, index) in evaluatees"
@@ -26,79 +26,96 @@
         </div>
       </div>
       <div v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20 pt-20">
-        <div class="loader3 mt-10">
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >L</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >O</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >A</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >D</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >I</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >N</span
-            >
-          </div>
-          <div class="circle1">
-            <span class="text-[8px] text-white absolute bottom-1 top-1 left-1 right-1"
-              >G</span
-            >
-          </div>
-        </div>
+        <LoadingAnimation/>
       </div>
       <div v-if="isNoData">
         <h1>You have not rated yet</h1>
       </div>
+    </div>
+    <div v-if="showSummary">
+      <SummaryModal 
+      @close-modal="closeSummaryBtn"
+      :showDetail="showDetail"
+      :noData="isNoSummary"
+      :questionaire="questionaire"
+      :evaluateeName="evaluateeName"
+      :ratingSummary="ratingSummary"
+      />
     </div>
     <FooterCard />
   </div>
 </template>
 
 <script setup>
-import ProfileCard from "../../components/ProfileCard.vue";
+
 import { ref, onMounted } from "vue";
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import { useDrawerStore } from "../../stores/drawerStore";
+import  { useRatingStore } from "../../stores/rating"
 import FooterCard from "../../components/FooterCard.vue";
+import ProfileCard from "../../components/ProfileCard.vue";
+import LoadingAnimation from "../../components/LoadingAnimation.vue"
+import SummaryModal from "../../components/SummaryModal.vue";
 
-const evaluatees = ref([]);
-const drawer = useDrawerStore();
 const evaluateeStore = useEvaluateeStore();
-const showProfileCard = ref(false);
+const drawer = useDrawerStore();
+const ratingStore = useRatingStore();
+const evaluatees = ref([]);
+const ratingSummary = ref([])
+const showProfileCards = ref(false);
 const isNoData = ref(false);
+const showDetail = ref(false);
+const showSummary = ref(false);
+const isNoSummary = ref(false);
+const evaluateeName= ref('')
+const questionaire = ref([]);
 
-const selectedEvaluatee = () => {
-  console.log("test");
+
+const selectedEvaluatee = async(evaluatee_id,evaluatee_name) => {
+    showSummary.value = true
+    evaluateeName.value = evaluatee_name
+    showDetail.value = false
+    await ratingStore.getRatingSummary(evaluatee_id)
+    if(ratingStore.summary.length != 0){
+      questionaire.value= ratingStore.summary.questionaire
+      const res = groupByCriteria(ratingStore.summary.ratingSummary,(summary)=>summary.criteria)
+      for(const summary in res){
+        ratingSummary.value.push({
+          criteria : summary,
+          summary : res[summary]
+        })
+      }
+      showDetail.value = true
+    }else{
+      isNoSummary.value = true
+    }
 };
 
+const groupByCriteria = (values, keySelector) => {
+        return values.reduce(function (accumulator, current) {
+            const key = keySelector(current);
+            (accumulator[key] = accumulator[key] || []).push(current);
+            return accumulator;
+          }, {});
+    }
+
+const closeSummaryBtn = ()=>{
+  showSummary.value = false
+  showDetail.value = false
+  isNoSummary.value = false
+}
+
 onMounted(async () => {
+
   if (evaluateeStore.evaluateesToRate.length == 0) {
     await evaluateeStore.fetchEvaluateesToRate();
   }
   evaluatees.value = evaluateeStore.isRatedEvaluatees(true);
   if (evaluatees.value.length > 0) {
-    showProfileCard.value = true;
+    showProfileCards.value = true;
     isNoData.value = false;
   } else {
-    showProfileCard.value = true;
+    showProfileCards.value = true;
     isNoData.value = true;
   }
 });
