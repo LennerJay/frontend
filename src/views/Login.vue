@@ -13,7 +13,7 @@
           <div id="password-container">
             <div id="actual-password">
 
-              <input type="password" @input="checker()" v-model="form.password" :class="{ 'is-invalid': errors.password && errors.password[0] }" id="password" name="student_password" placeholder="Password"/>
+              <input type="password" @input="checker()" v-model="form.password" :class="{ 'is-invalid': errors.password && errors.password[0] }" id="password" name="student_password" placeholder="Password" autocomplete="on"/>
 
             </div>
             <i class="fa fa-eye eye-show" id="eye-show" @click="hideShow()"></i>
