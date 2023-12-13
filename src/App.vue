@@ -26,6 +26,7 @@ watch(route, (to) => {
          </div>
       </Transition>
     </router-view>
+
 </template>
 <style scoped>
 main{

@@ -1,11 +1,13 @@
 <template>
 <!-- Modal -->
 <div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman z-20">
-  <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
-    <button @click="closeModal">
+  <div class=" bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
+    <div class="sticky top-0 left-0 z-10">
+      <button @click="closeModal" >
       <i class="bi bi-x-lg"></i>
         <span></span>
     </button>
+    </div>
     <div v-if="showDetail">
         <!-- Modal Header -->
         <div class="mb-4 flex flex-col">
@@ -20,7 +22,7 @@
 
         <!-- Modal Body -->
           <div v-if="isInstructor" class="mb-4">
-            
+            {{ evaluateeClasses.length }}
             <table class="max-w-screen w-full border" v-for="(evaluateeClass,classesIndex) in evaluateeClasses" :key="classesIndex">
             <caption>{{ evaluateeClass.department }}</caption>
               <thead>
@@ -40,7 +42,9 @@
                 </tr>
               </tbody>
             </table>
+            
           </div>
+
 
         <!-- Modal Footer -->
         <div class="flex justify-between items-center" v-if="isHistoryRoute">

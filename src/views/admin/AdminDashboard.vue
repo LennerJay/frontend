@@ -1,125 +1,128 @@
 <template>
-    <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full dashboard-main-header" style="overflow: hidden">
-        <!-- <div class="header pl-2 md:py-6 text-white text-center" style="background-color: #33B86C;">
-            <span class="md:hidden flex pt-4">
-                <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
-            </span> 
-            <div class="font-bold p-1 text-[30px]">
-                DASHBOARD
-              <h1 class="header-name">Cordova Public College</h1>
-            </div>
-       </div> -->
-       <div class="header-container">
-            <header id="main-header">
-                <span class="burger-container md:hidden flex pt-4">
-                    <i class=" bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
-                </span>
-                <div class="main-content">
-                    <h1>Dashboard</h1>
-                    <p>Cordova Public College</p>
+    <div class="flex">
+        <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full dashboard-main-header overflow-hidden" >
+            <!-- <div class="header pl-2 md:py-6 text-white text-center" style="background-color: #33B86C;">
+                <span class="md:hidden flex pt-4">
+                    <i class=" bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
+                </span> 
+                <div class="font-bold p-1 text-[30px]">
+                    DASHBOARD
+                <h1 class="header-name">Cordova Public College</h1>
                 </div>
-            </header><!-- End of main-header -->
-       </div><!-- End of header-container -->
-
-       <div class="dashboard-body-container">
-            <div class="dashboard-content">
-                <div class="overview">
-                    <h2>Overview</h2>
-                </div>
-                <div class="card-container">
-                    <div class="main-card students-enrolled hover:-translate-y-1 hover:scale-90">
-                        <div class="card-content">
-                            <div class="description">
-                                <p>{{ res.total_users }}</p>
-                                <p class="title">Students Enrolled</p>
-                            </div>
-                            <i class="bi bi-person-fill mr-1 text-2xl"></i>
-                        </div>
+        </div> -->
+        <div class="header-container">
+                <header id="main-header">
+                    <span class="burger-container md:hidden flex pt-4">
+                        <i class=" bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
+                    </span>
+                    <div class="main-content">
+                        <h1>Dashboard</h1>
+                        <p>Cordova Public College</p>
                     </div>
-                    <div class="main-card evaluatees-registered hover:-translate-y-1 hover:scale-90">
-                        <div class="card-content">
-                            <div class="description">
-                                <p>{{ res.total_evaluatees }}</p>
-                                <p class="title">Evaluatees Registered</p>
-                            </div>
-                            <i class="bi bi-clipboard-data-fill mr-1 text-2xl"></i>
-                        </div>
+                </header><!-- End of main-header -->
+        </div><!-- End of header-container -->
+
+        <div class="dashboard-body-container">
+                <div class="dashboard-content">
+                    <div class="overview">
+                        <h2>Overview</h2>
                     </div>
-                    <div class="main-card nan hover:-translate-y-1 hover:scale-90">
-                        <div class="card-content">
-                            <div class="description">
-                                <p class="title">NaN</p>
-                            </div>
-                            <i class="bi bi-bank2 mr-1 text-2xl"></i>
-                        </div>
-                    </div>
-                </div><!-- End of card-container -->
-                
-                <div class="graph-container">
-                    <div class="graph-content">
-                        <div class="card-container mt-6 grid gap-8 lg:grid-cols-2 sm-grid-cols-1 p-5 m-10 rounded-md">
-                            <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center md:h-96 h-72   
-                            cursor-pointer 
-                            hover:-translate-y-1 hover:scale-90 overflow-hidden rounded-2xl" id="cards">
-                                <canvas ref="barChartRef" id="BarChart" height="500" class="pb-4 md:w-[800px] w-[500px]"></canvas>
-                            </div>
-                            <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center md:h-80 h-72
-                            cursor-pointer bg-white
-                            hover:-translate-y-1 hover:scale-90 overflow-hidden rounded-xl" id="cards">
-                                <canvas ref="pieChartRef" id="PieChart" height="400" class="pb-4 md:w-[800px] w-[500px]"></canvas>
+                    <div class="card-container">
+                        <div class="main-card students-enrolled hover:-translate-y-1 hover:scale-90">
+                            <div class="card-content">
+                                <div class="description">
+                                    <p>{{ res.total_users }}</p>
+                                    <p class="title">Students Enrolled</p>
+                                </div>
+                                <i class="bi bi-person-fill mr-1 text-2xl"></i>
                             </div>
                         </div>
-                    </div><!-- End of graph-content -->
-                </div><!-- End of graph-container -->
+                        <div class="main-card evaluatees-registered hover:-translate-y-1 hover:scale-90">
+                            <div class="card-content">
+                                <div class="description">
+                                    <p>{{ res.total_evaluatees }}</p>
+                                    <p class="title">Evaluatees Registered</p>
+                                </div>
+                                <i class="bi bi-clipboard-data-fill mr-1 text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="main-card nan hover:-translate-y-1 hover:scale-90">
+                            <div class="card-content">
+                                <div class="description">
+                                    <p class="title">NaN</p>
+                                </div>
+                                <i class="bi bi-bank2 mr-1 text-2xl"></i>
+                            </div>
+                        </div>
+                    </div><!-- End of card-container -->
+                    
+                    <div class="graph-container">
+                        <div class="graph-content">
+                            <div class="card-container mt-6 grid gap-8 lg:grid-cols-2 sm-grid-cols-1 p-5 m-10 rounded-md">
+                                <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center md:h-96 h-72   
+                                cursor-pointer 
+                                hover:-translate-y-1 hover:scale-90 overflow-hidden rounded-2xl" id="cards">
+                                    <canvas ref="barChartRef" id="BarChart" height="500" class="pb-4 md:w-[800px] w-[500px]"></canvas>
+                                </div>
+                                <div class="first-card first-letter:bg-sky-900 flex flex-col justify-center items-center text-center md:h-80 h-72
+                                cursor-pointer bg-white
+                                hover:-translate-y-1 hover:scale-90 overflow-hidden rounded-xl" id="cards">
+                                    <canvas ref="pieChartRef" id="PieChart" height="400" class="pb-4 md:w-[800px] w-[500px]"></canvas>
+                                </div>
+                            </div>
+                        </div><!-- End of graph-content -->
+                    </div><!-- End of graph-container -->
 
-                <div class="table-container">
-                    <div class="table-content">
-                        <table id="main-table">
-                            <caption>CHAIRPERSONS</caption>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Department</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Eric Redolosa</td>
-                                    <td>ericredolosa@gmail.com</td>
-                                    <td>BSHM</td>
-                                    <td>Active</td>
-                                    <td><button type="button" id="modify" name="modify">Modify<i class="bi bi-pencil-square"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td>Lenner Jay Soliano</td>
-                                    <td>lennerjaysoliano@gmail.com</td>
-                                    <td>BSED</td>
-                                    <td>Active</td>
-                                    <td><button type="button" id="modify" name="modify">Modify<i class="bi bi-pencil-square"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td>Ranel Soliano</td>
-                                    <td>ranelsoliano@gmail.com</td>
-                                    <td>BSIT</td>
-                                    <td>Active</td>
-                                    <td><button type="button" id="modify" name="modify">Modify<i class="bi bi-pencil-square"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div><!-- End of table-content -->
-                </div><!-- End of table-container -->
+                    <div class="table-container">
+                        <div class="table-content">
+                            <table id="main-table">
+                                <caption>CHAIRPERSONS</caption>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Department</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Eric Redolosa</td>
+                                        <td>ericredolosa@gmail.com</td>
+                                        <td>BSHM</td>
+                                        <td>Active</td>
+                                        <td><button type="button" id="modify" name="modify">Modify<i class="bi bi-pencil-square"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lenner Jay Soliano</td>
+                                        <td>lennerjaysoliano@gmail.com</td>
+                                        <td>BSED</td>
+                                        <td>Active</td>
+                                        <td><button type="button" id="modify" name="modify">Modify<i class="bi bi-pencil-square"></i></button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ranel Soliano</td>
+                                        <td>ranelsoliano@gmail.com</td>
+                                        <td>BSIT</td>
+                                        <td>Active</td>
+                                        <td><button type="button" id="modify" name="modify">Modify<i class="bi bi-pencil-square"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!-- End of table-content -->
+                    </div><!-- End of table-container -->
 
-            </div><!-- End of dashboard-content -->
-       </div><!-- End of dashboard-body-container -->
+                </div><!-- End of dashboard-content -->
+        </div><!-- End of dashboard-body-container -->
 
-       <div style="margin-bottom: 100px;"></div>
-       <!-- PENETRATION TEST -->
+        <div style="margin-bottom: 100px;"></div>
+        <!-- PENETRATION TEST -->
 
-       <FooterCard/>
-    </div>
+            <FooterCard/>
+        </div>
+   </div>
+
 </template>
 
 <script setup>

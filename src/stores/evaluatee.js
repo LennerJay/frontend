@@ -12,6 +12,9 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const evaluateesToRate = ref([])
     const infoErrors = ref([])
     const evaluateeInfo = ref([])
+    const isSuccess = ref(false)
+    const errorMessage = ref([])
+    const deleteMessage = ref([])
 
     const fetchEvaluateeInfo = async(evaluateeId)=>{
         await csrfCookie()
@@ -87,39 +90,41 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         evaluateesToRate.value = data.data
       }
     
-      const isRatedEvaluatees = (isDone) => {
-        if(!isDone){
-          return evaluateesToRate.value.filter(evaluatee => evaluatee.is_done === 0)
-        }
-  
-        return evaluateesToRate.value.filter(evaluatee => evaluatee.is_done === 1)
-      }
+    const isRatedEvaluatees = (isDone) => {
+    if(!isDone){
+        return evaluateesToRate.value.filter(evaluatee => evaluatee.is_done === 0)
+    }
+
+    return evaluateesToRate.value.filter(evaluatee => evaluatee.is_done === 1)
+    }
 
     const removeEvaluate = async(userId) => {
         await csrfCookie()
         try{
-            const {data,status} = await deleteEvaluatee(userId);
-            console.log({data,status})
-            if(status == 200){
-                allEvaluatees.value = data.evaluatees
-                return data.message
+            const {data} = await deleteEvaluatee(userId);
+            if(data.success){
+                isSuccess.value = data.success
+                deleteMessage.value= data.data
+                allEvaluatees.value = allEvaluatees.value.filter(evaluatee => evaluatee.id != userId)
+            }else{
+                deleteMessage.value ='Something went wrong'
             }
-            return data.message
-    
+            errors.value= []
         }catch(e){
-            console.log(e)
+            errors.value = e
         }
     }
 
     const saveEvaluatee = async (val)=>{
         await csrfCookie()
-        const {data,status} = await storeEvaluatee(val)
-        console.log(data,status)        
-        if(status === 200){
-            allEvaluatees.value = data.evaluatees
-            return data.message
+        const {data} = await storeEvaluatee(val) 
+        if(data.success){
+            isSuccess.value = data.success
+            allEvaluatees.value.unshift(data.data)
+            errorMessage.value = []
         }else{
-            return 'Something went wrong'
+            isSuccess.value = data.success
+            errorMessage.value = data.message
         }
 
     }
@@ -148,6 +153,9 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         errors,
         status,
         removeEvaluate,
-        groupByDepartment
+        groupByDepartment,
+        isSuccess,
+        errorMessage,
+        deleteMessage
     }
 })

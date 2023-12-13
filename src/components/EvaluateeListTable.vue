@@ -11,18 +11,31 @@
             </tr>
           </thead>
           <tbody class="text-gray-600 text-sm font-light">
+            <tr
+              v-if="showDataAnimation"
+              class="border-b border-gray-200 hover:bg-gray-100 z-0"
+            >
+              <td
+                class="bg-white py-3 px-6 text-left whitespace-nowrap items-center"
+                colspan="3"
+              >
+                <DataAnimation />
+              </td>
+            </tr>
             <tr v-if="isNoData" class="border-b border-gray-200 hover:bg-gray-100 z-0">
               <td
-                class="py-3 px-6 text-left whitespace-nowrap flex justify-center row-span-3"
+                class="bg-white py-3 px-6 text-left whitespace-nowrap items-center"
+                colspan="3"
               >
-                <span class="font-medium">No data Found</span>
+                <span class="text-5xl flex justify-center items-center space-x-2"
+                  >No data Found</span
+                >
               </td>
             </tr>
             <tr
               v-for="(instructor, instructorIndex) in data"
               :key="instructorIndex"
-              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700
-              border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700 border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
             >
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
@@ -31,8 +44,11 @@
               </td>
               <td class="md:py-3 md:px-6 text-center">
                 <span
-                  class="bg-purple-200 text-purple-600 md:py-1 md:px-3 rounded-full text-xs "
-                  :class="{fullTime: instructor.job_type == 0, partTime: instructor.job_type == 1}"
+                  class="bg-purple-200 text-purple-600 md:py-1 md:px-3 rounded-full text-xs"
+                  :class="{
+                    fullTime: instructor.job_type == 0,
+                    partTime: instructor.job_type == 1,
+                  }"
                   >{{ instructor.job_type == 0 ? "Part Time" : "Full Time" }}</span
                 >
               </td>
@@ -110,11 +126,13 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import DataAnimation from "./DataAnimation.vue";
 
 const emit = defineEmits(["selectedValueTag", "handleActionClick"]);
 const props = defineProps({
   data: Object,
   isNoData: Boolean,
+  showDataAnimation: Boolean,
 });
 
 const handleActionClick = (id, action) => {

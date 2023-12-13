@@ -22,7 +22,7 @@ export const useSubjectStore = defineStore('subjectStore',()=>{
     const fetchAllSubjects = async()=>{
         const { data } = await getAllSubjects()
         console.log(data)
-        subjects.value = data
+        subjects.value = data.data
     }
     return {
         subjects,
