@@ -27,12 +27,18 @@
               >
               <input
                 v-model="name"
+                @input="handleInput"
                 class="border rounded w-full py-2 px-3 md:h-10"
                 id="fullname"
                 type="text"
                 placeholder="Enter Full name"
               />
-              <p v-if="errors.name">{{ errors.name }}</p>
+              <div class="flex items-center">
+                <span class="text-white" :class="{ invisible: isVisible }">.</span>
+                <Transition name="fade" appear>
+                  <span v-if="errors.name">{{ errors.name }}</span>
+                </Transition>
+              </div>
             </div>
             <div class="grid gap-x-2 lg:grid-cols-2 sm-grid-cols-2 grid-cols-2 pt-2">
               <div>
@@ -78,15 +84,25 @@
           Save
         </button>
       </div>
-      <ActionSpinnerAnimation v-if="showActionSpinner" data="Saving" />
+      <Transition name="fade" v-if="showActionModal">
+        <ActionModal
+          data="Saved"
+          :isInstructor="personelType == 1"
+          @closeAction="handleClose"
+        />
+      </Transition>
+      <Transition name="fade">
+        <ActionSpinnerAnimation v-if="showActionSpinner" data="Saving" />
+      </Transition>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useEvaluateeStore } from "../stores/evaluatee";
 import ActionSpinnerAnimation from "./ActionSpinnerAnimation.vue";
+import ActionModal from "./ActionModal.vue";
 
 const evaluateeStore = useEvaluateeStore();
 const nameInputElement = ref(null);
@@ -100,7 +116,8 @@ const personelType = ref(props.entityId);
 const showTable = ref(false);
 const entityName = ref(props.entity);
 const showActionSpinner = ref(false);
-
+const showActionModal = ref(false);
+const isVisible = ref(true);
 const props = defineProps([
   "entities",
   "entity",
@@ -109,7 +126,11 @@ const props = defineProps([
   "subjects",
   "sectionYears",
 ]);
-const emits = defineEmits(["handleCloseButton", "handleCreateClick"]);
+const emits = defineEmits(["handleCloseButton"]);
+
+const handleInput = () => {
+  errors.value = [];
+};
 
 const handleChange = () => {
   if (personelType.value !== 1) {
@@ -145,14 +166,26 @@ const handleSaveButton = async () => {
   await evaluateeStore.saveEvaluatee(val);
   showActionSpinner.value = false;
   if (evaluateeStore.isSuccess) {
-    alert("Successfully saved");
-    emits("handleCloseButton");
+    showActionModal.value = true;
+    setTimeout(function () {
+      showActionModal.value = false;
+      emits("handleCloseButton");
+    }, 3000);
   } else {
     errors.value.name = evaluateeStore.errorMessage;
   }
 };
 </script>
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.35s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 #close-btn {
   border: none;
   display: block;

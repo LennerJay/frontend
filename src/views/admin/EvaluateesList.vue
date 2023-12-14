@@ -171,36 +171,56 @@
           <!-- End Pagination -->
           <!-- Modal area -->
 
-          <ModalCard
-            v-if="showModal"
-            :noData="noData"
-            :isInstructor="isInstructor"
-            :showDetail="showDetail"
-            :evaluateeInfo="evaluateeInfo"
-            :evaluateeClasses="evaluateeClasses"
-            :action="actionSelected"
-            @close-modal="closeModal"
-            class="modal-box"
-          />
-          <CreateModal
-            v-if="crudModal.modalAdd"
-            :subjects="subjects"
-            :sectionYears="sectionYears"
-            :departments="departments"
-            :entities="entities"
-            :entityId="entityId"
-            :entity="entity"
-            @handleCloseButton="handleCloseButton"
-            @handleCreateClick="handleCreateClick"
-          />
-          <EditModal :editOpen="crudModal.modalEdit" @editNotOpen="editNotOpen" />
-          <DeleteModal
-            :showDataAnimation="showDataAnimation"
-            :evaluateeDetails="evaluateeDetails"
-            :deleteOpen="crudModal.modalDelete"
-            @closeDeleteModal="closeDeleteModal"
-            @handleDelete="handleDeleteEvaluatee"
-          />
+          <transition name="fade">
+            <ModalCard
+              v-if="showModal"
+              :noData="noData"
+              :isInstructor="isInstructor"
+              :showDetail="showDetail"
+              :evaluateeInfo="evaluateeInfo"
+              :evaluateeClasses="evaluateeClasses"
+              :action="actionSelected"
+              @close-modal="closeModal"
+              @show-Add-Update-Modal="showAddUpdateModal"
+              class="modal-box"
+            />
+          </transition>
+          <transition name="slide">
+            <AddUpdateClassModal v-if="showAddUpdate" 
+            @closeAddUpdate="closeAddUpdateModal"
+            />
+          </transition>
+          <transition name="fade">
+            <CreateModal
+              v-if="crudModal.modalAdd"
+              :subjects="subjects"
+              :sectionYears="sectionYears"
+              :departments="departments"
+              :entities="entities"
+              :entityId="entityId"
+              :entity="entity"
+              @handleCloseButton="handleCloseButton"
+            />
+          </transition>
+          <transition name="fade">
+            <EditModal
+              v-if="crudModal.modalEdit"
+              :subjects="subjects"
+              :departments="departments"
+              :entities="entities"
+              :evaluateeDetails="evaluateeDetails"
+              @closeEditModal="closeEditModal"
+            />
+          </transition>
+          <transition name="fade">
+            <DeleteModal
+              :showDataAnimation="showDataAnimation"
+              :evaluateeDetails="evaluateeDetails"
+              :deleteOpen="crudModal.modalDelete"
+              @closeDeleteModal="closeDeleteModal"
+              @handleDelete="handleDeleteEvaluatee"
+            />
+          </transition>
         </div>
       </div>
       <FooterCard />
@@ -226,6 +246,7 @@ import ModalCard from "../../components/ModalCard.vue";
 import CreateModal from "../../components/CreateModal.vue";
 import EditModal from "../../components/EditModal.vue";
 import DeleteModal from "../../components/DeleteModal.vue";
+import AddUpdateClassModal from "../../components/AddUpdateClassModal.vue";
 import FooterCard from "../../components/FooterCard.vue";
 
 const subjectStore = useSubjectStore();
@@ -258,6 +279,16 @@ const evaluateeDetails = ref([]);
 const noData = ref(false);
 const entityId = ref(1);
 const showDataAnimation = ref(false);
+const showAddUpdate = ref(true);
+
+const showAddUpdateModal = () => {
+  showModal.value  = false
+  showAddUpdate.value = true;
+};
+
+const closeAddUpdateModal = () => {
+  showAddUpdate.value = false;
+}
 
 const handleDeleteEvaluatee = () => {
   evaluatees.value = evaluateeStore.filterEvaluatees(
@@ -293,7 +324,13 @@ const handleCloseButton = () => {
   crudModal.modalAdd = false;
 };
 
-const editNotOpen = () => {
+const closeEditModal = () => {
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluatees"
+  );
   crudModal.modalEdit = false;
 };
 
@@ -362,7 +399,8 @@ const handleActionClick = (id, action) => {
   if (action == "view") {
     selectedEvaluatee(id);
   } else if (action == "edit") {
-    console.log("Edit Click!");
+    evaluateeDetails.value = findEvaluatee;
+    console.log(evaluateeDetails.value);
     crudModal.modalEdit = true;
   } else if (action == "delete") {
     evaluateeDetails.value = findEvaluatee;
@@ -416,12 +454,6 @@ const handleJobTypeSelected = (val) => {
   );
 };
 
-const handleCreateClick = async (res) => {
-  alert(res);
-  evaluatees.value = evaluateeStore.allEvaluatees;
-  crudModal.modalAdd = false;
-};
-
 const HandleCreateButton = () => {
   entityId.value = 1;
   if (entity.value != "All") {
@@ -472,6 +504,29 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .visible {
   display: block !important;
 }

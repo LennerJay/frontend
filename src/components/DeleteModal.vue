@@ -38,7 +38,12 @@
           Delete
         </button>
       </div>
-      <ActionSpinnerAnimation v-if="showActionSpinnerAnimation" data="Deleting" />
+      <Transition name="fade" v-if="showActionModal">
+        <ActionModal data="Deleted" @closeAction="handleCloseButton" />
+      </Transition>
+      <Transition name="fade">
+        <ActionSpinnerAnimation v-if="showActionSpinner" data="Deleting" />
+      </Transition>
     </div>
   </div>
 </template>
@@ -47,23 +52,30 @@
 import { ref } from "vue";
 import { useEvaluateeStore } from "../stores/evaluatee";
 import ActionSpinnerAnimation from "./ActionSpinnerAnimation.vue";
+import ActionModal from "./ActionModal.vue";
 
 const props = defineProps(["deleteOpen", "evaluateeDetails"]);
 const emits = defineEmits(["closeDeleteModal", "handleDelete"]);
 
 const evaluateeStore = useEvaluateeStore();
-const showActionSpinnerAnimation = ref(false);
+const showActionSpinner = ref(false);
+const showActionModal = ref(false);
 
 const handleCloseButton = () => {
   emits("closeDeleteModal");
 };
 
 const handleDelete = async () => {
-  showActionSpinnerAnimation.value = true;
+  showActionSpinner.value = true;
   await evaluateeStore.removeEvaluate(props.evaluateeDetails.id);
-  alert(evaluateeStore.deleteMessage);
-  showActionSpinnerAnimation.value = false;
-  emits("handleDelete");
+  showActionSpinner.value = false;
+  if (evaluateeStore.isSuccess) {
+    showActionModal.value = true;
+    setTimeout(function () {
+      showActionModal.value = false;
+      emits("handleDelete");
+    }, 2500);
+  }
 };
 </script>
 <style scoped>

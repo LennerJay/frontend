@@ -1,6 +1,6 @@
 import {  defineStore } from "pinia";
 import { ref, watch } from "vue";
-import { getAllEvaluatees,getEvaluateesToRate,getEvaluateeInfo,deleteEvaluatee , storeEvaluatee} from "../http/evaluatee-api"
+import { getAllEvaluatees,getEvaluateesToRate,getEvaluateeInfo, evaluateeUpdate, deleteEvaluatee , storeEvaluatee} from "../http/evaluatee-api"
 import { csrfCookie } from "../http/auth-api"
 
 export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
@@ -44,21 +44,6 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         }
     }
     
-
-    // if(localStorage.getItem('allEvaluatees')){
-    //     allEvaluatees.value = JSON.parse(localStorage.getItem('allEvaluatees'))
-    // }
-
-    // watch(
-    //     allEvaluatees,
-    //     (evaluateesVal)=>{
-    //         localStorage.setItem('allEvaluatees', JSON.stringify(evaluateesVal))
-    //     },
-    //     {
-    //         deep:true
-    //     }
-    // );
-
     const filterEvaluatees = (entity, departmentName,jobType,path=null)=>{
         const evaluatees = ref([]); 
             if(path === 'evaluations'){
@@ -129,6 +114,26 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
 
     }
 
+    const updateEvaluatee = async (evaluatee_id,val)=>{
+        await csrfCookie()
+        try {
+            const {data} = await evaluateeUpdate(evaluatee_id,val);
+            console.log(data)
+            if(data.success){
+                isSuccess.value = data.success
+                allEvaluatees.value = allEvaluatees.value.filter(evaluatee => evaluatee.id != evaluatee_id)
+                allEvaluatees.value.unshift(data.data)
+                errorMessage.value = []
+            }else{
+                isSuccess.value = data.success
+                errorMessage.value = data.message
+            }
+            errors.value =[]
+        } catch (e) {
+            errors.value = e
+        }
+    }
+
     const groupByDepartment = (values, keySelector) => {
         return values.reduce(function (accumulator, current) {
             const key = keySelector(current);
@@ -156,6 +161,7 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         groupByDepartment,
         isSuccess,
         errorMessage,
-        deleteMessage
+        deleteMessage,
+        updateEvaluatee
     }
 })

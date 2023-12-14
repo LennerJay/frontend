@@ -1,109 +1,136 @@
 <template>
-<!-- Modal -->
-<div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman z-20">
-  <div class=" bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
-    <div class="sticky top-0 left-0 z-10">
-      <button @click="closeModal" >
-      <i class="bi bi-x-lg"></i>
-        <span></span>
-    </button>
-    </div>
-    <div v-if="showDetail">
+  <!-- Modal -->
+  <div
+    @keydown.esc="handleEscKey"
+    class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-Times New Roman z-20"
+  >
+    <div
+      class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto"
+    >
+      <div class="sticky top-0 left-0 z-10">
+        <button id="close-btn" @click="closeModal">
+          <i class="bi bi-x-lg"></i>
+          <span></span>
+        </button>
+      </div>
+      <div v-if="showDetail">
         <!-- Modal Header -->
         <div class="mb-4 flex flex-col">
-            <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2">Details</h2>
-            <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 ">
-                <span><i class="bi bi-person-fill mr-1"></i>Name: {{evaluateeInfo.name }}</span>
-                <span><i class="bi bi-calendar-check-fill mr-1"></i>Shift : {{ evaluateeInfo.job_type == 0 ?'Part time':'Full Time' }}</span>
-                <span>Personnel Type: {{ evaluateeInfo.entity_name }}</span>
-                <span v-if="isInstructor"><i class="bi bi-bank2 mr-1"></i>Department : <span v-for="department in evaluateeInfo.instructorsDepartments" >{{ department.toUpperCase() }}</span></span>
-              </div>
+          <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2">
+            Details
+          </h2>
+          <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2">
+            <span
+              ><i class="bi bi-person-fill mr-1"></i>Name: {{ evaluateeInfo.name }}</span
+            >
+            <span
+              ><i class="bi bi-calendar-check-fill mr-1"></i>Shift :
+              {{ evaluateeInfo.job_type == 0 ? "Part time" : "Full Time" }}</span
+            >
+            <span>Personnel Type: {{ evaluateeInfo.entity_name }}</span>
+            <span v-if="isInstructor"
+              ><i class="bi bi-bank2 mr-1"></i>Department :
+              <span v-for="department in evaluateeInfo.instructorsDepartments">{{
+                department.toUpperCase()
+              }}</span></span
+            >
+          </div>
         </div>
 
         <!-- Modal Body -->
-          <div v-if="isInstructor" class="mb-4">
-            {{ evaluateeClasses.length }}
-            <table class="max-w-screen w-full border" v-for="(evaluateeClass,classesIndex) in evaluateeClasses" :key="classesIndex">
-            <caption>{{ evaluateeClass.department }}</caption>
-              <thead>
-                <tr>
-                  <th class="border">Subject</th>
-                  <th class="border">Sections</th>
-                  <th class="border">Day</th>
-                  <th class="border">Time</th>
-                </tr>
-              </thead>
-              <tbody class="text-center" v-for="(klasses,classIndex) in evaluateeClass.classes" :key="classIndex">
-                <tr v-for="(klass,klassKey) in klasses">
-                 <td v-if="klassKey === 0" :rowspan="klasses.length ">{{ klass.subject }}</td>
-                 <td>{{ klass.section_year }}</td>
-                 <td>{{ klass.day }}</td>
-                 <td>{{ klass.time }}</td>
-                </tr>
-              </tbody>
-            </table>
-            
-          </div>
+        <div v-if="isInstructor" class="mb-4">
+          <table
+            class="max-w-screen w-full border"
+            v-for="(evaluateeClass, classesIndex) in evaluateeClasses"
+            :key="classesIndex"
+          >
+            <caption>
+              {{
+                evaluateeClass.department
+              }}
+            </caption>
+            <thead>
+              <tr>
+                <th class="border">Subject</th>
+                <th class="border">Sections</th>
+                <th class="border">Day</th>
+                <th class="border">Time</th>
+              </tr>
+            </thead>
+            <tbody
+              class="text-center"
+              v-for="(klasses, classIndex) in evaluateeClass.classes"
+              :key="classIndex"
+            >
+              <tr v-for="(klass, klassKey) in klasses">
+                <td v-if="klassKey === 0" :rowspan="klasses.length">
+                  {{ klass.subject }}
+                </td>
+                <td>{{ klass.section_year }}</td>
+                <td>{{ klass.day }}</td>
+                <td>{{ klass.time }}</td>
+              </tr>
+            </tbody>
+          </table>
 
+          <button
+           @click="$emit('show-Add-Update-Modal')"
+            type="button"
+            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >
+            Blue
+          </button>
+        </div>
 
         <!-- Modal Footer -->
-        <div class="flex justify-between items-center" v-if="isHistoryRoute">
-          <p class="mb-2">Date Evaluated 
-            <hr>
-            <span class="flex ml-5">11-12-23</span>
-          </p>
+      </div>
+      <div v-else-if="noData">No data Found</div>
+      <div
+        v-else
+        class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex"
+      >
+        <div class="loader">
+          <svg viewBox="0 0 80 80">
+            <circle id="test" cx="40" cy="40" r="32"></circle>
+          </svg>
         </div>
-    </div>
-    <div v-else-if="noData">
-      No data Found
-    </div>
-    <div v-else class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex">
-      <div class="loader">
-        <svg viewBox="0 0 80 80">
-          <circle id="test" cx="40" cy="40" r="32"></circle>
-        </svg>
-      </div>
 
-      <div class="loader triangle">
-        <svg viewBox="0 0 86 80">
-          <polygon points="43 8 79 72 7 72"></polygon>
-        </svg>
-      </div>
+        <div class="loader triangle">
+          <svg viewBox="0 0 86 80">
+            <polygon points="43 8 79 72 7 72"></polygon>
+          </svg>
+        </div>
 
-      <div class="loader">
-        <svg viewBox="0 0 80 80">
-          <rect x="8" y="8" width="64" height="64"></rect>
-        </svg>
+        <div class="loader">
+          <svg viewBox="0 0 80 80">
+            <rect x="8" y="8" width="64" height="64"></rect>
+          </svg>
+        </div>
       </div>
     </div>
   </div>
-
-</div>
 </template>
 <script setup>
-import { ref, computed } from 'vue';
-import { useEvaluateeStore } from '../stores/evaluatee';
-import { useRoute } from 'vue-router';
+import { ref } from "vue";
+import { useEvaluateeStore } from "../stores/evaluatee";
 
-const store = useEvaluateeStore();
-const route = useRoute();
 const props = defineProps([
-                'isInstructor', 
-                'evaluateeInfo',
-                'selectedEvaluteeId',
-                'showDetail',
-                'noData',
-                'evaluateeClasses'
-              ]);
-const emits = defineEmits(['close-modal'])
+  "isInstructor",
+  "evaluateeInfo",
+  "selectedEvaluteeId",
+  "showDetail",
+  "noData",
+  "evaluateeClasses",
+]);
+const emits = defineEmits(["close-modal"]);
+
+const handleEscKey = (e) => {
+  console.log(e);
+};
 
 const closeModal = () => {
-  // Emit an event to inform the parent component to close the modal
-  emits('close-modal');
+  emits("close-modal");
 };
-const isHistoryRoute = computed(() => route.name === 'history');
-
-
 </script>
 
 <style scoped>
@@ -119,7 +146,7 @@ const isHistoryRoute = computed(() => route.name === 'history');
 }
 
 .loader:before {
-  content: '';
+  content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -138,7 +165,9 @@ const isHistoryRoute = computed(() => route.name === 'history');
   height: 100%;
 }
 
-.loader svg rect, .loader svg polygon, .loader svg circle {
+.loader svg rect,
+.loader svg polygon,
+.loader svg circle {
   fill: none;
   stroke: var(--path);
   stroke-width: 10px;
@@ -261,8 +290,7 @@ const isHistoryRoute = computed(() => route.name === 'history');
   margin: 0 16px;
 }
 
- 
-button {
+#close-btn {
   border: none;
   display: block;
   position: relative;

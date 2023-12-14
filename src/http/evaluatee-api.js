@@ -13,6 +13,8 @@ export const getEvaluateesToRate = () => api.get(apiPath + '/users/evaluatees-to
 
 export const storeEvaluatee = (data) => api.post(resource,data)
 
+export const evaluateeUpdate = (evaluateeId,data) => api.put(resource + `/${evaluateeId}`,data)
+
 export const deleteEvaluatee = (evaluateeId) => api.delete(resource + `/${evaluateeId}`);
 
 
