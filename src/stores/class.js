@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import {addClass, updateClass, deleteClass } from "../http/class-api"
+import {addClass, deleteClass } from "../http/class-api"
 import { ref } from 'vue';
 
 export const useClassStore = defineStore('classStore',()=>{
@@ -7,25 +7,26 @@ export const useClassStore = defineStore('classStore',()=>{
     const errors = ref([])
 
 
-    const addClass = async()=>{
-
+    const saveClass = async(datas)=>{
+        const {data} = await addClass(datas);
+        console.log(data);
+        if(data.success){
+            isSuccess.value = data.success
+            errors.value = []
+        }else{
+            errors.value = data.message
+        }
     }
 
-    const updateClass = async()=>{
-
-    }
-
-    const deleteClass = async()=>{
-
+    const removeClass = async()=>{
+        const {data} = await deleteClass()
     };
 
 
     return {
         isSuccess,
         errors,
-        addClass,
-        updateClass,
-        deleteClass
-
+        saveClass,
+        removeClass
     }
 });

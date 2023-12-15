@@ -5,7 +5,7 @@
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-Times New Roman z-20"
   >
     <div
-      class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto"
+      class="bg-white p-8 max-w-lg mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto"
     >
       <div class="sticky top-0 left-0 z-10">
         <button id="close-btn" @click="closeModal">
@@ -73,13 +73,22 @@
             </tbody>
           </table>
 
-          <button
-           @click="$emit('show-Add-Update-Modal')"
-            type="button"
-            class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          >
-            Blue
-          </button>
+          <div class="flex justify-end mt-5">
+            <button
+              @click="closeModal"
+              type="button"
+              class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            >
+              close
+            </button>
+            <button
+              @click="emits('show-Add-Update-Modal')"
+              type="button"
+              class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+            >
+              {{ evaluateeClasses.length != 0 ? "Add / Update Class " : "Add Class" }}
+            </button>
+          </div>
         </div>
 
         <!-- Modal Footer -->
@@ -87,7 +96,7 @@
       <div v-else-if="noData">No data Found</div>
       <div
         v-else
-        class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex"
+        class="bg-white p-[10px] pl-5 pr-32 max-w-lg mx-auto mt-48 max-h-[26rem] flex"
       >
         <div class="loader">
           <svg viewBox="0 0 80 80">
@@ -122,7 +131,7 @@ const props = defineProps([
   "noData",
   "evaluateeClasses",
 ]);
-const emits = defineEmits(["close-modal"]);
+const emits = defineEmits(["close-modal", "show-Add-Update-Modal"]);
 
 const handleEscKey = (e) => {
   console.log(e);

@@ -134,12 +134,35 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         }
     }
 
-    const groupByDepartment = (values, keySelector) => {
-        return values.reduce(function (accumulator, current) {
-            const key = keySelector(current);
+    // const groupByDepartment = (values, keySelector) => {
+    //     return values.reduce(function (accumulator, current) {
+    //         const key = keySelector(current);
+    //         (accumulator[key] = accumulator[key] || []).push(current);
+    //         return accumulator;
+    //       }, {});
+    // }
+    const groupByDepartment = () => {
+        const keySelector1 = (value) => value.department
+        const keySelector2 = (value) => value.subject
+        const evaluateeClasses = [];
+        const klasses =  evaluateeInfo.value.classes.reduce(function (accumulator, current) {
+            const key = keySelector1(current);
             (accumulator[key] = accumulator[key] || []).push(current);
             return accumulator;
           }, {});
+          for (const klass in klasses) {
+            const newValue = klasses[klass].reduce(function (accumulator, current) {
+                const key = keySelector2(current);
+                (accumulator[key] = accumulator[key] || []).push(current);
+                return accumulator;
+              }, {});
+            evaluateeClasses.push({
+              department: klass,
+              classes: newValue,
+            });
+          }
+
+          return evaluateeClasses;
     }
 
     return {

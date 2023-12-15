@@ -185,17 +185,20 @@
               class="modal-box"
             />
           </transition>
-          <transition name="slide">
-            <AddUpdateClassModal v-if="showAddUpdate" 
-            @closeAddUpdate="closeAddUpdateModal"
+          <transition name="fade">
+            <AddUpdateClassModal
+              v-if="showAddUpdate"
+              :evaluateeInfo="evaluateeInfo"
+              :subjects="subjects"
+              :sectionYears="sectionYears"
+              :departments="departments"
+              :evaluateeClasses="evaluateeClasses"
+              @closeAddUpdate="closeAddUpdateModal"
             />
           </transition>
           <transition name="fade">
             <CreateModal
               v-if="crudModal.modalAdd"
-              :subjects="subjects"
-              :sectionYears="sectionYears"
-              :departments="departments"
               :entities="entities"
               :entityId="entityId"
               :entity="entity"
@@ -279,16 +282,18 @@ const evaluateeDetails = ref([]);
 const noData = ref(false);
 const entityId = ref(1);
 const showDataAnimation = ref(false);
-const showAddUpdate = ref(true);
+const showAddUpdate = ref(false);
 
 const showAddUpdateModal = () => {
-  showModal.value  = false
+  showModal.value = false;
   showAddUpdate.value = true;
 };
 
 const closeAddUpdateModal = () => {
+  evaluateeInfo.value = [];
   showAddUpdate.value = false;
-}
+  closeModal();
+};
 
 const handleDeleteEvaluatee = () => {
   evaluatees.value = evaluateeStore.filterEvaluatees(
@@ -371,20 +376,7 @@ const selectedEvaluatee = async (id) => {
   if (Object.keys(evaluateeStore.infoErrors).length == 0) {
     evaluateeClasses.value = [];
     evaluateeInfo.value = evaluateeStore.evaluateeInfo;
-    const klasses = evaluateeStore.groupByDepartment(
-      evaluateeInfo.value.classes,
-      (klass) => klass.department
-    );
-    for (const klass in klasses) {
-      const newValue = evaluateeStore.groupByDepartment(
-        klasses[klass],
-        (klass) => klass.subject
-      );
-      evaluateeClasses.value.push({
-        department: klass,
-        classes: newValue,
-      });
-    }
+    evaluateeClasses.value = evaluateeStore.groupByDepartment();
     if (evaluateeInfo.value.entity_name === "instructor") {
       isInstructor.value = true;
     }
@@ -394,10 +386,10 @@ const selectedEvaluatee = async (id) => {
   }
 };
 
-const handleActionClick = (id, action) => {
+const handleActionClick = async (id, action) => {
   const findEvaluatee = evaluatees.value.find((evaluatee) => evaluatee.id === id);
   if (action == "view") {
-    selectedEvaluatee(id);
+    await selectedEvaluatee(id);
   } else if (action == "edit") {
     evaluateeDetails.value = findEvaluatee;
     console.log(evaluateeDetails.value);
@@ -505,7 +497,7 @@ onMounted(async () => {
 
 <style scoped>
 .slide-fade-enter-active {
-  transition: all 0.3s ease-out;
+  transition: all 0.8s ease-out;
 }
 
 .slide-fade-leave-active {
