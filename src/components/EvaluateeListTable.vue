@@ -19,7 +19,7 @@
                 class="bg-white py-3 px-6 text-left whitespace-nowrap items-center"
                 colspan="3"
               >
-                <DataAnimation />
+                <LoadingDataAnimation />
               </td>
             </tr>
             <tr v-if="isNoData" class="border-b border-gray-200 hover:bg-gray-100 z-0">
@@ -126,7 +126,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import DataAnimation from "./DataAnimation.vue";
+import LoadingDataAnimation from "./LoadingDataAnimation.vue";
 
 const emit = defineEmits(["selectedValueTag", "handleActionClick"]);
 const props = defineProps({

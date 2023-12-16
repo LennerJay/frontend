@@ -60,9 +60,7 @@ const scrollToTarget = (element) => {
 defineEmits(["CancelDelete", "ClickDelete"]);
 
 onMounted(() => {
-  // console.log("test");
   scrollToTarget(targetWarning.value);
-  console;
 });
 </script>
 

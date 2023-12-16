@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
-import { allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents } from "../http/questionaire-api";
+import { deleteQuestionaire,updateStatusQuestionaire,allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents ,updateQuestionaire} from "../http/questionaire-api";
+import { csrfCookie } from "../http/auth-api"
+
 import { ref, watch } from "vue";
 
 export const useQuestionaireStore = defineStore('questionaireStore',()=>{
@@ -8,7 +10,7 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     const errors = ref([]);
     const questionaireForEvaluatee = ref([]);
     const maxRespondents= ref([]);
-
+    const isSuccess = ref(false);
     const fetchQuestionaire = async ()=>{
         try{
             const {data}  = await allQuestionaires();
@@ -32,9 +34,9 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
       
     }
 
-    if(localStorage.getItem('questionaires')){
-        questionaires.value = JSON.parse(localStorage.getItem('questionaires'))
-    }
+    // if(localStorage.getItem('questionaires')){
+    //     questionaires.value = JSON.parse(localStorage.getItem('questionaires'))
+    // }
     if(localStorage.getItem('latest-questionaires')){
         latestQuestionaire.value = JSON.parse(localStorage.getItem('latest-questionaires'))
     }
@@ -43,16 +45,16 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     }
 
 
-    watch(
-        questionaires,
-        (questionairesVal)=>{
-            localStorage.setItem('questionaires',JSON.stringify(questionairesVal))
-        },
-        {
-            deep:true
-        }
+    // watch(
+    //     questionaires,
+    //     (questionairesVal)=>{
+    //         localStorage.setItem('questionaires',JSON.stringify(questionairesVal))
+    //     },
+    //     {
+    //         deep:true
+    //     }
 
-    );
+    // );
     watch(
         latestQuestionaire,
         (latestQuestionaireVal)=>{
@@ -73,15 +75,15 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         }
 
     );
-    // watch(
-    //     maxRespondents,
-    //     (maxRespondentsVal)=>{
-    //         localStorage.setItem('max-repondents',JSON.stringify(maxRespondentsVal))
-    //     },
-    //     {
-    //         deep:true
-    //     }
-    // )
+    watch(
+        maxRespondents,
+        (maxRespondentsVal)=>{
+            localStorage.setItem('max-repondents',JSON.stringify(maxRespondentsVal))
+        },
+        {
+            deep:true
+        }
+    )
     const fetchQuestionaireForEvaluatee = async(entityId)=>{
         const id = {
             entity_id : entityId
@@ -107,6 +109,53 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
       }
     }
 
+    const filterQuestionaires = (val)=>{
+        if(val == 'All'){
+            return questionaires.value
+        }
+        return questionaires.value.filter(q => q.entity_name == val)
+    }
+
+    const questionaireUpdate = async(qId,datas)=>{
+        await csrfCookie()
+        try{
+            const {data} = await updateQuestionaire(qId,datas);
+            console.log(data)
+            if(data.success){
+                isSuccess.value = true
+                return data.data
+            }
+            errors.value = []
+        }catch(e){
+            errors.value = e
+        }
+    }
+
+    const updateStatus = async(qId)=>{
+        await csrfCookie()
+        try{
+          const {data} =  await updateStatusQuestionaire(qId)
+          console.log(data)
+          if(data.success){
+                isSuccess.value = true
+                return data.data
+            }else{
+                isSuccess.value = false
+            }
+        }catch(e){
+
+        }
+    }
+    const removeQuestionaire = async(qId)=>{
+        await csrfCookie()
+        try{
+          const {data} =   await deleteQuestionaire(qId)
+          console.log(data)
+          errors.value = []
+        }catch(e){
+            errors.value = e
+        }
+    }
 
     return {
         questionaires,
@@ -116,6 +165,12 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         questionaireForEvaluatee,
         fetchQuestionaireForEvaluatee,
         fetchMaxRespondents,
-        maxRespondents
+        maxRespondents,
+        filterQuestionaires,
+        questionaireUpdate,
+        isSuccess,
+        errors,
+        updateStatus,
+        removeQuestionaire
     }
 })

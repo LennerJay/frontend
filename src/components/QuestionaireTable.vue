@@ -11,6 +11,11 @@
             </tr>
           </thead>
           <tbody class="text-gray-600 text-sm font-light">
+            <tr v-if="showLoadingDataAnimation" class="border-b border-gray-200 hover:bg-gray-100">
+              <td class="py-3 px-6 text-left " colspan="3">
+                <LoadingDataAnimation/>
+              </td>
+            </tr>
             <tr v-if="isNoData" class="border-b border-gray-200 hover:bg-gray-100">
               <td class="py-3 px-6 text-left whitespace-nowrap flex justify-center row-span-3">
                 <span class="font-medium">No data Found</span>
@@ -37,6 +42,7 @@
                   <button @click="handleClickAction(questionaire.id,'details')" id="details">Details</button>
                   <!--class="border-solid border-2 border-indigo-300"-->
                   <button @click="handleClickAction(questionaire.id,'questions')" id="questions">Questions</button>
+                  <button @click="handleClickAction(questionaire.id,'delete')" id="questions">Delete</button>
                 </div>
               </td>
             </tr>
@@ -49,11 +55,14 @@
 
 
 <script setup>
+import { ref } from 'vue';
+import LoadingDataAnimation from './LoadingDataAnimation.vue';
 
 
 const props = defineProps({
   data:Object,
-  isNoData:Boolean
+  isNoData:Boolean,
+  showLoadingDataAnimation:Boolean
 });
 const emits = defineEmits(['handleAction']);
 

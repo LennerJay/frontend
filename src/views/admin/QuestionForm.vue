@@ -1,6 +1,6 @@
 <template>
-  <div class="main-container w-screen">
-    <div class="content">
+  <div class="flex relative">
+    <div class="content main-container w-screen ">
       <div class="navbar-container">
         <div class="navbar-content">
           <header id="main-header">
@@ -10,17 +10,35 @@
         </div>
       </div>
       <!-- End of navbar-container -->
-      <QuestionaireTable
+      <div class="mt-5 flex justify-end">
+        <button id="add-btn">Add Questinaire</button>
+      </div>
+      <div>
+        <SelectEntity
+          :entities="entities"
+          :entity="entity"
+          @handleSelect="handleSelectEntity"
+        />
+      </div>
+      <QuestionaireTable 
         :isNoData="isNoData"
         :data="questionaires"
+        :showLoadingDataAnimation="showLoadingDataAnimation"
         @handleAction="selectQuestionaire"
       />
-      <QuestionaireDetail
+      <transition name="fade">
+        <QuestionaireDetail
         v-if="showDetails"
         :selectedQuestionaire="selectedQuestionaire"
         @backButton="handleBack"
       />
-
+      </transition>
+      <transition name="fade">
+        <WarningModal v-if="showWarningModal" 
+        @CancelDelete="showWarningModal=false"
+        @ClickDelete = "deleteQuestionaire"
+        />
+      </transition>
       <FooterCard />
     </div>
     <!-- End of content -->
@@ -29,33 +47,45 @@
 </template>
 
 <script setup>
-import { useQuestionaireStore } from "../../stores/questionaire";
 import { ref, onMounted } from "vue";
+import { useEntityStore } from "../../stores/entity"
+import { useQuestionaireStore } from "../../stores/questionaire";
 import QuestionaireTable from "../../components/QuestionaireTable.vue";
 import QuestionaireDetail from "../../components/QuestionaireDetail.vue";
+import SelectEntity from "../../components/SelectEntity.vue";
 import FooterCard from "../../components/FooterCard.vue";
+import WarningModal from "../../components/WarningModal.vue";
 
+const showWarningModal = ref(false)
 const questionaireStore = useQuestionaireStore();
-
+const entityStore = useEntityStore();
+const isNoData = ref(false);
+const showLoadingDataAnimation = ref(false);
 const questionaires = ref([]);
 const showDetails = ref(false);
 const selectedQuestionaire = ref();
-const isNoData = ref(false);
-
+const entities = ref([]);
+const entity = ref("All");
+const qId = ref(0);
+const handleSelectEntity =(val)=>{
+  questionaires.value = questionaireStore.filterQuestionaires(val)
+}
 const selectQuestionaire = (id, action) => {
   if (action == "details") {
     selectedQuestionaire.value = questionaires.value.find(
       (questionaire) => questionaire.id === id
     );
-    console.log(selectedQuestionaire.value);
-    localStorage.setItem(
-      "selectedQuestionaire",
-      JSON.stringify(selectedQuestionaire.value)
-    );
     showDetails.value = true;
-  } else if (action == "questions") {
+  } 
+  if (action == "delete") {
+    showWarningModal.value = true
+    qId.value = id
   }
 };
+
+const deleteQuestionaire = async()=>{
+  await questionaireStore.removeQuestionaire(qId.value)
+}
 
 const handleBack = () => {
   localStorage.removeItem("selectedQuestionaire");
@@ -63,17 +93,35 @@ const handleBack = () => {
 };
 
 onMounted(async () => {
+  showLoadingDataAnimation.value = true;
+  if (!localStorage.getItem("entities")) {
+    await entityStore.fetchAllEntity();
+  }
+  entities.value = entityStore.entities;
+
   await questionaireStore.fetchQuestionaire();
+  showLoadingDataAnimation.value = false;
   questionaires.value = questionaireStore.questionaires;
   console.log(questionaires.value);
   if (localStorage.getItem("selectedQuestionaire")) {
     selectedQuestionaire.value = JSON.parse(localStorage.getItem("selectedQuestionaire"));
     showDetails.value = true;
   }
+  
 });
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .navbar-container {
   background-color: #0c4a6e;
 }
@@ -83,8 +131,8 @@ onMounted(async () => {
   padding: 15px 15px;
 }
 
-.navbar-content #main-header {
-}
+/* .navbar-content #main-header {
+} */
 
 #main-header h1,
 #main-header h2 {
@@ -104,4 +152,16 @@ onMounted(async () => {
   font-size: 20px;
   font-family: Verdana;
 }
+#add-btn {
+    outline: none;
+    padding: 6px 12px;
+    background-color: #0C4A6E;
+    color: #ffffff;
+  }
+  #add-btn:hover {
+    background-color: #1885F2;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
 </style>
