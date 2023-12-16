@@ -5,4 +5,6 @@ const resource = apiPath +  "/class"
 
 export const addClass = (data) => api.post(resource + '/store',data)
 
-export const deleteClass = (data) => api.delete(resource + '/delete',data)
+export const updateClass = (data) => api.put(resource + '/update',data)
+
+export const deleteClass = (data) => api.post(resource + '/delete',data)

@@ -12,6 +12,7 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
     const evaluateesToRate = ref([])
     const infoErrors = ref([])
     const evaluateeInfo = ref([])
+    const evaluateClasses = ref([])
     const isSuccess = ref(false)
     const errorMessage = ref([])
     const deleteMessage = ref([])
@@ -24,6 +25,7 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         try{
             const {data} = await getEvaluateeInfo(id)
             evaluateeInfo.value = data.data
+            evaluateClasses.value = evaluateeInfo.value.classes
             infoErrors.value = []
         }catch(e){
             evaluateeInfo.value =[]
@@ -134,18 +136,18 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         }
     }
 
-    // const groupByDepartment = (values, keySelector) => {
-    //     return values.reduce(function (accumulator, current) {
-    //         const key = keySelector(current);
-    //         (accumulator[key] = accumulator[key] || []).push(current);
-    //         return accumulator;
-    //       }, {});
-    // }
-    const groupByDepartment = () => {
+    const groupByDepartment = (classes) => {
+        const datas = ref([])
+        if(classes){
+            datas.value = classes
+        }else{
+            datas.value = evaluateClasses.value
+        }
         const keySelector1 = (value) => value.department
         const keySelector2 = (value) => value.subject
         const evaluateeClasses = [];
-        const klasses =  evaluateeInfo.value.classes.reduce(function (accumulator, current) {
+
+        const klasses =  datas.value.reduce(function (accumulator, current) {
             const key = keySelector1(current);
             (accumulator[key] = accumulator[key] || []).push(current);
             return accumulator;
@@ -163,6 +165,27 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
           }
 
           return evaluateeClasses;
+    }
+
+    const filterEvaluateeClasses = (action,klassId,data)=>{
+        if(action == 'delete'){
+            evaluateClasses.value = evaluateClasses.value.filter(klass => klass.id != klassId);
+        }
+        if(action == 'update'){
+            evaluateClasses.value = evaluateClasses.value.map(val => {
+                if(val.id == klassId){
+                    val.section_year = data.section_year
+                    val.department = data.department
+                    val.subject =data.subject 
+                    val.day = data.day 
+                    val.time = data.time 
+                    return val
+                }else{
+                    return val
+                }
+            })
+        }
+       
     }
 
     return {
@@ -185,6 +208,8 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         isSuccess,
         errorMessage,
         deleteMessage,
-        updateEvaluatee
+        updateEvaluatee,
+        evaluateClasses,
+        filterEvaluateeClasses
     }
 })

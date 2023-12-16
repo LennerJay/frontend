@@ -5,7 +5,7 @@
     <div
       class="relative bg-white md:max-w-3xl max-w-sm mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto"
     >
-      <div class="relative p-8">
+      <div class="relative p-8 ">
         <button @click="handleClose" id="close-btn">
           <i class="bi bi-x-lg"></i>
           <span></span>
@@ -20,16 +20,19 @@
           <p>Instructor:{{ evaluateeInfo.name }}</p>
         </div>
         <!-- Modal body -->
+       <div ref="formField">
         <div class="mb-4 flex flex-col">
           <div>
-            <label class="block text-gray-700 text-sm font-bold pb-1" for="department"
+            <label
+              class="block text-gray-700 text-sm font-bold pb-1"
+              for="klass-department"
               >Department
             </label>
             <select
               v-model="department"
               @click="handleClickDepartment"
               class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3"
-              id="department"
+              id="klass-department"
             >
               <option hidden value="">Select Department</option>
               <option v-for="department in departments" :value="department.id">
@@ -49,14 +52,14 @@
             class="pt-2 grid md:gap-x-2 md:lg:grid-cols-2 md:sm-grid-cols-2 gap-x-2 gap-y-2 grid-cols-2 sm-grid-cols-2"
           >
             <div class="basis-1/4">
-              <label class="flex text-gray-700 text-sm font-bold mb-2" for="subject"
+              <label class="flex text-gray-700 text-sm font-bold mb-2" for="klass-subject"
                 >Subject</label
               >
               <select
                 @click="handleClickSubject"
                 v-model="subject"
                 class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 pr-2"
-                id="subject"
+                id="klass-subject"
               >
                 <option hidden value="">SELECT</option>
                 <option v-for="subject in subjects" :value="subject.id">
@@ -71,14 +74,16 @@
               </div>
             </div>
             <div class="basis-1/2">
-              <label class="flex text-gray-700 text-sm font-bold mb-2" for="fullname"
+              <label
+                class="flex text-gray-700 text-sm font-bold mb-2"
+                for="klass-year-section"
                 >Year & Section</label
               >
               <input
                 v-model="sectionYear"
                 @input="handleInputSectionYear"
                 class="border rounded w-full py-2 px-3 md:h-10"
-                id="fullname"
+                id="klass-year-section"
                 type="text"
                 placeholder="Eg. 1-C 2-C"
               />
@@ -95,14 +100,14 @@
           class="pt-2 grid md:gap-x-2 md:lg:grid-cols-2 md:sm-grid-cols-2 gap-x-2 gap-y-2 grid-cols-2 sm-grid-cols-2"
         >
           <div>
-            <label class="flex text-gray-700 text-sm font-bold pb-1" for="time"
+            <label class="flex text-gray-700 text-sm font-bold pb-1" for="klass-time"
               >Time</label
             >
             <input
               @input="handleInputTime"
               v-model="time"
               class="border rounded w-full h-9 px-3"
-              id="time"
+              id="klass-time"
               type="text"
               placeholder="Eg. 1:00-2:30 PM"
             />
@@ -114,12 +119,14 @@
             </div>
           </div>
           <div>
-            <label class="flex text-gray-700 text-sm font-bold pb-1" for="day">Day</label>
+            <label class="flex text-gray-700 text-sm font-bold pb-1" for="klass-day"
+              >Day</label
+            >
             <input
               @input="handleInputDay"
               v-model="day"
               class="border rounded w-full h-9 px-3"
-              id="day"
+              id="klass-day"
               type="text"
               placeholder="Eg. MWF, TTH, SAT"
             />
@@ -130,15 +137,27 @@
               </Transition>
             </div>
           </div>
-          <div>
-            <button
-              @click="addClassBtn"
-              class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Add Class
-            </button>
-          </div>
+
         </div>
+        <div class="flex justify-end gap-5">
+          <button v-if="isUpdate"
+            @click="cancelUpdate"
+            class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+          Cancel
+          </button>
+          <button
+            @click="addClassBtn"
+            class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            {{ isUpdate ? 'Update': 'Save' }} Class
+          </button>
+        </div>
+       
+       
+       </div>
+
+
         <table
           class="max-w-screen w-full border"
           v-for="(evaluateeClass, classesIndex) in classes"
@@ -172,25 +191,33 @@
               <td>{{ klass.time }}</td>
               <td>
                 <button @click="handleEdit(klass)">Edit</button>
-                <button>Delete</button>
+                <button @click="handleDelete(klass.id)">Delete</button>
               </td>
             </tr>
           </tbody>
         </table>
         <!-- Modal footer -->
-        <div class="flex justify-end">
+        <div class="flex justify-end mt-10">
           <button
-            @click="addClassBtn"
+            @click="emits('closeAddUpdate')"
             class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            Add Class
+            Close
           </button>
         </div>
         <Transition name="fade" v-if="showActionModal">
-          <ActionModal data="Saved" @closeAction="showActionModal = false" />
+          <ActionModal :data="actionData" @closeAction="showActionModal = false" />
         </Transition>
         <Transition name="fade">
-          <ActionSpinnerAnimation v-if="showActionSpinner" data="Saving" />
+          <ActionSpinnerAnimation v-if="showActionSpinner" :data="actionSpinnerData" />
+        </Transition>
+
+        <Transition name="fade">
+          <WarningModal
+            v-if="showWarningModal"
+            @ClickDelete="proceedToDelete"
+            @CancelDelete="cancelDelete"
+          />
         </Transition>
       </div>
     </div>
@@ -199,10 +226,13 @@
 
 <script setup>
 import { ref, watch } from "vue";
+import { useEvaluateeStore } from "../stores/evaluatee";
 import { useClassStore } from "../stores/class";
 import ActionSpinnerAnimation from "./ActionSpinnerAnimation.vue";
 import ActionModal from "./ActionModal.vue";
+import WarningModal from "./WarningModal.vue";
 
+const evaluateeStore = useEvaluateeStore()
 const classStore = useClassStore();
 
 const errors = ref({});
@@ -214,13 +244,18 @@ const isTimeVisible = ref(true);
 const isDayVisible = ref(true);
 const showActionSpinner = ref(false);
 const showActionModal = ref(false);
+const showWarningModal = ref(false);
+const actionSpinnerData = ref("");
+const actionData = ref("");
 const day = ref("");
 const time = ref("");
 const department = ref("");
 const sectionYear = ref(null);
 const subject = ref("");
 const classes = ref(props.evaluateeClasses);
-
+const klassId = ref(0);
+const formField = ref()
+const isUpdate= ref(false);
 const props = defineProps([
   "departments",
   "subjects",
@@ -230,9 +265,52 @@ const props = defineProps([
 ]);
 const emits = defineEmits(["closeAddUpdate"]);
 
-const handleEdit = (ojb)=>{
-console.log(ojb)
+const cancelUpdate = () => {
+  isUpdate.value = false;
+  clearInputs()
 }
+
+const handleDelete = async (klass_id) => {
+  showWarningModal.value = true;
+  klassId.value = klass_id;
+};
+
+const cancelDelete = () => {
+  showWarningModal.value = false;
+  klassId.value = 0;
+  console.log(klassId.value);
+};
+
+const proceedToDelete = async () => {
+  showWarningModal.value = false;
+  actionSpinnerData.value = "Deleting";
+  showActionSpinner.value = true;
+  await classStore.removeClass(klassId.value);
+  showActionSpinner.value = false;
+  if (classStore.isSuccess) {
+    actionData.value = "Deleted";
+    showActionModal.value = true;
+    setTimeout(function () {
+      showActionModal.value = false;
+    }, 1000);
+    console.log(classes.value)
+    evaluateeStore.filterEvaluateeClasses('delete',klassId.value)
+    classes.value =  evaluateeStore.groupByDepartment();
+    console.log(classes.value)
+  }
+  clearInputs()
+};
+
+const handleEdit = (obj) => {
+  isUpdate.value = true
+  formField.value.scrollIntoView({ behavior: "smooth" });
+  klassId.value = obj.id;
+  department.value = props.departments.find(department => department.name == obj.department).id
+  subject.value= props.subjects.find(subject => subject.name == obj.subject).id
+  sectionYear.value = obj.section_year
+  day.value = obj.day
+  time.value = obj.time 
+};
 
 const addClassBtn = async () => {
   let klass = {};
@@ -242,34 +320,42 @@ const addClassBtn = async () => {
   const findSectionYear = props.sectionYears.find(
     (item) => item.year_section === sectionYear.value
   );
-  console.log(findSectionYear);
   if (!findSectionYear) {
     errors.value.sy = "Section not Registered";
     return;
   }
-
   klass.evaluatee_id = props.evaluateeInfo.id;
   klass.department_id = department.value;
   klass.subject_id = subject.value;
   klass.s_y_id = findSectionYear.id;
   klass.time = time.value;
   klass.day = day.value;
+  actionSpinnerData.value = "Saving";
   showActionSpinner.value = true;
-  await classStore.saveClass(klass);
+  if(isUpdate.value){
+     klass.klass_id = klassId.value
+    await classStore.editClass(klass)
+  }else{
+    await classStore.saveClass(klass);
+  }
   showActionSpinner.value = false;
   if (classStore.isSuccess) {
+    actionData.value = "Saved";
     showActionModal.value = true;
     setTimeout(function () {
       showActionModal.value = false;
     }, 1500);
+    addUpdateClasses(findSectionYear)
   }
-  // department.value = "";
-  // sectionYear.value = "";
-  // subject.value = "";
-  // time.value = "";
-  // day.value = "";
-};
 
+};
+const clearInputs = ()=>{
+  department.value = "";
+  sectionYear.value = "";
+  subject.value = "";
+  time.value = "";
+  day.value = "";
+}
 const validateInput = () => {
   let isError = false;
   if (department.value.length == 0) {
@@ -319,6 +405,25 @@ const handleClickSubject = () => {
 const handleClickDepartment = () => {
   errors.value.department = "";
 };
+
+const addUpdateClasses = (sectionYear)=>{
+    let klasses = {};
+    klasses.id = classStore.klasses.id;
+    klasses.section_year = sectionYear.year_section
+    klasses.department = props.departments.find(d => d.id == department.value).name
+    klasses.subject = props.subjects.find(s => s.id == subject.value).name
+    klasses.day = classStore.klasses.day;
+    klasses.time = classStore.klasses.time;
+    if(isUpdate.value){
+       evaluateeStore.filterEvaluateeClasses('update',klassId.value,klasses)
+    }else{
+      evaluateeStore.evaluateClasses.push(klasses)
+    }
+    classes.value = evaluateeStore.groupByDepartment()
+    isUpdate.value = false
+    clearInputs()
+    klassId.value = 0;
+}
 
 watch(sectionYear, (newVal, OldVal) => {
   newVal.toUpperCase();

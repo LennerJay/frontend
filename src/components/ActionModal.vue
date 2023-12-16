@@ -40,6 +40,8 @@
 
 <script setup>
 defineProps(["data", "isInstructor"]);
+
+
 </script>
 
 <style scoped></style>
