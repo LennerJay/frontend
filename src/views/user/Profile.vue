@@ -147,20 +147,7 @@ onMounted(async () => {
   }
   user.value = userStore.userInfo;
   showProfile.value = true;
-  const klasses = evaluateeStore.groupByDepartment(
-    user.value.classes,
-    (klass) => klass.department
-  );
-  for (const klass in klasses) {
-    const newValue = evaluateeStore.groupByDepartment(
-      klasses[klass],
-      (klass) => klass.section_year
-    );
-    userClasses.value.push({
-      department: klass,
-      classes: newValue,
-    });
-  }
+  userClasses.value = userStore.filterSchedule()
 });
 </script>
 

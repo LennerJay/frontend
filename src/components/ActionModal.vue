@@ -25,7 +25,7 @@
 
       <div class="flex gap-6 mt-3">
         <button
-          @click="$emit('closeAction')"
+          @click="emits('closeAction')"
           class="p-3 bg-[#4F46E5] rounded-lg text-white"
         >
           {{ isInstructor ? "Later" : "Close" }}
@@ -40,7 +40,7 @@
 
 <script setup>
 defineProps(["data", "isInstructor"]);
-
+const emits = defineEmits(["closeAction"])
 
 </script>
 

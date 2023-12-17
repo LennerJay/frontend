@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { deleteQuestionaire,updateStatusQuestionaire,allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents ,updateQuestionaire} from "../http/questionaire-api";
+import {AddQuestionaire, deleteQuestionaire,updateStatusQuestionaire,allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents ,updateQuestionaire} from "../http/questionaire-api";
 import { csrfCookie } from "../http/auth-api"
 
 import { ref, watch } from "vue";
@@ -123,6 +123,8 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
             console.log(data)
             if(data.success){
                 isSuccess.value = true
+                questionaires.value = questionaires.value.filter(q => q.id != qId)
+                questionaires.value.unshift(data.data)
                 return data.data
             }
             errors.value = []
@@ -138,22 +140,41 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
           console.log(data)
           if(data.success){
                 isSuccess.value = true
-                return data.data
+                questionaires.value = questionaires.value.filter(q => q.id != qId)
+                questionaires.value.unshift(data.data)
             }else{
                 isSuccess.value = false
             }
+            errors.value =[]
         }catch(e){
-
+            errors.value = e
         }
     }
     const removeQuestionaire = async(qId)=>{
         await csrfCookie()
         try{
           const {data} =   await deleteQuestionaire(qId)
-          console.log(data)
+          if(data.success){
+            questionaires.value = questionaires.value.filter(q => q.id != qId)
+            isSuccess.value = true
+        }
           errors.value = []
         }catch(e){
             errors.value = e
+        }
+    }
+
+    const saveQuestionaire = async(datas) => {
+        await csrfCookie()
+        try {
+            const {data} = await AddQuestionaire(datas)
+            if(data.success){
+                questionaires.value.unshift(data.data)
+                isSuccess.value = true
+            }
+            errors.value = []
+        } catch (error) {
+            errors.value = error
         }
     }
 
@@ -167,10 +188,11 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         fetchMaxRespondents,
         maxRespondents,
         filterQuestionaires,
-        questionaireUpdate,
         isSuccess,
         errors,
+        questionaireUpdate,
         updateStatus,
-        removeQuestionaire
+        removeQuestionaire,
+        saveQuestionaire
     }
 })

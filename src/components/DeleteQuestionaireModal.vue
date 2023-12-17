@@ -1,7 +1,6 @@
 <template>
   <!-- Modal container -->
   <div
-    v-if="deleteOpen"
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-Times New Roman z-20"
   >
     <div
@@ -19,9 +18,12 @@
       </div>
       <!-- Modal body -->
       <div class="mb-4 flex flex-col items-center">
-        <h1>{{ evaluateeDetails.name }}</h1>
+        <div >
+          <span>Title: </span>
+          <span>{{ questionaireDetails.title }}</span>
+        </div>
         <h1>Note:</h1>
-        <p>All data from this {{ evaluateeDetails.entity_name }} will also be deleted</p>
+        <p class="text-center">All data related from this questionaire will also be deleted</p>
       </div>
       <!-- Modal footer -->
       <div class="flex justify-end space-x-4">
@@ -50,14 +52,14 @@
 
 <script setup>
 import { ref } from "vue";
-import { useEvaluateeStore } from "../stores/evaluatee";
+import { useQuestionaireStore } from "../stores/questionaire";
 import ActionSpinnerAnimation from "./ActionSpinnerAnimation.vue";
 import ActionModal from "./ActionModal.vue";
 
-const props = defineProps(["deleteOpen", "evaluateeDetails"]);
-const emits = defineEmits(["closeDeleteModal", "handleDelete"]);
+const questionaireStore = useQuestionaireStore()
+const props = defineProps(["questionaireDetails"]);
+const emits = defineEmits(["closeDeleteModal"]);
 
-const evaluateeStore = useEvaluateeStore();
 const showActionSpinner = ref(false);
 const showActionModal = ref(false);
 
@@ -66,15 +68,17 @@ const handleCloseButton = () => {
 };
 
 const handleDelete = async () => {
-  showActionSpinner.value = true;
-  await evaluateeStore.removeEvaluate(props.evaluateeDetails.id);
-  showActionSpinner.value = false;
-  if (evaluateeStore.isSuccess) {
-    showActionModal.value = true;
-    setTimeout(function () {
-      showActionModal.value = false;
-      emits("handleDelete");
-    }, 2500);
+  console.log(props.questionaireDetails.id)
+  showActionSpinner.value = true
+  await questionaireStore.removeQuestionaire(props.questionaireDetails.id)
+  showActionSpinner.value = false
+  if(questionaireStore.isSuccess){
+    showActionModal.value= true
+    setTimeout(() =>{
+      showActionModal.value= false
+      handleCloseButton()
+    },1000)
+    
   }
 };
 </script>

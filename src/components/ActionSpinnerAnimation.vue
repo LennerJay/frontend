@@ -1,7 +1,7 @@
 <template>
   <div
     id="loading-overlay"
-    class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-60 p-4 overflow-y-auto"
+    class="absolute inset-0 top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-60  overflow-y-auto z-30"
   >
     <svg
       class="animate-spin h-8 w-8 text-white mr-3"

@@ -16,3 +16,5 @@ export const updateQuestionaire = (questionaireId,data)=> api.put(resource +`/${
 export const updateStatusQuestionaire = (questionaireId)=> api.patch(resource +`/${questionaireId}/update-status`)
 
 export const deleteQuestionaire = (questionaireId)=> api.delete(resource +`/${questionaireId}`)
+
+export const AddQuestionaire = (datas) =>api.post(resource,datas)

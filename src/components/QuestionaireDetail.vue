@@ -3,157 +3,232 @@
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins z-20"
   >
     <div
-      class="relative bg-white pl-5 pr-5 md:max-w-2xl max-w-sm mx-auto md:mt-36 mt-12 border-4 border-sky-950 rounded-xl max-h-[36rem] overflow-y-auto"
+      class="relative bg-white pl-5 pr-5 md:max-w-2xl max-w-sm mx-auto md:mt-36 mt-12 border-4 border-sky-950 rounded-xl max-h-[45rem] overflow-y-auto"
     >
-
       <div class="container w-full mt-6">
         <div class="flex justify-between items-center">
+          <div>Questionaire Details</div>
           <div>
-           Questionaire Details
+            <button @click="closeModal" id="close-btn">
+              <i class="bi bi-x-lg"></i>
+              <span></span>
+            </button>
           </div>
-         <div>
-          <button @click="emits('backButton')" id="close-btn">
-            <i class="bi bi-x-lg"></i>
-            <span></span>
-          </button>
-         </div>
-
         </div>
-        <div class="flex items-center mb-5  gap-5">
-          <label 
-              class="text-left block text-gray-500 font-bold  mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
+
+        <div class="flex flex-col">
+          <div class="flex items-center mb-5 gap-5">
+            <label
+              class="text-left block text-gray-500 font-bold mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
+              for="questionaire-entity"
+            >
+              For
+            </label>
+
+            <select
+              v-model="entityId"
+              name="questionaire-entity"
+              id="questionaire-entity"
+              :disabled="isEnable"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            >
+              <option
+                v-for="(entity, entityIndex) in entities"
+                :key="entityIndex"
+                :value="entity.id"
+              >
+                {{ entity.entity_name }}
+              </option>
+            </select>
+          </div>
+          <div class="flex items-center">
+            <span class="text-white invisible">.</span>
+            <Transition name="fade" appear>
+              <span v-if="errors.entityId">{{ errors.entityId }}</span>
+            </Transition>
+          </div>
+        </div>
+
+        <div class="flex flex-col mb-2">
+          <div class="flex items-center mb-2 gap-2">
+            <label
+              class="text-left block text-gray-500 font-bold mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
               for="title"
             >
-            Title 
+              Title
             </label>
-          <input
+            <input
+              @input="titleInput"
               id="title"
               v-model="title"
               :disabled="isEnable"
-              class=" w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
-            <div class="flex items-center">
-              <span class="text-white invisible"
-                >.</span
-              >
-              <Transition name="fade" appear>
-                <span v-if="errors.title">{{ errors.title }}</span>
-              </Transition>
-            </div>
+          </div>
+          <div class="flex items-center gap-5">
+            <span class="flex-grow min-w-[120px] invisible">.</span>
+            <Transition name="fade" appear>
+              <span class="w-full" v-if="errors.title">{{ errors.title }}</span>
+            </Transition>
+          </div>
         </div>
-        <div class="flex items-start mb-5  gap-5 ">
-          <label 
-              class=" pt-2 text-gray-500 font-bold text-left  mb-1 md:mb-0 pr-4  flex-grow min-w-[120px]"
+
+        <div class="flex flex-col">
+          <div class="flex items-start mb-2 gap-2">
+            <label
+              class="pt-2 text-gray-500 font-bold text-left mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
               for="questionaire-description"
             >
-            Description 
+              Description
             </label>
-          <textarea
+            <textarea
+              @input="descriptionInput"
               v-model="description"
               rows="3"
               id="questionaire-description"
               :disabled="isEnable"
-              class=" w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
-             
+              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
+          </div>
+          <div class="flex items-center gap-5">
+            <span class="flex-grow min-w-[120px] invisible">.</span>
+            <transition name="fade">
+              <span class="w-full" v-if="errors.description">{{
+                errors.description
+              }}</span>
+            </transition>
+          </div>
         </div>
-        <div class="flex items-center mb-5  gap-5">
-          <label 
-              class="block text-gray-500 font-bold text-left  mb-1 md:mb-0 pr-4  flex-grow min-w-[120px]"
+
+        <div class="flex flex-col">
+          <div class="flex items-center mb-2 gap-2">
+            <label
+              class="block text-gray-500 font-bold text-left mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
               for="semester"
             >
-            Semester 
+              Semester
             </label>
-          <input
-          v-model="semester"
+            <input
+              @input="semesterInput"
+              v-model="semester"
               id="semester"
               :disabled="isEnable"
-              class=" w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
-             
+              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
+          </div>
+          <div class="flex items-center gap-5">
+            <span class="flex-grow min-w-[120px] invisible">.</span>
+            <transition name="fade">
+              <span class="w-full" v-if="errors.semester">{{ errors.semester }}</span>
+            </transition>
+          </div>
         </div>
-        <div class="flex items-center mb-5  gap-5">
-          <label 
-              class="block text-gray-500 font-bold text-left  mb-1 md:mb-0 pr-4  flex-grow min-w-[120px]"
+
+        <div class="flex flex-col">
+          <div class="flex items-center mb-2 gap-2">
+            <label
+              class="block text-gray-500 font-bold text-left mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
               for="school-year"
             >
-            School Year 
+              School Year
             </label>
-          <input
+            <input
+              @input="schoolYearInput"
               v-model="schoolYear"
               id="school-year"
               :disabled="isEnable"
-              class=" w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
-              
+              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
+          </div>
+          <div class="flex items-center gap-5">
+            <span class="flex-grow min-w-[120px] invisible">.</span>
+            <transition name="fade">
+              <span class="w-full" v-if="errors.schoolYear">{{ errors.schoolYear }}</span>
+            </transition>
+          </div>
         </div>
-        <div class="flex items-center mb-5  gap-5">
-          <label 
-              class="block text-gray-500 font-bold text-left  mb-1 md:mb-0 pr-4  flex-grow min-w-[120px]"
+
+        <div class="flex flex-col">
+          <div class="flex items-center mb-2 gap-2">
+            <label
+              class="block text-gray-500 font-bold text-left mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
               for="max-respondents"
             >
-            Max Respondents 
+              Max Respondents
             </label>
-          <input
-          v-model="maxRespondents"
+            <input
+              @input="maxRespondentsInput"
+              v-model="maxRespondents"
               id="max-respondents"
               :disabled="isEnable"
-              class=" w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
-            
+              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
+          </div>
+          <div class="flex items-center gap-5">
+            <span class="flex-grow min-w-[120px] invisible">.</span>
+            <transition name="fade">
+              <span class="w-full" v-if="errors.maxRespondents">{{
+                errors.maxRespondents
+              }}</span>
+            </transition>
+          </div>
         </div>
-        <div class="flex items-center mb-5  gap-5">
-          <label 
-              class="block text-gray-500 font-bold text-left  mb-1 md:mb-0 pr-4  flex-grow min-w-[120px]"
-              for="questionaire-status"
-            >
+
+        <div class="flex items-center mt-5 gap-5">
+          <label
+            class="block text-gray-500 font-bold text-left mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
+            for="questionaire-status"
+          >
             Status
-            </label>
+          </label>
           <input
-              id="questionaire-status"
-              disabled
-              class=" w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
-              :value="selectedQuestionaire.status == 0 ? 'Unused' :'Used '"
-            />
+            id="questionaire-status"
+            disabled
+            class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            :value="selectedQuestionaire.status == 0 ? 'Unused' : 'Used '"
+          />
         </div>
-  
       </div>
 
-      <div class="flex justify-end mt-5 mb-5 gap-6">
-        <button
-          class="border border-black p-1"
-          id="back-button"
-          @click="updateStatus"
-        >
-          {{  status ? 'Unuse': "Use"}}
+      <div class="flex justify-end mt-5 mb-5 gap-6 items-center">
+        <transition name="bounce" appear>
+          <p v-if="isInvalid">Nothing's Change</p>
+        </transition>
+        <button class="border border-black p-1" id="back-button" @click="updateStatus">
+          {{ status ? "Unuse" : "Use" }}
         </button>
         <button
           class="border border-black p-1"
           id="back-button"
-          @click="isEnable = !isEnable"
+          @click="handleCancelClick"
         >
-          {{isEnable ?"Edit":"Cancel"}}
+          {{ isEnable ? "Edit" : "Cancel" }}
         </button>
-        <button v-if="isEnable"
+        <button
+          v-if="isEnable"
           class="border border-black p-1"
           id="back-button"
-          @click="emits('backButton')"
+          @click="closeModal"
         >
           Back
         </button>
-        <button v-else
+        <button
+          v-else
           class="border border-black p-1"
           id="back-button"
-          @click="updateQuestinaire"
+          @click="updateQuestionaire"
         >
           Save
         </button>
       </div>
       <TransitionGroup name="fade">
-        <ActionSpinnerAnimation v-if="showActionSpinner" data="Updating"/>
-        <ActionModal v-if="showActionModal" data="Updated" @closeAction="showActionModal=false"/>
+        <ActionSpinnerAnimation v-if="showActionSpinner" data="Updating" />
+        <ActionModal
+          v-if="showActionModal"
+          data="Updated"
+          @closeAction="showActionModal = false"
+        />
       </TransitionGroup>
-
     </div>
   </div>
 
@@ -161,75 +236,191 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useQuestionaireStore } from '../stores/questionaire';
+import { ref } from "vue";
+import { useQuestionaireStore } from "../stores/questionaire";
 import ActionSpinnerAnimation from "./ActionSpinnerAnimation.vue";
 import ActionModal from "./ActionModal.vue";
 import WarningModal from "./WarningModal.vue";
 
-const questionaireStore = useQuestionaireStore()
+const questionaireStore = useQuestionaireStore();
 
-const showActionSpinner = ref(false)
-const showActionModal = ref(false)
+const isEnable = ref(true);
+const showActionSpinner = ref(false);
+const showActionModal = ref(false);
+const entityId = ref(props.selectedQuestionaire.entity_id);
 const title = ref(props.selectedQuestionaire.title);
 const description = ref(props.selectedQuestionaire.description);
 const semester = ref(props.selectedQuestionaire.semester);
 const schoolYear = ref(props.selectedQuestionaire.school_year);
-const maxRespondents = ref(props.selectedQuestionaire.max_respondents)
-const status = ref(props.selectedQuestionaire.status)
-const errors = ref({})
+const maxRespondents = ref(props.selectedQuestionaire.max_respondents);
+const status = ref(props.selectedQuestionaire.status);
+const errors = ref({});
+const isInvalid = ref(false);
+
+const handleCancelClick = () => {
+  console.log(props.selectedQuestionaire)
+  if (compareData() && !isEnable.value) {
+    if (confirm("Change will not be Save") == true) {
+      isEnable.value = !isEnable.value;
+      restoreDataInputs();
+    }
+  } else {
+    isEnable.value = !isEnable.value;
+  }
+};
+
+const restoreDataInputs = () => {
+  entityId.value = props.selectedQuestionaire.entity_id;
+  title.value = props.selectedQuestionaire.title;
+  description.value = props.selectedQuestionaire.description;
+  semester.value = props.selectedQuestionaire.semester;
+  schoolYear.value = props.selectedQuestionaire.school_year;
+  maxRespondents.value = props.selectedQuestionaire.max_respondents;
+  status.value = ref(props.selectedQuestionaire.status);
+};
 
 const emits = defineEmits(["backButton"]);
 const props = defineProps({
   selectedQuestionaire: Object,
+  entities: Object,
 });
 
-// const showActionSpinner = ref(false);
-// const showActionModal = ref(false);
-// const showWarningModal = ref(false);
-// const actionSpinnerData = ref("");
-// const actionData = ref("");
+const closeModal = () => {
+  if (!isEnable.value) {
+    if (confirm("Are you sure you want to close?") == true) {
+      emits("backButton");
+    }
+  } else {
+    emits("backButton");
+  }
+};
 
-const isEnable = ref(true);
-
-const updateQuestinaire = async()=>{
-  const qId = props.selectedQuestionaire.id
+const updateQuestionaire = async () => {
+  if (!compareData()) {
+    isInvalid.value = true;
+    setTimeout(() => {
+      isInvalid.value = false;
+    }, 1500);
+    return;
+  }
+  if (validateInputs()) {
+    return;
+  }
+  const qId = props.selectedQuestionaire.id;
   const data = {
+    entity_id: entityId.value,
     title: title.value,
     description: description.value,
     semester: semester.value,
     school_year: schoolYear.value,
     max_respondents: maxRespondents.value,
-    status: props.selectedQuestionaire.status
+    status: props.selectedQuestionaire.status,
+  };
+  showActionSpinner.value = true;
+  await questionaireStore.questionaireUpdate(qId, data);
+  showActionSpinner.value = false;
+  if (questionaireStore.isSuccess) {
+    showActionModal.value = true;
+    setTimeout(() => {
+      showActionModal.value = false;
+    }, 1000);
+    isEnable.value = true;
   }
-  showActionSpinner.value = true
-  await questionaireStore.questionaireUpdate(qId,data)
-  showActionSpinner.value = false
-  if(questionaireStore.isSuccess){
-    showActionModal.value = true
-    setTimeout(()=>{
-      showActionModal.value = false
-    },1000);
-    isEnable.value = true
-  }
-}
+};
 
-const updateStatus = async()=>{
-  showActionSpinner.value = true
-  await questionaireStore.updateStatus(props.selectedQuestionaire.id)
-  showActionSpinner.value = false
-  if(questionaireStore.isSuccess){
-    showActionModal.value = true
-    setTimeout(()=>{
-      showActionModal.value = false
-    },1000);
-    isEnable.value = true
+const updateStatus = async () => {
+  showActionSpinner.value = true;
+  await questionaireStore.updateStatus(props.selectedQuestionaire.id);
+  showActionSpinner.value = false;
+  if (questionaireStore.isSuccess) {
+    showActionModal.value = true;
+    setTimeout(() => {
+      showActionModal.value = false;
+      closeModal();
+    }, 1000);
+    isEnable.value = true;
   }
-}
+};
 
+const compareData = () => {
+  //if the data is change returns true
+  return (
+    props.selectedQuestionaire.entity_id != entityId.value ||
+    props.selectedQuestionaire.title != title.value ||
+    props.selectedQuestionaire.description != description.value ||
+    props.selectedQuestionaire.semester != semester.value ||
+    props.selectedQuestionaire.school_year != schoolYear.value ||
+    props.selectedQuestionaire.max_respondents != maxRespondents.value
+  );
+};
+
+const validateInputs = () => {
+  let isError = false;
+  if (entityId.value == "") {
+    errors.value.entityId = "Please Choose";
+    isError = true;
+  }
+  if (title.value == "") {
+    errors.value.title = "Input title";
+    isError = true;
+  }
+  if (description.value == "") {
+    errors.value.description = "Input Description";
+    isError = true;
+  }
+  if (semester.value == "") {
+    errors.value.semester = "Input Semester";
+    isError = true;
+  }
+  if (schoolYear.value == "") {
+    errors.value.schoolYear = "Input School Year";
+    isError = true;
+  }
+  if (maxRespondents.value == "") {
+    errors.value.maxRespondents = "Input max respondents";
+    isError = true;
+  }
+
+  return isError;
+};
+
+const titleInput = () => {
+  errors.value.title = "";
+};
+const descriptionInput = () => {
+  errors.value.description = "";
+};
+const semesterInput = () => {
+  errors.value.semester = "";
+};
+const schoolYearInput = () => {
+  errors.value.schoolYear = "";
+};
+
+const maxRespondentsInput = () => {
+  errors.value.maxRespondents = "";
+};
 </script>
 
 <style scoped>
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.35s ease;
@@ -309,4 +500,15 @@ button#back-button:hover {
   background: #2751cd;
 }
 
+select:disabled::ms-expand {
+  display: none; /* for Edge and IE */
+}
+
+select:disabled::-ms-expand {
+  display: none; /* for Edge and IE */
+}
+
+select:disabled {
+  appearance: none;
+}
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div
     id="loading-overlay-delete"
-    class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-60 p-4"
+    class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-60 p-4 "
   >
     <div ref="targetWarning">
       <div

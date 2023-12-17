@@ -216,11 +216,11 @@
             />
           </transition>
           <transition name="fade">
-            <DeleteModal
+            <DeleteEvaluateeModal
+              v-if="showDeleteModal"
               :showDataAnimation="showDataAnimation"
               :evaluateeDetails="evaluateeDetails"
-              :deleteOpen="crudModal.modalDelete"
-              @closeDeleteModal="closeDeleteModal"
+              @closeDeleteModal="showDeleteModal = false"
               @handleDelete="handleDeleteEvaluatee"
             />
           </transition>
@@ -248,7 +248,7 @@ import SelectJobType from "../../components/SelectJobType.vue";
 import ModalCard from "../../components/ModalCard.vue";
 import CreateModal from "../../components/CreateModal.vue";
 import EditModal from "../../components/EditModal.vue";
-import DeleteModal from "../../components/DeleteModal.vue";
+import DeleteEvaluateeModal from "../../components/DeleteEvaluateeModal.vue";
 import AddUpdateClassModal from "../../components/AddUpdateClassModal.vue";
 import FooterCard from "../../components/FooterCard.vue";
 
@@ -283,6 +283,9 @@ const noData = ref(false);
 const entityId = ref(1);
 const showDataAnimation = ref(false);
 const showAddUpdate = ref(false);
+const showDeleteModal = ref(false);
+
+
 
 const showAddUpdateModal = () => {
   showModal.value = false;
@@ -339,9 +342,9 @@ const closeEditModal = () => {
   crudModal.modalEdit = false;
 };
 
-const closeDeleteModal = () => {
-  crudModal.modalDelete = false;
-};
+// const closeDeleteModal = () => {
+//   showDeleteModal.value = false;
+// };
 
 const paginatedData = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize.value;
@@ -392,12 +395,10 @@ const handleActionClick = async (id, action) => {
     await selectedEvaluatee(id);
   } else if (action == "edit") {
     evaluateeDetails.value = findEvaluatee;
-    console.log(evaluateeDetails.value);
     crudModal.modalEdit = true;
   } else if (action == "delete") {
     evaluateeDetails.value = findEvaluatee;
-    console.log(evaluateeDetails.value);
-    crudModal.modalDelete = true;
+    showDeleteModal.value = true;
   }
 };
 

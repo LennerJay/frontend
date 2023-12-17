@@ -1,6 +1,6 @@
 <template>
-  <div class="flex relative">
-    <div class="content main-container w-screen ">
+  <div class="flex ">
+    <div class="content main-container w-screen relative">
       <div class="navbar-container">
         <div class="navbar-content">
           <header id="main-header">
@@ -11,7 +11,7 @@
       </div>
       <!-- End of navbar-container -->
       <div class="mt-5 flex justify-end">
-        <button id="add-btn">Add Questinaire</button>
+        <button @click="showAddQuestionaire = true" id="add-btn">Add Questinaire</button>
       </div>
       <div>
         <SelectEntity
@@ -29,14 +29,23 @@
       <transition name="fade">
         <QuestionaireDetail
         v-if="showDetails"
+        :entities ="entities"
         :selectedQuestionaire="selectedQuestionaire"
-        @backButton="handleBack"
-      />
+        @backButton="closeQuestionaireDetail"
+        />
       </transition>
       <transition name="fade">
-        <WarningModal v-if="showWarningModal" 
-        @CancelDelete="showWarningModal=false"
-        @ClickDelete = "deleteQuestionaire"
+        <DeleteQuestionaireModalVue
+          v-if="showDeleteModal"
+          :questionaireDetails ="selectedQuestionaire"
+          @closeDeleteModal="closeDeleteModal"
+        />
+      </transition>
+      <transition name="fade">
+        <AddQuestionaireModal
+          v-if="showAddQuestionaire"
+          :entities="entities"
+          @close="closeAddModal"
         />
       </transition>
       <FooterCard />
@@ -54,43 +63,54 @@ import QuestionaireTable from "../../components/QuestionaireTable.vue";
 import QuestionaireDetail from "../../components/QuestionaireDetail.vue";
 import SelectEntity from "../../components/SelectEntity.vue";
 import FooterCard from "../../components/FooterCard.vue";
-import WarningModal from "../../components/WarningModal.vue";
+import AddQuestionaireModal from "../../components/AddQuestionaireModal.vue";
+import DeleteQuestionaireModalVue from "../../components/DeleteQuestionaireModal.vue";
 
-const showWarningModal = ref(false)
+
+const showDeleteModal= ref(false);
 const questionaireStore = useQuestionaireStore();
 const entityStore = useEntityStore();
 const isNoData = ref(false);
 const showLoadingDataAnimation = ref(false);
+const showAddQuestionaire = ref(false)
 const questionaires = ref([]);
 const showDetails = ref(false);
 const selectedQuestionaire = ref();
 const entities = ref([]);
 const entity = ref("All");
-const qId = ref(0);
+
+const closeQuestionaireDetail = ()=>{
+  questionaires.value = questionaireStore.filterQuestionaires(entity.value)
+  showDetails.value = false
+}
+
+const closeAddModal = ()=>{
+  questionaires.value = questionaireStore.filterQuestionaires(entity.value)
+  showAddQuestionaire.value = false
+
+}
+
+const closeDeleteModal = ()=>{
+  questionaires.value = questionaireStore.filterQuestionaires(entity.value)
+  showDeleteModal.value = false
+}
 const handleSelectEntity =(val)=>{
+  entity.value = val
   questionaires.value = questionaireStore.filterQuestionaires(val)
 }
 const selectQuestionaire = (id, action) => {
-  if (action == "details") {
-    selectedQuestionaire.value = questionaires.value.find(
+  selectedQuestionaire.value = questionaires.value.find(
       (questionaire) => questionaire.id === id
     );
+  if (action == "details") {
     showDetails.value = true;
   } 
   if (action == "delete") {
-    showWarningModal.value = true
-    qId.value = id
+    showDeleteModal.value = true
+    console.log( selectedQuestionaire.value)
   }
 };
 
-const deleteQuestionaire = async()=>{
-  await questionaireStore.removeQuestionaire(qId.value)
-}
-
-const handleBack = () => {
-  localStorage.removeItem("selectedQuestionaire");
-  showDetails.value = false;
-};
 
 onMounted(async () => {
   showLoadingDataAnimation.value = true;
@@ -102,7 +122,6 @@ onMounted(async () => {
   await questionaireStore.fetchQuestionaire();
   showLoadingDataAnimation.value = false;
   questionaires.value = questionaireStore.questionaires;
-  console.log(questionaires.value);
   if (localStorage.getItem("selectedQuestionaire")) {
     selectedQuestionaire.value = JSON.parse(localStorage.getItem("selectedQuestionaire"));
     showDetails.value = true;

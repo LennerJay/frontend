@@ -33,8 +33,8 @@
               </td>
               <td class="py-3 px-6 text-center">
                 <span
-                 :class="[questionaire.status === 0 ? 'un-used':'used']" class=" py-1 px-3 rounded-full text-xs"
-                  >{{ questionaire.status === 0 ? 'Unused':'Currenly Used' }}</span
+                 :class="[questionaire.status  ? 'used':'un-used']" class=" py-1 px-3 rounded-full text-xs"
+                  >{{ questionaire.status  ? 'Currenly Used':'Unused' }}</span
                 >
               </td>
               <td class="py-3 px-6 text-center">

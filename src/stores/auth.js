@@ -96,6 +96,32 @@ export const useAuthStore = defineStore('authStore', ()=>{
       const res = await testCreateApi(val);
       console.log(res);
     }
+
+    const filterSchedule = () => {
+      const keySelector1 =  (klass) => klass.department
+      const keySelector2 =  (klass) => klass.section_year
+      const studentClasses = [];
+
+      const klasses =  userInfo.value.classes.reduce(function (accumulator, current) {
+          const key = keySelector1(current);
+          (accumulator[key] = accumulator[key] || []).push(current);
+          return accumulator;
+        }, {});
+        for (const klass in klasses) {
+          const newValue = klasses[klass].reduce(function (accumulator, current) {
+              const key = keySelector2(current);
+              (accumulator[key] = accumulator[key] || []).push(current);
+              return accumulator;
+            }, {});
+          studentClasses.push({
+              department: klass,
+              classes: newValue,
+          });
+        }
+
+        return studentClasses;
+  }
+
     return{
       testCreate,
       testApi,
@@ -107,6 +133,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
       isLoggedIn,
       fetchUser,
       handleLogin,
-      handleLogout
+      handleLogout,
+      filterSchedule
     }
 });

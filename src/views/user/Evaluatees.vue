@@ -125,22 +125,8 @@ const selectedEvaluatee = async (id) => {
   noData.value = false;
   await evaluateeStore.fetchEvaluateeInfo(id);
   if (Object.keys(evaluateeStore.infoErrors).length == 0) {
-    evaluateeClasses.value = [];
+    evaluateeClasses.value = evaluateeStore.groupByDepartment();
     evaluateeInfo.value = evaluateeStore.evaluateeInfo;
-    const klasses = evaluateeStore.groupByDepartment(
-      evaluateeInfo.value.classes,
-      (klass) => klass.department
-    );
-    for (const klass in klasses) {
-      const newValue = evaluateeStore.groupByDepartment(
-        klasses[klass],
-        (klass) => klass.subject
-      );
-      evaluateeClasses.value.push({
-        department: klass,
-        classes: newValue,
-      });
-    }
     if (evaluateeInfo.value.entity_name === "instructor") {
       isInstructor.value = true;
     }

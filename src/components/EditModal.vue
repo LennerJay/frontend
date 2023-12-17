@@ -162,7 +162,7 @@ const handleSave = async () => {
       setTimeout(function () {
         showActionModal.value = false;
         emits("closeEditModal");
-      }, 3000);
+      }, 1500);
     } else {
       errors.value.name = "Name Already Exists";
     }
@@ -172,7 +172,7 @@ const handleSave = async () => {
     setTimeout(function () {
       isVisible.value = true;
       showError.value = false;
-    }, 2000);
+    }, 1500);
   }
 };
 
