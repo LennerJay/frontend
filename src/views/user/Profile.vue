@@ -1,5 +1,6 @@
 <template>
-  <div class="md:ml-[250px] ml-0 bg-sky-900 font-poppins px-0 w-full">
+  <div class="flex">
+    <div class="md:ml-[250px] ml-0 bg-sky-900 font-poppins px-0 w-full">
     <div class="header pt-2 text-white text-center">
       <span class="md:hidden flex text-white">
         <i
@@ -119,6 +120,8 @@
       </div>
     </div>
     <FooterCard />
+  </div>
+  
   </div>
 </template>
 
