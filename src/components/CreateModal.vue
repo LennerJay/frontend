@@ -89,6 +89,7 @@
           data="Saved"
           :isInstructor="personelType == 1"
           @closeAction="handleClose"
+          @addClassAction="addClassAction"
         />
       </Transition>
       <Transition name="fade">
@@ -106,8 +107,7 @@ import ActionModal from "./ActionModal.vue";
 
 const evaluateeStore = useEvaluateeStore();
 const nameInputElement = ref(null);
-const status = ref();
-const message = ref("");
+const evaluateeInfo = ref([]);
 const errors = ref({});
 const entities = ref(props.entities);
 const name = ref("");
@@ -126,7 +126,8 @@ const props = defineProps([
   "subjects",
   "sectionYears",
 ]);
-const emits = defineEmits(["handleCloseButton"]);
+
+const emits = defineEmits(["handleCloseButton","addClass"]);
 
 const handleInput = () => {
   errors.value = [];
@@ -151,6 +152,10 @@ const handleClose = () => {
   emits("handleCloseButton");
 };
 
+const addClassAction = ()=>{
+  emits('addClass',evaluateeInfo.value)
+}
+
 const handleSaveButton = async () => {
   const val = {};
   if (name.value == "") {
@@ -161,16 +166,19 @@ const handleSaveButton = async () => {
   val.name = name.value;
   val.entity_id = personelType.value;
   val.job_type = shift.value;
+  evaluateeInfo.value = val
 
   showActionSpinner.value = true;
   await evaluateeStore.saveEvaluatee(val);
   showActionSpinner.value = false;
   if (evaluateeStore.isSuccess) {
+    evaluateeInfo.value = val
     showActionModal.value = true;
     setTimeout(function () {
       showActionModal.value = false;
       emits("handleCloseButton");
     }, 3000);
+
   } else {
     errors.value.name = evaluateeStore.errorMessage;
   }

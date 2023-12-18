@@ -30,7 +30,7 @@
         >
           {{ isInstructor ? "Later" : "Close" }}
         </button>
-        <button v-if="isInstructor" class="p-3 bg-[#4F46E5] rounded-lg text-white">
+        <button @click="emits('addClassAction')" v-if="isInstructor" class="p-3 bg-[#4F46E5] rounded-lg text-white">
           Add Class
         </button>
       </div>
@@ -40,7 +40,7 @@
 
 <script setup>
 defineProps(["data", "isInstructor"]);
-const emits = defineEmits(["closeAction"])
+const emits = defineEmits(["closeAction", "addClassAction"])
 
 </script>
 

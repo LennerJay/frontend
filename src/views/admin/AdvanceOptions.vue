@@ -10,146 +10,185 @@
           <div class="object-content">
             <ul>
               <li>
-                <button @click="changeOption('Departments')" type="button" id="department" name="department">Departments</button>
+                <button
+                  @click="changeOption('Departments')"
+                  type="button"
+                  id="department"
+                  name="department"
+                >
+                  Departments
+                </button>
               </li>
               <li>
-                <button  @click="changeOption('Year & Sections')" type="button" id="year-sec" name="year_sec">Year & Sections</button>
+                <button
+                  @click="changeOption('Year & Sections')"
+                  type="button"
+                  id="year-sec"
+                  name="year_sec"
+                >
+                  Year & Sections
+                </button>
               </li>
-              <li><button  @click="changeOption('Entities')" type="button" id="entities" name="entities">Entities</button></li>
-              <li><button  @click="changeOption('Subjects')" type="button" id="subject" name="subject">Subjects</button></li>
+              <li>
+                <button
+                  @click="changeOption('Evaluatee Type')"
+                  type="button"
+                  id="entities"
+                  name="entities"
+                >
+                  Evaluatees
+                </button>
+              </li>
+              <li>
+                <button
+                  @click="changeOption('Subjects')"
+                  type="button"
+                  id="subject"
+                  name="subject"
+                >
+                  Subjects
+                </button>
+              </li>
             </ul>
           </div>
         </div>
       </div>
-      <button @click="showOptionModal = true">Add {{ currentOption }}</button>
+      <button @click="showOptionModal('Add')">Add {{ currentOption }}</button>
       <!-- End of header-container -->
 
-    
       <OptionTable
         :datas="datas"
         :name="currentOption"
         :showLoadingAnimations="showLoadingAnimations"
         :isNoData="isNoData"
-      
+        @action="showOptionModal"
       />
- 
+      <transition name="fade">
+        <OptionModal
+          v-if="showOption"
+          :data="currentData"
+          :action="action"
+          :option="currentOption"
+          @closeButton="closeOptionModal"
+        />
+      </transition>
       <FooterCard />
-    
     </div>
- 
-   <!-- End of main-container -->
+
+    <!-- End of main-container -->
   </div>
 </template>
 
 <script setup>
-import {ref,onMounted} from "vue"
+import { ref, onMounted } from "vue";
 import { useSubjectStore } from "../../stores/subject";
 import { useSectionYearStore } from "../../stores/sectionYear";
-import { useDepartmentStore } from "../../stores/department"
-import { useEntityStore } from "../../stores/entity"
-import OptionModal from "../../components/OptionTable.vue"
-import OptionTable from '../../components/OptionTable.vue';
+import { useDepartmentStore } from "../../stores/department";
+import { useEntityStore } from "../../stores/entity";
+import OptionModal from "../../components/OptionModal.vue";
+import OptionTable from "../../components/OptionTable.vue";
 import FooterCard from "../../components/FooterCard.vue";
 
-const sectionYear = useSectionYearStore()
+const sectionYear = useSectionYearStore();
 const subjectStore = useSubjectStore();
 const entityStore = useEntityStore();
-const departmentStore = useDepartmentStore()
-const currentOption = ref('Departments')
-const datas = ref([])
-const showLoadingAnimations = ref(false)
-const isNoData = ref(false)
-const showOptionModal = ref(false)
+const departmentStore = useDepartmentStore();
+const currentOption = ref("Departments");
+const datas = ref([]);
+const showLoadingAnimations = ref(false);
+const isNoData = ref(false);
+const action = ref("");
+const currentData = ref([]);
+const showOption = ref(false);
 
-const addOption = ()=>{
+const showOptionModal = (val,data) => {
+  action.value = val;
+  showOption.value = true;
+  currentData.value= data
+};
+
+const closeOptionModal = ()=>{
+  showOption.value = false
+  refreshData()
+}
+
+const refreshData = ()=>{
   if(currentOption.value == 'Departments'){
-    addDepartment();
-  }else if(currentOption.value == 'Year & Sections'){
-    addSectionYear();
-  }else if(currentOption.value == 'Entities'){
-    addEntity();
-  }else if(currentOption.value == 'Subjects'){
-    addSubject();
-  }
-}
-
-const addEntity = ()=>{
-
-}
-
-const addSubject = ()=>{
-
-}
-
-const addSectionYear = ()=>{
-
-}
-
-const addDepartment = () =>{
-
-}
-
-const changeOption = async (value)=>{
-  showLoadingAnimations.value = true;
-  currentOption.value = value;
-  localStorage.setItem('currentOption', value);
-  await fetchOptions();
-  if(datas.value.length > 0){
-    showLoadingAnimations.value = false;
-  }else{
-    isNoData.value = true;
-  }
-
-}
-
-const fetchOptions = async()=>{
-  if(currentOption.value == 'Departments'){
-    if(departmentStore.departments.length == 0){
-        await departmentStore.getDepartments()
-    }
     datas.value = departmentStore.departments
   }
-
-  if(currentOption.value == 'Entities'){
-    if(entityStore.entities.length == 0){
-        await entityStore.fetchAllEntity()
-    }
-    datas.value =  entityStore.entities.map(item => {
-                    return { id: item.id, name: item.entity_name };
-                  });
-    
-  }
-
   if(currentOption.value == 'Year & Sections'){
-    if(sectionYear.sectionYears.length == 0){
-        await sectionYear.fetchAllSectionYears()
-    }
-    datas.value =  sectionYear.sectionYears.map(item => {
-                    return { id: item.id, name: item.year_section };
-                  });
+    datas.value = sectionYear.sectionYears
   }
-
+  if(currentOption.value == 'Evaluatee Type'){
+    datas.value = entityStore.entities.map((item) => {
+                        return { id: item.id, name: item.entity_name };
+                      });
+  }
   if(currentOption.value == 'Subjects'){
-    if(subjectStore.subjects.length == 0){
-        await subjectStore.fetchAllSubjects()
-    }
-    datas.value =  subjectStore.subjects
+    datas.value = subjectStore.subjects
   }
 }
 
-onMounted(async()=>{
+const changeOption = async (value) => {
   showLoadingAnimations.value = true;
-  if(localStorage.getItem('currentOption')){
-    currentOption.value = localStorage.getItem('currentOption')
-  }
+  currentOption.value = value;
+  localStorage.setItem("currentOption", value);
   await fetchOptions();
-  if(datas.value.length > 0){
+  if (datas.value.length > 0) {
     showLoadingAnimations.value = false;
-  }else{
+  } else {
     isNoData.value = true;
   }
+};
 
-})
+const fetchOptions = async () => {
+  if (currentOption.value == "Departments") {
+    if (departmentStore.departments.length == 0) {
+      await departmentStore.getDepartments();
+    }
+    datas.value = departmentStore.departments;
+  }
+
+  if (currentOption.value == "Evaluatee Type") {
+    if (entityStore.entities.length == 0) {
+      await entityStore.fetchAllEntity();
+    }
+    datas.value = entityStore.entities.map((item) => {
+      return { id: item.id, name: item.entity_name };
+    });
+  }
+
+  if (currentOption.value == "Year & Sections") {
+    if (sectionYear.sectionYears.length == 0) {
+      await sectionYear.fetchAllSectionYears();
+    }
+    datas.value = sectionYear.sectionYears.map((item) => {
+      return { id: item.id, name: item.year_section };
+    });
+
+  }
+
+  if (currentOption.value == "Subjects") {
+    if (subjectStore.subjects.length == 0) {
+      await subjectStore.fetchAllSubjects();
+    }
+    datas.value = subjectStore.subjects;
+  }
+};
+
+onMounted(async () => {
+  showLoadingAnimations.value = true;
+  if (localStorage.getItem("currentOption")) {
+    currentOption.value = localStorage.getItem("currentOption");
+  }
+  await fetchOptions();
+
+  if (datas.value.length != 0) {
+    showLoadingAnimations.value = false;
+  } else {
+    isNoData.value = true;
+  }
+});
 </script>
 
 <style scoped>

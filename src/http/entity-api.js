@@ -6,3 +6,9 @@ const resource = apiPath +  "/entities"
 
 
 export const getAllEntity = ()=> api.get(resource)
+
+export const addEntity = (data)=> api.post(resource,data)
+
+export const deleteEntity = (id)=> api.delete(resource + `/${id}`);
+
+export const updateEntity = (id,data)=> api.put(resource + `/${id}`,data);

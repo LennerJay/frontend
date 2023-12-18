@@ -5,3 +5,9 @@ const resource = apiPath +  "/departments"
 
 
 export const getAllDepartments = () => api.get(resource)
+
+export const addDepartment = (data) => api.post(resource,data)
+
+export const deleteDepartment = (id) => api.delete(resource+ `/${id}`)
+
+export const updateDepartment = (id,data) => api.put(resource+ `/${id}`,data)

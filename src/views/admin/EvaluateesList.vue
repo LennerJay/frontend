@@ -203,6 +203,7 @@
               :entityId="entityId"
               :entity="entity"
               @handleCloseButton="handleCloseButton"
+              @addClass="handleAddClassAction"
             />
           </transition>
           <transition name="fade">
@@ -286,6 +287,11 @@ const showAddUpdate = ref(false);
 const showDeleteModal = ref(false);
 
 
+const handleAddClassAction = (val)=>{
+  evaluateeInfo.value = val;
+  handleCloseButton()
+  showAddUpdateModal()
+}
 
 const showAddUpdateModal = () => {
   showModal.value = false;

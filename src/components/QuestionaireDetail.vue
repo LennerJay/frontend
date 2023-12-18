@@ -3,12 +3,25 @@
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins z-20"
   >
     <div
-      class="relative bg-white pl-5 pr-5 md:max-w-2xl max-w-sm mx-auto md:mt-36 mt-12 border-4 border-sky-950 rounded-xl max-h-[45rem] overflow-y-auto"
+      class="relative bg-white pl-5 pr-5 md:max-w-lg max-w-sm mx-auto md:mt-36 mt-12 border-4 border-sky-950 rounded-xl max-h-[45rem] overflow-y-auto"
     >
+
+      <transition name="slide-fade">
+        <div class="absolute w-11/12 top-5 left-5 z-20" v-if="showResponseError">
+          <div class="bg-red-100 border border-red-400 text-red-700 px-5 py-3 rounded relative" role="alert">
+            <strong class="font-bold block">Warning</strong>
+            <span class="block sm:inline">This questionnaire cannot be used because it contains no questions</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="showResponseError = false" >
+              <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
+          </div>
+      
+        </div>
+      </transition>
       <div class="container w-full mt-6">
         <div class="flex justify-between items-center">
           <div>Questionaire Details</div>
-          <div>
+          <div class="mr-3">
             <button @click="closeModal" id="close-btn">
               <i class="bi bi-x-lg"></i>
               <span></span>
@@ -185,7 +198,7 @@
             id="questionaire-status"
             disabled
             class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
-            :value="selectedQuestionaire.status == 0 ? 'Unused' : 'Used '"
+            :value="selectedQuestionaire.status == 1 && qIndex == 0 ?  'Currently Used' : selectedQuestionaire.status == 1 ? 'Used':'Unused'"
           />
         </div>
       </div>
@@ -194,8 +207,8 @@
         <transition name="bounce" appear>
           <p v-if="isInvalid">Nothing's Change</p>
         </transition>
-        <button class="border border-black p-1" id="back-button" @click="updateStatus">
-          {{ status ? "Unuse" : "Use" }}
+        <button v-if="!status" class="border border-black p-1" id="back-button" @click="updateStatus">
+            Use 
         </button>
         <button
           class="border border-black p-1"
@@ -240,10 +253,11 @@ import { ref } from "vue";
 import { useQuestionaireStore } from "../stores/questionaire";
 import ActionSpinnerAnimation from "./ActionSpinnerAnimation.vue";
 import ActionModal from "./ActionModal.vue";
-import WarningModal from "./WarningModal.vue";
 
 const questionaireStore = useQuestionaireStore();
 
+
+const showResponseError = ref(false);
 const isEnable = ref(true);
 const showActionSpinner = ref(false);
 const showActionModal = ref(false);
@@ -258,7 +272,7 @@ const errors = ref({});
 const isInvalid = ref(false);
 
 const handleCancelClick = () => {
-  console.log(props.selectedQuestionaire)
+  console.log(props.selectedQuestionaire);
   if (compareData() && !isEnable.value) {
     if (confirm("Change will not be Save") == true) {
       isEnable.value = !isEnable.value;
@@ -268,6 +282,7 @@ const handleCancelClick = () => {
     isEnable.value = !isEnable.value;
   }
 };
+
 
 const restoreDataInputs = () => {
   entityId.value = props.selectedQuestionaire.entity_id;
@@ -283,6 +298,7 @@ const emits = defineEmits(["backButton"]);
 const props = defineProps({
   selectedQuestionaire: Object,
   entities: Object,
+  qIndex:Number
 });
 
 const closeModal = () => {
@@ -332,6 +348,14 @@ const updateStatus = async () => {
   showActionSpinner.value = true;
   await questionaireStore.updateStatus(props.selectedQuestionaire.id);
   showActionSpinner.value = false;
+  if (!questionaireStore.isUpdateSuccess) {
+    showResponseError.value = true;
+    setTimeout(() => {
+      showResponseError.value = false;
+    }, 4000);
+
+    return;
+  }
   if (questionaireStore.isSuccess) {
     showActionModal.value = true;
     setTimeout(() => {
@@ -403,6 +427,7 @@ const maxRespondentsInput = () => {
 </script>
 
 <style scoped>
+
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }

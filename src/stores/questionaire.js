@@ -11,14 +11,21 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     const questionaireForEvaluatee = ref([]);
     const maxRespondents= ref([]);
     const isSuccess = ref(false);
+    const isUpdateSuccess = ref(false);
+
     const fetchQuestionaire = async ()=>{
         try{
             const {data}  = await allQuestionaires();
-            questionaires.value =  data.data
+            if(data.success){
+                isSuccess.value = true
+                questionaires.value =  data.data
+            }else{
+                isSuccess.value = false
+            }
+            errors.value = []
         }catch(e){
             questionaires.value = null;
             errors.value = e.response
-            console.log(errors.value)
         }
       
     }
@@ -110,10 +117,11 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     }
 
     const filterQuestionaires = (val)=>{
+        let questionaires = groupbByEntity()
         if(val == 'All'){
-            return questionaires.value
+            return questionaires
         }
-        return questionaires.value.filter(q => q.entity_name == val)
+        return questionaires.filter(q => q.entity_name == val)
     }
 
     const questionaireUpdate = async(qId,datas)=>{
@@ -123,9 +131,8 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
             console.log(data)
             if(data.success){
                 isSuccess.value = true
-                questionaires.value = questionaires.value.filter(q => q.id != qId)
+                 questionaires.value = questionaires.value.filter(q => q.id != qId)
                 questionaires.value.unshift(data.data)
-                return data.data
             }
             errors.value = []
         }catch(e){
@@ -137,11 +144,15 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         await csrfCookie()
         try{
           const {data} =  await updateStatusQuestionaire(qId)
-          console.log(data)
           if(data.success){
-                isSuccess.value = true
-                questionaires.value = questionaires.value.filter(q => q.id != qId)
-                questionaires.value.unshift(data.data)
+                if(data.data){
+                    isSuccess.value = true
+                    isUpdateSuccess.value = true
+                    questionaires.value = questionaires.value.filter(q => q.id != qId)
+                    questionaires.value.unshift(data.data)
+                }else{
+                    isUpdateSuccess.value = false
+                }
             }else{
                 isSuccess.value = false
             }
@@ -178,7 +189,25 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         }
     }
 
+    const groupbByEntity = ()=>{
+        const q = []
+        const keySelector = (value) => value.entity_name
+        const datas = questionaires.value.reduce(function (accumulator, current) {
+          const key = keySelector(current);
+          (accumulator[key] = accumulator[key] || []).push(current);
+          return accumulator;
+        }, {});
+        for(const val in datas){
+            q.push({
+                entity_name: val,
+              datas: datas[val]
+            })
+        }
+        return q
+    }
+
     return {
+        groupbByEntity,
         questionaires,
         fetchQuestionaire,
         latestQuestionaire,
@@ -193,6 +222,7 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         questionaireUpdate,
         updateStatus,
         removeQuestionaire,
-        saveQuestionaire
+        saveQuestionaire,
+        isUpdateSuccess
     }
 })

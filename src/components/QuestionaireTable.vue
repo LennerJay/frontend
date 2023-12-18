@@ -10,39 +10,35 @@
               <th class="py-3 px-6 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody class="text-gray-600 text-sm font-light">
-            <tr v-if="showLoadingDataAnimation" class="border-b border-gray-200 hover:bg-gray-100">
+          <tbody v-if="showLoadingDataAnimation" class="text-gray-600 text-sm font-light">
+            <tr class="border-b border-gray-200 hover:bg-gray-100">
               <td class="py-3 px-6 text-left " colspan="3">
                 <LoadingDataAnimation/>
               </td>
             </tr>
-            <tr v-if="isNoData" class="border-b border-gray-200 hover:bg-gray-100">
-              <td class="py-3 px-6 text-left whitespace-nowrap flex justify-center row-span-3">
+          </tbody>
+          <tbody v-if="isNoData" class="text-gray-600 text-sm font-light">
+            <tr class="border-b border-gray-200 hover:bg-gray-100">
+              <td class="py-3 px-6 text-center font-bold text-2xl" colspan="3">
                 <span class="font-medium">No data Found</span>
               </td>
             </tr>
-            <tr
-              v-for="(questionaire, questionaireIndex) in data"
-              :key="questionaireIndex"
-              class="border-b border-gray-200 hover:bg-gray-100"
-            >
-              <td class="py-3 px-6 text-left whitespace-nowrap">
-                <div class="flex items-center">
-                  <span class="font-medium">{{ questionaire.title }}</span>
-                </div>
+          </tbody>
+          <tbody v-else v-for="(evaluatees,evaluateeIndex) in datas" :key="evaluatees + evaluateeIndex" class="text-gray-600 text-sm font-light" >
+            <tr v-for="(questionaire,index) in evaluatees.datas" :key="questionaire.id"  class="border-b border-gray-200 hover:bg-gray-100">
+              <td class="py-3 px-6 text-center">
+                <span class="font-medium">{{ questionaire.title }} </span>
               </td>
               <td class="py-3 px-6 text-center">
-                <span
-                 :class="[questionaire.status  ? 'used':'un-used']" class=" py-1 px-3 rounded-full text-xs"
-                  >{{ questionaire.status  ? 'Currenly Used':'Unused' }}</span
-                >
+                <span>
+                  {{ questionaire.status && index == 0 ? "Currently Used" : questionaire.status ? "Used":"Unused" }}
+                </span>
               </td>
               <td class="py-3 px-6 text-center">
                 <div class="flex item-center justify-center gap-2">
-                  <button @click="handleClickAction(questionaire.id,'details')" id="details">Details</button>
-                  <!--class="border-solid border-2 border-indigo-300"-->
-                  <button @click="handleClickAction(questionaire.id,'questions')" id="questions">Questions</button>
-                  <button @click="handleClickAction(questionaire.id,'delete')" id="questions">Delete</button>
+                  <button @click="handleClickAction(questionaire.id,'details',index)" id="details">Details</button>
+                  <button @click="handleClickAction(questionaire.id,'questions',index)" id="questions">Questions</button>
+                  <button @click="handleClickAction(questionaire.id,'delete',index)" id="questions">Delete</button>
                 </div>
               </td>
             </tr>
@@ -60,23 +56,35 @@ import LoadingDataAnimation from './LoadingDataAnimation.vue';
 
 
 const props = defineProps({
-  data:Object,
+  datas:Object,
   isNoData:Boolean,
   showLoadingDataAnimation:Boolean
 });
 const emits = defineEmits(['handleAction']);
 
-const handleClickAction = (id,action)=>{
-  emits('handleAction',id,action)
+const handleClickAction = (id,action,index)=>{
+  emits('handleAction',id,action,index)
 }
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+  .currently-used{
+    @apply bg-green-200 text-green-600
+  }
   .un-used{
-    @apply bg-gray-200 text-gray-600
+    @apply  bg-amber-100 text-amber-600
   }
   .used{
-    @apply bg-green-200 text-green-600
+    @apply bg-gray-200 text-gray-600
   }
 
   #details {

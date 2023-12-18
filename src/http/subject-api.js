@@ -5,3 +5,10 @@ const resource = apiPath +  "/subjects"
 
 
 export const  getAllSubjects = () => api.get(resource)
+
+export const saveSubjects = (data) => api.post(resource,data)
+
+export const deleteSubject = (id) => api.delete(resource+ `/${id}`)
+
+export const updateSubject = (id,data) => api.put(resource + `/${id}`,data)
+

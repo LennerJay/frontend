@@ -17,12 +17,12 @@
                             </div>
                         </td>
                     </tr>
-                    <tr v-else-if="!isNoData" v-for="value in datas" >
+                    <tr v-else-if="!isNoData" v-for="(value,index) in datas" :key="index + value.name +value.id">
                         <td>{{ value.name }}</td>
                         <td>
                             <div class="actions">
-                                <button @click="handleAction('edit',value.id)" type="button" id="edit" name="edit"><i class='far fa-edit'></i>Edit</button>
-                                <button @click="handleAction('delete',value.id)" type="button" id="delete" name="delete"><i class="far fa-trash-alt"></i>Delete</button>
+                                <button @click="handleAction('Edit',value)" type="button" id="edit" name="edit"><i class='far fa-edit'></i>Edit</button>
+                                <button @click="handleAction('Delete',value)" type="button" id="delete" name="delete"><i class="far fa-trash-alt"></i>Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -49,12 +49,11 @@ const props = defineProps([
     'isNoData'
 ])
 const emits = defineEmits([
-    'edit','delete'
+    'action'
 ]);
 
-const handleAction = (option,id) => {
-
-    console.log(id)
+const handleAction = (action,id) => {
+    emits('action',action,id)
 };
 
 </script>
