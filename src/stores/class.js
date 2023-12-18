@@ -17,6 +17,7 @@ export const useClassStore = defineStore('classStore',()=>{
             errors.value = []
         }else{
             errors.value = data.message
+            isSuccess.value = data.success
         }
     }
 
@@ -29,6 +30,7 @@ export const useClassStore = defineStore('classStore',()=>{
             errors.value = []
         }else{
             errors.value = data.message
+            isSuccess.value = data.success
         }
     }
 

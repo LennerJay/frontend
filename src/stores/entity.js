@@ -28,19 +28,19 @@ export const useEntityStore = defineStore('entityStore',()=>{
         
     }
 
-    // if(localStorage.getItem('entities')){
-    //     entities.value = JSON.parse(localStorage.getItem('entities'));
-    // }
+    if(localStorage.getItem('entities')){
+        entities.value = JSON.parse(localStorage.getItem('entities'));
+    }
 
-    // watch(
-    //     entities,
-    //     (entitiesVal)=>{
-    //         localStorage.setItem('entities', JSON.stringify(entitiesVal))
-    //     },
-    //     {
-    //         deep: true,
-    //     }
-    // );
+    watch(
+        entities,
+        (entitiesVal)=>{
+            localStorage.setItem('entities', JSON.stringify(entitiesVal))
+        },
+        {
+            deep: true,
+        }
+    );
 
 
     const saveEntity = async(val)=>{
@@ -72,7 +72,7 @@ export const useEntityStore = defineStore('entityStore',()=>{
                 if(data.data){
                     isSuccess.value = true
                     isResponseSuccess.value = true
-                    entities.value.map(entity =>{
+                    entities.value = entities.value.map(entity =>{
                         if(entity.id == id){
                             entity.entity_name = data.data.entity_name
                         }

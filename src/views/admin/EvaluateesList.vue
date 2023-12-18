@@ -197,7 +197,7 @@
             />
           </transition>
           <transition name="fade">
-            <CreateModal
+            <CreateEvaluateeModal
               v-if="crudModal.modalAdd"
               :entities="entities"
               :entityId="entityId"
@@ -207,7 +207,7 @@
             />
           </transition>
           <transition name="fade">
-            <EditModal
+            <EditEvaluateeModal
               v-if="crudModal.modalEdit"
               :subjects="subjects"
               :departments="departments"
@@ -247,8 +247,8 @@ import SelectEntity from "../../components/SelectEntity.vue";
 import SelectDepartment from "../../components/SelectDepartment.vue";
 import SelectJobType from "../../components/SelectJobType.vue";
 import ModalCard from "../../components/ModalCard.vue";
-import CreateModal from "../../components/CreateModal.vue";
-import EditModal from "../../components/EditModal.vue";
+import CreateEvaluateeModal from "../../components/CreateEvaluateeModal.vue";
+import EditEvaluateeModal from "../../components/EditEvaluateeModal.vue";
 import DeleteEvaluateeModal from "../../components/DeleteEvaluateeModal.vue";
 import AddUpdateClassModal from "../../components/AddUpdateClassModal.vue";
 import FooterCard from "../../components/FooterCard.vue";

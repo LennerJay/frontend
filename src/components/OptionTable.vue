@@ -3,21 +3,26 @@
         <div class="dept-content">
             <table id="main-table">
                 <thead>
-                    <tr>
+                    <tr v-if="name != 'Year & Sections'">
                         <th>{{ name }}</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr v-else>
+                        <th>Year</th>
+                        <th>Sections</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-if="showLoadingAnimations">
-                        <td colspan="2" >
+                        <td :colspan="name != 'Year & Sections' ? '2':'3'">
                             <div
                                 class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                                 role="status">
                             </div>
                         </td>
                     </tr>
-                    <tr v-else-if="!isNoData" v-for="(value,index) in datas" :key="index + value.name +value.id">
+                    <tr v-else-if="!isNoData && name != 'Year & Sections'" v-for="(value,index) in datas" :key="index + value.name +value.id">
                         <td>{{ value.name }}</td>
                         <td>
                             <div class="actions">
@@ -26,9 +31,18 @@
                             </div>
                         </td>
                     </tr>
+                    <tr v-else-if="!isNoData && name == 'Year & Sections'" v-for="(value,index) of datas" :key="value + index" >
+                        <td>{{ value.year }}</td>
+                        <td>{{ value.sections.join(', ') }}</td>
+                        <td>
+                            <div class="actions">
+                                <button @click="handleAction('Show',value)" type="button" id="edit" name="edit"><i class='far fa-edit'></i>Show</button>
+                            </div>
+                        </td>
+                    </tr>
                     <tr v-else>
-                        <td colspan="2">
-                            No Data
+                        <td :colspan="name != 'Year & Sections' ? '2':'3'">
+                           <span class="font-bold text-5xl"> No Data</span> 
                         </td>
                     </tr>
 
@@ -55,6 +69,7 @@ const emits = defineEmits([
 const handleAction = (action,id) => {
     emits('action',action,id)
 };
+
 
 </script>
 

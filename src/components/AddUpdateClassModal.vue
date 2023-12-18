@@ -3,8 +3,20 @@
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins z-20"
   >
     <div
-      class="relative bg-white md:max-w-3xl max-w-sm mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto"
+      class="relative bg-white md:max-w-3xl max-w-sm mx-auto md:mt-20 mt-10 border-4 border-sky-950 rounded-xl max-h-[40rem] overflow-y-auto"
     >
+        <transition name="slide-fade">
+          <div class="absolute w-11/12 top-3 left-5 z-20" v-if="showResponseError" >
+          <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-3 rounded relative" role="alert">
+            <strong class="font-bold mr-5">Warning</strong>
+            <span class="block sm:inline">Class Already Exist</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="showResponseError = false" >
+              <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
+          </div>
+        </div>
+        </transition>
+
       <div class="relative p-8 ">
         <button @click="handleClose" id="close-btn">
           <i class="bi bi-x-lg"></i>
@@ -256,6 +268,8 @@ const classes = ref(props.evaluateeClasses);
 const klassId = ref(0);
 const formField = ref()
 const isUpdate= ref(false);
+const showResponseError = ref(false);
+
 const props = defineProps([
   "departments",
   "subjects",
@@ -278,7 +292,6 @@ const handleDelete = async (klass_id) => {
 const cancelDelete = () => {
   showWarningModal.value = false;
   klassId.value = 0;
-  console.log(klassId.value);
 };
 
 const proceedToDelete = async () => {
@@ -293,10 +306,8 @@ const proceedToDelete = async () => {
     setTimeout(function () {
       showActionModal.value = false;
     }, 1000);
-    console.log(classes.value)
     evaluateeStore.filterEvaluateeClasses('delete',klassId.value)
     classes.value =  evaluateeStore.groupByDepartment();
-    console.log(classes.value)
   }
   clearInputs()
 };
@@ -346,6 +357,11 @@ const addClassBtn = async () => {
       showActionModal.value = false;
     }, 1500);
     addUpdateClasses(findSectionYear)
+  }else{
+    showResponseError.value = true;
+    setTimeout(()=>{
+      showResponseError.value = false;
+    },3000);
   }
 
 };

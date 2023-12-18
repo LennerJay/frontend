@@ -122,16 +122,22 @@ const nameInput = () => {
 };
 
 const closeModal = () => {
-  console.log(name.value)
-  if(name.value !=""  && props.data && props.data.name != name.value ){
-    if(confirm('Are you sure you want to close?') == true){
-      emits("closeButton");
-      }
-
-  }else{
+  if(name.value =="" && props.action != "Edit"){
     emits("closeButton");
+    return;
   }
-
+  if(props.action == "Delete"){
+    emits("closeButton");
+    return;
+  }
+  if(props.data && props.data.name == name.value) {
+    emits("closeButton");
+    return;
+  }
+  if(confirm("Are you sure you want to close?")== true){
+    emits("closeButton");
+    return;
+  }
 };
 
 const handleSaveAction = () => {
@@ -268,7 +274,7 @@ const handleActionModal = () => {
   showActionModal.value = true;
   setTimeout(() => {
     showActionModal.value = false;
-    closeModal();
+    emits("closeButton");
   }, 1500);
 };
 </script>

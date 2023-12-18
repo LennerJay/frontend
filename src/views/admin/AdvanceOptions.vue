@@ -71,6 +71,15 @@
           :option="currentOption"
           @closeButton="closeOptionModal"
         />
+  
+      </transition >
+      <transition name="fade">
+        <SectionYearOptionModal 
+        v-if="showSectionYearModal"
+          :action="action"
+          :data="currentData"
+          @close="closeSectionYearModal"
+        />
       </transition>
       <FooterCard />
     </div>
@@ -87,6 +96,7 @@ import { useDepartmentStore } from "../../stores/department";
 import { useEntityStore } from "../../stores/entity";
 import OptionModal from "../../components/OptionModal.vue";
 import OptionTable from "../../components/OptionTable.vue";
+import SectionYearOptionModal from "../../components/SectionYearOptionModal.vue";
 import FooterCard from "../../components/FooterCard.vue";
 
 const sectionYear = useSectionYearStore();
@@ -100,15 +110,26 @@ const isNoData = ref(false);
 const action = ref("");
 const currentData = ref([]);
 const showOption = ref(false);
+const showSectionYearModal = ref(false);
 
 const showOptionModal = (val,data) => {
+  if(currentOption.value == 'Year & Sections'){
+    showSectionYearModal.value = true
+    showOption.value = false;
+  }else{
+    showOption.value = true;
+    showSectionYearModal.value = false
+  }
   action.value = val;
-  showOption.value = true;
   currentData.value= data
 };
-
+const closeSectionYearModal = ()=>{
+  showSectionYearModal.value = false
+  refreshData()
+}
 const closeOptionModal = ()=>{
   showOption.value = false
+ 
   refreshData()
 }
 
@@ -117,7 +138,7 @@ const refreshData = ()=>{
     datas.value = departmentStore.departments
   }
   if(currentOption.value == 'Year & Sections'){
-    datas.value = sectionYear.sectionYears
+    datas.value = sectionYear.filterSectionYear()
   }
   if(currentOption.value == 'Evaluatee Type'){
     datas.value = entityStore.entities.map((item) => {
@@ -130,13 +151,13 @@ const refreshData = ()=>{
 }
 
 const changeOption = async (value) => {
+  isNoData.value = false;
   showLoadingAnimations.value = true;
   currentOption.value = value;
   localStorage.setItem("currentOption", value);
   await fetchOptions();
-  if (datas.value.length > 0) {
-    showLoadingAnimations.value = false;
-  } else {
+  showLoadingAnimations.value = false;
+  if (datas.value.length == 0) {
     isNoData.value = true;
   }
 };
@@ -162,10 +183,7 @@ const fetchOptions = async () => {
     if (sectionYear.sectionYears.length == 0) {
       await sectionYear.fetchAllSectionYears();
     }
-    datas.value = sectionYear.sectionYears.map((item) => {
-      return { id: item.id, name: item.year_section };
-    });
-
+    datas.value = sectionYear.filterSectionYear()
   }
 
   if (currentOption.value == "Subjects") {
@@ -182,12 +200,11 @@ onMounted(async () => {
     currentOption.value = localStorage.getItem("currentOption");
   }
   await fetchOptions();
-
-  if (datas.value.length != 0) {
-    showLoadingAnimations.value = false;
-  } else {
+  showLoadingAnimations.value = false
+  // console.log(datas.value.length)
+  if (datas.value.length == 0) {
     isNoData.value = true;
-  }
+  } 
 });
 </script>
 

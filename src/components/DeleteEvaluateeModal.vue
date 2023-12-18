@@ -20,7 +20,7 @@
       <div class="mb-4 flex flex-col items-center">
         <h1>{{ evaluateeDetails.name }}</h1>
         <h1>Note:</h1>
-        <p>All data related from this {{ evaluateeDetails.entity_name }} will also be deleted</p>
+        <p class="text-center">All data related from this {{ evaluateeDetails.entity_name }} will also be deleted</p>
       </div>
       <!-- Modal footer -->
       <div class="flex justify-end space-x-4">
