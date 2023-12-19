@@ -11,10 +11,13 @@
                 </div>
         </div> -->
         <div class="header-container">
-                <header id="main-header">
-                    <span class="burger-container md:hidden flex pt-4">
-                        <i class=" bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
-                    </span>
+                <header id="main-header" class="bg-sky-950">
+                    <span class="md:hidden flex">
+                        <i
+                          class="bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-white text-[30px]"
+                          @click="drawer.toggle"
+                        ></i>
+                      </span>
                     <div class="main-content">
                         <h1>Dashboard</h1>
                         <p>Cordova Public College</p>
@@ -25,7 +28,7 @@
         <div class="dashboard-body-container">
                 <div class="dashboard-content">
                     <div class="overview">
-                        <h2>Overview</h2>
+                        <h2 class="text-gray-600">Overview</h2>
                     </div>
                     <div class="card-container">
                         <div class="main-card students-enrolled hover:-translate-y-1 hover:scale-90">
@@ -243,14 +246,18 @@ onMounted(async()=>{
     }
 
     .header-container #main-header {
-        width: 90%;
+        /* width: 90%;
         margin: auto;
         padding: 15px 15px;
         text-align: center;
         background-color: #ffffff;
-        color: #000000;
+        color: #000000; */
+        text-align: center;
+        padding: 15px 15px;
+        color: #ffffff;
     }
 
+    
     #main-header .burger-container i {
         background-color: #cccccc;
     }

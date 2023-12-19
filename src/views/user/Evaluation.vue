@@ -2,9 +2,9 @@
   <div class="flex">
     <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full text-center">
     <div class="header pl-2 md:py-6 bg-sky-900 text-white text-center">
-      <span class="md:hidden flex pt-2">
+      <span class="md:hidden flex">
         <i
-          class="bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2"
+          class="bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-[30px]"
           @click="drawer.toggle"
         ></i>
       </span>

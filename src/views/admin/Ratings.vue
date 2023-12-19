@@ -1,9 +1,15 @@
 <template>
-    <div class="md:ml-[250px] w-full h-screen">
+    <div class="md:ml-[250px] h-screen">
         <div class="header-container">
             <header id="main-header">
+                <span class="md:hidden flex">
+                    <i
+                      class="bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-white text-[30px]"
+                      @click="drawer.toggle"
+                    ></i>
+                </span>
                 <h1>Ratings</h1>
-                <h2>Cordova Public College</h2>
+                <p>Cordova Public College</p>
             </header>
         </div><!-- End of header-container -->
 
@@ -18,7 +24,9 @@
     /* Code Blocks Here */
     import A_Commitment from "../../components/A_Commitment.vue";
     import FooterCard from "../../components/footercard.vue";
+    import { useDrawerStore } from "../../stores/drawerStore";
 
+    const drawer = useDrawerStore();
 </script>
 
 <style scoped>
@@ -44,15 +52,14 @@
 
     #main-header h1 {
         color: #ffffff;
-        font-size: 24px;
+        font-size: 22px;
         font-family: Verdana;
         font-weight: bold;
     }
 
-    #main-header h2 {
-        color: #ffffff;
-        font-size: 20px;
-        font-family: Verdana;
+    #main-header p {
+        font-size: 14px;
+        font-family: Helvetica, Georgia, "Times New Roman";
     }
 
 </style>

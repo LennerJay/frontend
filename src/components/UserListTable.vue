@@ -1,8 +1,8 @@
 <template>
-  <div class="card flex justify-center font-poppins h-screen">
+  <div class="flex justify-center font-poppins h-screen">
     <div class="w-full lg:w-5/6 max-h-[550px] md:max-h-[550px] overflow-y-auto mt-12">
       <div class="transparent shadow-md rounded my-6">
-        <table class="min-w-[250px] md:w-full table-auto">
+        <table class="w-full table-auto">
           <thead>
             <tr
               v-if="isStudent"

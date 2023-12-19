@@ -1,6 +1,6 @@
 <template>
   <aside class="w-0 font-Times New Roman">
-    <div class="sidebar min-h-screen fixed top-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center" :class="{ 'left-0': !drawer.drawerState, 'left-[-250px]': drawer.drawerState }">
+    <div class="sidebar min-h-screen fixed top-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center z-50 bg-gray-100" :class="{ 'left-0': !drawer.drawerState, 'left-[-250px]': drawer.drawerState }">
       <div class="text-white-100 text-x1">
         <div class="p-2 mt-1 flex items-center justify-between">
           <img src="../assets/cpc_logo.png" height="90" width="90" class="animate-bounce hover:animate-spin"/>
@@ -10,15 +10,15 @@
       </div>
       <router-link v-for="(component, index) in components" :key="index" :to="component.path">
         <hr v-if="index % 3 == 0 && index != 0" class="my-2 text-gray-600" />
-        <div class="router">
+        <div class="router p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-black hover:text-white hover:bg-blue-500">
           <i :class="component.icon"></i>
-          <span class="router-name">{{ component.name }}</span>
+          <span class="router-name text-[15px] ml-4">{{ component.name }}</span>
         </div>
       </router-link>
       <hr v-if="showHr && components.length % 3 == 0" class="my-2 text-gray-600" />
-      <div class="router" @click="handleLogout">
+      <div class="router p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-black hover:text-white hover:bg-blue-500" @click="handleLogout">
         <i class="bi bi-box-arrow-right"></i>
-        <span class="router-name">Logout</span>
+        <span class="router-name text-[15px] ml-4">Logout</span>
       </div>
     </div>
   </aside><!-- End of aside tag -->
@@ -121,8 +121,8 @@ onMounted(() => {
 <style scoped>
 
     .sidebar {
-      background-color: #ffffff;
-      color: #000000;
+      /* background-color: #ffffff;
+      color: #000000; */
     }
 
     .sidebar img {
@@ -130,23 +130,23 @@ onMounted(() => {
       margin: auto;
     }
 
-    .router i {
+    /* .router i {
       color: #000000;
-    }
+    } */
 
-    .router .router-name {
+    /* .router .router-name {
       color: #000000;
-    }
+    } */
 
     .router-link-active {
       font-size: x-large;
     }
-    .router {
-      @apply p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-600;
-    }
-    .router-name {
-      @apply text-[15px] ml-4 text-gray-200;
-    }
+    /* .router {
+      @apply p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-blue-500;
+    } */
+    /* .router-name {
+      @apply text-[15px] ml-4 text-gray-200 hover:text-white;
+    } */
     aside {
       z-index: 1000;
     }

@@ -1,16 +1,17 @@
 <template>
   <div class="flex">
     <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full">
-      <div class="header md:py-6 md:pb-0 pb-2 text-white text-center bg-sky-900">
-        <span class="md:hidden flex pt-2 pl-2">
+      <div class="header md:py-4 text-white text-center bg-sky-900">
+        <span class="md:hidden flex">
           <i
-            class="bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2"
+            class="bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-white text-[30px]"
             @click="drawer.toggle"
           ></i>
         </span>
-        <div class="font-bold p-1 text-[30px]">User List</div>
+        <h1>User List</h1>
+        <p>Cordova Public College</p>
       </div>
-      <div class="card nav">
+      <div class="nav">
         <div class="flex flex-col min-h-[43.2rem]">
           <!--Navar Section -->
           <nav class="bg-gray-200 border-gray-200 dark:bg-gray-900 pb-2">
@@ -274,10 +275,28 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.active {
-  color: red;
-}
-.visible {
-  display: block !important;
-}
+
+    .header h1,
+    .header p {
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-family: Verdana;
+      font-weight: bold;
+    }
+
+    .header p {
+      font-size: 14px;
+      font-family: Helvetica, Georgia, "Times New Roman";
+    }
+
+    .active {
+      color: red;
+    }
+    .visible {
+      display: block !important;
+    }
+
 </style>

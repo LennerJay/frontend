@@ -1,11 +1,17 @@
 <template>
   <div class="flex">
-    <div class="content main-container w-screen relative">
+    <div class="md:ml-[250px] ml-0 font-poppins px-0 dashboard-main-header w-full">
       <div class="navbar-container">
         <div class="navbar-content">
           <header id="main-header">
+            <span class="md:hidden flex">
+              <i
+                class="bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-white text-[30px]"
+                @click="drawer.toggle"
+              ></i>
+            </span>
             <h1>Question Form</h1>
-            <h2>Cordova Public College</h2>
+            <p>Cordova Public College</p>
           </header>
         </div>
       </div>
@@ -25,6 +31,7 @@
         :datas="questionaires"
         :showLoadingDataAnimation="showLoadingDataAnimation"
         @handleAction="selectQuestionaire"
+        class="w-full overflow-x-scroll"
       />
       <transition name="fade">
         <QuestionaireDetail
@@ -67,6 +74,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useEntityStore } from "../../stores/entity";
+import { useDrawerStore } from '../../stores/drawerStore';
 import { useQuestionaireStore } from "../../stores/questionaire";
 import QuestionaireTable from "../../components/QuestionaireTable.vue";
 import QuestionaireDetail from "../../components/QuestionaireDetail.vue";
@@ -78,6 +86,7 @@ import QuestionsModal from "../../components/QuestionsModal.vue";
 
 const showQuestionsData= ref(false)
 const showQuestionsModal = ref(false)
+const drawer = useDrawerStore();
 const showDeleteModal = ref(false);
 const questionaireStore = useQuestionaireStore();
 const entityStore = useEntityStore();
@@ -176,6 +185,7 @@ onMounted(async () => {
 
 .navbar-container {
   background-color: #0c4a6e;
+  color: #ffffff;
 }
 
 .navbar-container .navbar-content {
@@ -187,23 +197,21 @@ onMounted(async () => {
 } */
 
 #main-header h1,
-#main-header h2 {
+#main-header p {
   text-align: center;
 }
 
 #main-header h1 {
-  color: #ffffff;
-  font-size: 25px;
+  font-size: 22px;
   font-family: Verdana;
   font-weight: bold;
-  margin-bottom: 8px;
 }
 
-#main-header h2 {
-  color: #ffffff;
-  font-size: 20px;
-  font-family: Verdana;
+#main-header p {
+  font-size: 14px;
+  font-family: Helvetica, Georgia, "Times New Roman";
 }
+
 #add-btn {
   outline: none;
   padding: 6px 12px;
