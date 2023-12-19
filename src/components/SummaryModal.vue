@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman z-20">
+    <div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman" style="z-index: 10000">
       <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
         <button @click="closeModal">
           <i class="bi bi-x-lg"></i>
