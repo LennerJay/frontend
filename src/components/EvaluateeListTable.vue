@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gray-100 flex justify-center font-poppins h-screen">
-    <div class="w-full lg:w-5/6 max-h-[550px] md:max-h-[550px] overflow-y-auto">
-      <div class="transparent shadow-md rounded my-6">
+    <div class="w-full  max-h-[550px] md:h-full overflow-y-scroll">
+      <div class="transparent shadow-md rounded">
         <table class="min-w-[250px] md:w-full table-auto">
           <thead class="sticky top-0 left-0 z-10">
             <tr class="bg-sky-950 text-white uppercase text-sm leading-normal">
