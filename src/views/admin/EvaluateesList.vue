@@ -1,16 +1,18 @@
 <template>
   <div class="flex">
     <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full">
-      <div class="header md:py-6 md:pb-1 pb-2 text-white text-center bg-sky-900">
-        <span class="md:hidden flex pt-2 pl-2">
+      <div class="header md:py-4 text-white text-center bg-sky-900">
+        <span class="md:hidden flex">
           <i
-            class="bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2"
+            class="bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-white text-[30px]"
             @click="drawer.toggle"
           ></i>
         </span>
-        <div class="font-bold p-1 text-[30px]">Evaluatee List</div>
+        <!-- <div class="font-bold p-1 text-[30px]">Evaluatee List</div> -->
+        <h1>Evaluatee List</h1>
+        <p>Cordova Public College</p>
       </div>
-      <div class="card nav">
+      <div class="nav">
         <div class="flex flex-col min-h-[43.2rem]">
           <!--navar section -->
           <nav class="bg-gray-200 border-gray-200 dark:bg-gray-900 pb-2">
@@ -128,7 +130,7 @@
             :isNoData="isNoData"
             :showDataAnimation="showDataAnimation"
             @handleActionClick="handleActionClick"
-            class="card md:pt-20"
+            class="md:pt-20"
           />
           <!-- end table area -->
           <!-- Pagination -->
@@ -503,30 +505,43 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.slide-fade-enter-active {
-  transition: all 0.8s ease-out;
-}
 
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
+  .header h1 {
+    color: #ffffff;
+    font-size: 22px;
+    font-family: Verdana;
+    font-weight: bold;
+  }
 
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
+  .header p {
+    font-size: 14px;
+    font-family: Helvetica, Georgia, "Times New Roman";
+  }
 
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+  .slide-fade-enter-active {
+    transition: all 0.8s ease-out;
+  }
 
-.visible {
-  display: block !important;
-}
+  .slide-fade-leave-active {
+    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  }
+
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  .visible {
+    display: block !important;
+  }
 </style>

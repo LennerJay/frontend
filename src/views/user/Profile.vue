@@ -4,11 +4,11 @@
     <div class="header pt-2 text-white text-center">
       <span class="md:hidden flex text-white">
         <i
-          class="bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-0"
+          class="bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-[30px]"
           @click="drawer.toggle"
         ></i>
       </span>
-      <div class="font-bold text-[30px] my-6 text-center text-white">
+      <div class="font-bold text-[30px] md:my-6 text-center text-white">
         <h1>Student Profile</h1>
       </div>
     </div>
@@ -74,7 +74,7 @@
               :key="classIndex"
               class="w-full text-sm text-left rtl:text-right text-black dark:text-gray-400 border bg-white"
             >
-              <caption class="text-white">
+              <caption class="text-[25px] text-white py-4 uppercase bg-sky-950 shadow-inner shadow-sky-950 text-center">
                 {{
                   userClass.department
                 }}
