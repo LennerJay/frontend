@@ -119,15 +119,16 @@
             :isNoData="isNoData"
             :isStudent="isStudent"
             @handleActionClick="handleActionClicked"
+            class="md:h-full md:w-full"
           />
           <!-- End Table Area -->
           <!-- Pagination -->
-          <div class="bg-gray-200 px-2">
-            <span class="text-gray-600">{{ status }}</span>
+          <div class="bg-sky-950 text-white px-2 mt-auto">
+            <span class="text-white">{{ status }}</span>
             <div class="mt-2 flex items-center pb-2">
               <!-- Previous Button -->
               <i
-                class="bi bi-arrow-left-square cursor-pointer hover:bg-sky-950 hover:text-white transition duration-300"
+                class="bi bi-arrow-left-square cursor-pointer hover:bg-gray-100 hover:text-gray-600 transition duration-300"
                 @click="gotoPage(currentPage - 1)"
                 :class="{ '': currentPage > 1, 'mx-1 px-3 py-1': true }"
                 v-if="currentPage > 1"
@@ -140,7 +141,7 @@
                   @click="gotoPage(pageNumber)"
                   :class="{
                     'border-2 border-gray-400': pageNumber === currentPage,
-                    'px-3 py-1 cursor-pointer hover:bg-sky-950 hover:text-white': true,
+                    'px-3 py-1 cursor-pointer hover:bg-gray-100 hover:text-gray-600': true,
                   }"
                 >
                   {{ pageNumber }}
@@ -150,7 +151,7 @@
 
               <!-- Next Button -->
               <i
-                class="bi bi-arrow-right-square cursor-pointer hover:bg-sky-950 hover:text-white transition duration-300"
+                class="bi bi-arrow-right-square cursor-pointer hover:bg-gray-100 hover:text-gray-600 transition duration-300"
                 @click="gotoPage(currentPage + 1)"
                 :class="{ '': currentPage < totalPages, 'mx-1 px-3 py-1': true }"
                 v-if="currentPage < totalPages"
