@@ -27,6 +27,14 @@
             <!-- End of contact-location -->
           </div>
           <!-- End of left-side content -->
+          <div v-if="isAdmin" class="bookmarks">
+            <router-link to="/">Dashboard</router-link>
+            <router-link to="/ratings">Ratings</router-link>
+            <router-link to="/question-form">Question Form</router-link>
+            <router-link to="/evaluatees-list">Evaluatees List</router-link>
+            <router-link to="/users-list">User List</router-link>
+            <router-link to="/advance-options">Advance Options</router-link>
+          </div>
           <div v-if="showBookmarks" class="bookmarks">
             <router-link to="/">Dashboard</router-link>
             <router-link to="/evaluatees">Evaluatees</router-link>
@@ -34,6 +42,7 @@
             <router-link to="/history">History</router-link>
             <router-link to="/profile">Profile</router-link>
           </div>
+          
           <div class="soc-meds-content">
             <a href="https://www.facebook.com/EhrickRhed" target="_blank"
               >Eric Redolosa</a
@@ -94,15 +103,24 @@
 
 <script setup>
 import { useRoute } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { useAuthStore } from "../stores/auth";
+
+const authStore = useAuthStore();
 const currentYear = ref(null);
 const showBookmarks = ref(false);
 const route = useRoute();
+const isAdmin = ref(false)
+
 onMounted(() => {
   const date = new Date();
   currentYear.value = date.getFullYear();
   if (route.path != "/login") {
     showBookmarks.value = true;
+  }
+  if(route.path != "/login" && authStore.isAdminStaff) {
+    isAdmin.value = true
+    showBookmarks.value = false;
   }
 });
 </script>
