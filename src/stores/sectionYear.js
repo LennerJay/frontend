@@ -97,7 +97,7 @@ export const useSectionYearStore = defineStore('sectionYearStore',()=>{
     const deleteSectionYears = async(id)=>{
         await csrfCookie();
         try{
-            const {data} = await getAllSectionYear(id);
+            const {data} = await removeSectionYear(id);
             if(data.success){
                 errors.value = []
                 if(data.data){

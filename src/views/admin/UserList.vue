@@ -62,6 +62,14 @@
                 <ul
                   class="font-medium flex flex-col md:p-0 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-200 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
                 >
+                <li>
+                    <div class="selectTags pb-2 pl-2" v-if="isStudent">
+                      <SelectYearSection
+                        :sectionYear="sectionYear"
+                        @handleSelectSY="handleSelectSY"
+                      />
+                    </div>
+                  </li>
                   <li>
                     <div class="selectTags pl-2 pb-2">
                       <SortTag :sort="sort" @handleSelectRole="handleSelectRole" />
@@ -75,14 +83,7 @@
                       />
                     </div>
                   </li>
-                  <li>
-                    <div class="selectTags pb-2 pl-2" v-if="isStudent">
-                      <SelectYearSection
-                        :sectionYear="sectionYear"
-                        @handleSelectSY="handleSelectSY"
-                      />
-                    </div>
-                  </li>
+
                   <li>
                     <div class="selectTags pl-2 pb-2">
                       <button
@@ -221,7 +222,6 @@ const filteredUsers = computed(() => {
   }
   return paginatedData.value.filter(
     (user) =>
-      user.infos.fullname.toLowerCase().includes(searchBar.value.toLowerCase()) ||
       user.id_number.toString().includes(searchBar.value)
   );
 });
