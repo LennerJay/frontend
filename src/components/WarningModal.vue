@@ -1,6 +1,6 @@
 <template>
   <div
-    id="loading-overlay-delete"
+    id="loading-overlay-delete" style="z-index: 10000"
     class="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-60 p-4 "
   >
     <div ref="targetWarning">

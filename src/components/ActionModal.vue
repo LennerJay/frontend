@@ -44,4 +44,8 @@ const emits = defineEmits(["closeAction", "addClassAction"])
 
 </script>
 
-<style scoped></style>
+<style scoped>
+#loading-overlay {
+  z-index: 100000;
+}
+</style>
