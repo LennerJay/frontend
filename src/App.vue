@@ -29,6 +29,9 @@ watch(route, (to) => {
 
 </template>
 <style scoped>
+body {
+  display: flex;
+}
 main{
   will-change: transform, opacity;
 }

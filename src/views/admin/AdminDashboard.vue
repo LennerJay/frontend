@@ -13,7 +13,7 @@
         <div class="header-container">
                 <header id="main-header">
                     <span class="burger-container md:hidden flex pt-4">
-                        <i class=" bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
+                        <i class=" bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-black bg-white text-[30px] ml-2" @click="drawer.toggle"></i>
                     </span>
                     <div class="main-content">
                         <h1>Dashboard</h1>

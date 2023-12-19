@@ -3,11 +3,15 @@
     <div class="md:ml-[250px] h-screen w-screen">
       <div class="header-container">
         <header id="main-header">
+          <i
+              class="bi bi-filter-left px-5 p-1 text-white text-left rounded-md cursor-pointer text-[30px] ml-2 md:hidden block"
+              @click="drawer.toggle"
+            ></i>
           <h1>Advance Options</h1>
           <h2>Cordova Public College</h2>
         </header>
         <div class="objects">
-          <div class="object-content">
+          <div class="object-content py-[25px] md:px-[15px]">
             <ul>
               <li>
                 <button @click="changeOption('Departments')" type="button" id="department" name="department">Departments</button>
@@ -44,6 +48,7 @@
 <script setup>
 import {ref,onMounted} from "vue"
 import { useSubjectStore } from "../../stores/subject";
+import { useDrawerStore } from '../../stores/drawerStore';
 import { useSectionYearStore } from "../../stores/sectionYear";
 import { useDepartmentStore } from "../../stores/department"
 import { useEntityStore } from "../../stores/entity"
@@ -52,6 +57,7 @@ import OptionTable from '../../components/OptionTable.vue';
 import FooterCard from "../../components/FooterCard.vue";
 
 const sectionYear = useSectionYearStore()
+const drawer = useDrawerStore()
 const subjectStore = useSubjectStore();
 const entityStore = useEntityStore();
 const departmentStore = useDepartmentStore()
@@ -194,9 +200,6 @@ onMounted(async()=>{
 
 .objects .object-content {
   color: #000000;
-  padding: 20px 15px;
-  width: 80%;
-  margin: auto;
 }
 
 .objects .object-content ul {

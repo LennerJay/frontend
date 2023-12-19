@@ -1,9 +1,10 @@
 <template>
-  <div class="md:ml-[250px] ml-0 font-poppins px-0 w-full dashboard-main-header">
+  <div class="md:ml-[250px] ml-0 font-poppins px-0 dashboard-main-header">
     <div class="header pl-2 md:py-6 text-white text-center">
       <span class="md:hidden flex pt-2">
         <i
           class="bi bi-filter-left px-5 p-1 bg-blue-900 hover:bg-blue-600 rounded-md cursor-pointer text-[30px] ml-2"
+          @click="drawer.toggle"
         ></i>
         <!-- @click="drawer.toggle" -->
       </span>

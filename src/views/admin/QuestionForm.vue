@@ -1,9 +1,13 @@
 <template>
   <div class="flex relative">
-    <div class="content main-container w-screen ">
+    <div class="md:ml-[250px] ml-0 font-poppins px-0 dashboard-main-header w-full">
       <div class="navbar-container">
         <div class="navbar-content">
           <header id="main-header">
+            <i
+              class="bi bi-filter-left px-5 p-1 text-white rounded-md cursor-pointer text-[30px] ml-2 md:hidden block"
+              @click="drawer.toggle"
+            ></i>
             <h1>Question Form</h1>
             <h2>Cordova Public College</h2>
           </header>
@@ -25,6 +29,7 @@
         :data="questionaires"
         :showLoadingDataAnimation="showLoadingDataAnimation"
         @handleAction="selectQuestionaire"
+        class="w-full overflow-x-scroll"
       />
       <transition name="fade">
         <QuestionaireDetail
@@ -49,6 +54,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useEntityStore } from "../../stores/entity"
+import { useDrawerStore } from '../../stores/drawerStore';
 import { useQuestionaireStore } from "../../stores/questionaire";
 import QuestionaireTable from "../../components/QuestionaireTable.vue";
 import QuestionaireDetail from "../../components/QuestionaireDetail.vue";
@@ -59,6 +65,7 @@ import WarningModal from "../../components/WarningModal.vue";
 const showWarningModal = ref(false)
 const questionaireStore = useQuestionaireStore();
 const entityStore = useEntityStore();
+const drawer = useDrawerStore()
 const isNoData = ref(false);
 const showLoadingDataAnimation = ref(false);
 const questionaires = ref([]);

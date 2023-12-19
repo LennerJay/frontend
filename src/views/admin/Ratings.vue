@@ -1,13 +1,16 @@
 <template>
-    <div class="md:ml-[250px] w-full h-screen">
+    <div class="md:ml-[250px] h-screen">
         <div class="header-container">
             <header id="main-header">
+                <span class="burger-container md:hidden flex pt-4">
+                    <i class=" bi bi-filter-left px-5 p-1 rounded-md cursor-pointer text-[30px] ml-2" @click="drawer.toggle"></i>
+                </span>
                 <h1>Ratings</h1>
                 <h2>Cordova Public College</h2>
             </header>
         </div><!-- End of header-container -->
 
-        <A_Commitment />
+        <A_Commitment/>
         <FooterCard />
 
     </div><!-- End of main-container -->
@@ -18,7 +21,9 @@
     /* Code Blocks Here */
     import A_Commitment from "../../components/A_Commitment.vue";
     import FooterCard from "../../components/footercard.vue";
+    import { useDrawerStore } from "../../stores/drawerStore";
 
+    const drawer = useDrawerStore();
 </script>
 
 <style scoped>
