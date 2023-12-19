@@ -25,22 +25,26 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useDepartmentStore } from "../stores/department";
 
-const route = useRoute();
-
-const props = defineProps(["selectDepartment", "option","departments"]);
+const props = defineProps(["selectDepartment", "option"]);
 const emits = defineEmits(["handleSelectedDepartment"]);
 
-const selectDepartment = ref(props.selectDepartment);
 
+const departmetStore = useDepartmentStore();
+const selectDepartment = ref(props.selectDepartment);
+const departments = ref([])
 
 const handleTag = () => {
   emits("handleSelectedDepartment", selectDepartment.value);
 };
 
-const isEvaluateeRoute = computed(() => route.name === "evaluatees");
-
+onMounted( async()=>{
+  if(!localStorage.getItem('departments')){
+    await departmetStore.getDepartments()
+  }
+  departments.value = departmetStore.departments;
+})
 </script>
 
 <style lang="scss" scoped></style>

@@ -26,7 +26,9 @@ const handleClick = () => {
 };
 
 onMounted(async () => {
-  await store.fetchAllSectionYears();
+  if(store.sectionYears.length == 0){
+    await store.fetchAllSectionYears();
+  }
   sys.value = store.sectionYears;
 });
 </script>

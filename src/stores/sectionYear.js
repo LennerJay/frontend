@@ -28,20 +28,20 @@ export const useSectionYearStore = defineStore('sectionYearStore',()=>{
         
     }
 
-    // if(localStorage.getItem('sectionYears')){
-    //     sectionYears.value = JSON.parse(localStorage.getItem('sectionYears'))
-    // }
+    if(localStorage.getItem('sectionYears')){
+        sectionYears.value = JSON.parse(localStorage.getItem('sectionYears'))
+    }
 
 
-    // watch(
-    //     sectionYears,
-    //     function(sectionYearsVal){
-    //         localStorage.setItem('sectionYears', JSON.stringify(sectionYearsVal))
-    //     },
-    //     {
-    //         deep: true,
-    //     }
-    // );
+    watch(
+        sectionYears,
+        function(sectionYearsVal){
+            localStorage.setItem('sectionYears', JSON.stringify(sectionYearsVal))
+        },
+        {
+            deep: true,
+        }
+    );
 
 
     const saveSectionYears = async(val)=>{

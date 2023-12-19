@@ -5,11 +5,13 @@ import { getAllUsers } from "../http/users-api";
 export const useUserStore = defineStore('userStore', ()=>{
     const users = ref([]);
     const errors = ref([]);
+    const isSuccess = ref(false)
     const filteredUsers = ref([]);
     const fetchAllUsers = async ()=>{
         try{
             const {data}  = await getAllUsers();
-            users.value =  data.data
+            console.log(data);
+            // users.value =  data.data
             errors.value = []
         }catch(error){
             users.value = []
