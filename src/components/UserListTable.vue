@@ -64,10 +64,16 @@
                 </div>
               </td>
               <td class="py-3 px-6 text-center">
-                <div class="flex item-center justify-center">
-                <button @click="handleActionClick(student.id_number,'view')">View</button>
-                <button @click="handleActionClick(student.id_number,'reset')">Reset</button>
-                <button @click="handleActionClick(student.id_number,'delete')">Delete</button>
+                <div class="flex item-center justify-center text-bold space-x-2">
+                <button @click="handleActionClick(student.id_number,'view')">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button @click="handleActionClick(student.id_number,'reset')">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button @click="handleActionClick(student.id_number,'delete')">
+                  <i class="bi bi-trash"></i>
+                </button>
                 </div>
               </td>
             </tr>

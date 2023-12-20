@@ -12,15 +12,15 @@
         </button>
         <div>Add Student</div>
       </div>
-      <div class="flex justify-center mt-5">
-        <div>
+      <div class="flex justify-center mt-5 ">
+        <div class="mr-2">
           <label class="block text-gray-700 text-sm font-bold pb-1" for="user-department"
             >Department
           </label>
           <select
             v-model="department"
             @change="handleClickDepartment"
-            class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3"
+            class="cursor-pointer border rounded-[7px] text-gray-700 w-full font-sans font-normal  px-3 mt-1 h-[43px]"
             id="user-department"
             :disabled="isEnable"
           >
@@ -32,7 +32,7 @@
           <div class="flex items-center">
             <span class="text-white invisible">.</span>
             <Transition name="fade" appear>
-              <span v-if="errors.department">{{ errors.department }}</span>
+              <span v-if="errors.department" class="text-rose-600">{{ errors.department }}</span>
             </Transition>
           </div>
         </div>
@@ -52,7 +52,7 @@
           <div class="flex items-center">
             <span class="text-white invisible">.</span>
             <transition name="fade" appear>
-              <span v-if="errors.sy">{{ errors.sy }}</span>
+              <span v-if="errors.sy" class="text-rose-600">{{ errors.sy }}</span>
             </transition>
           </div>
         </div>
@@ -82,7 +82,7 @@
         <div class="flex items-center">
           <span class="flex-grow min-w-[90px] invisible">.</span>
           <transition name="fade">
-            <span class="w-full pl-3" v-if="errors.idNumber">
+            <span class="w-full pl-3 text-rose-600" v-if="errors.idNumber">
               {{ errors.idNumber }}</span
             >
           </transition>

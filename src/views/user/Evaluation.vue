@@ -64,7 +64,7 @@
         type="button"
         id="back"
         value="back"
-        class="border border-red-100"
+        class="border border-red-100 md:ml-32"
       >
         Back
       </button>

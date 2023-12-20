@@ -6,7 +6,7 @@
     style="z-index: 10000"
   >
     <div
-      class="bg-white p-8 max-w-lg mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto"
+      class="bg-white p-8 max-w-lg mx-auto md:mt-24 mt-20 border-4 border-sky-950 rounded-xl md:max-h-full h-[80%] overflow-y-auto"
     >
       <div class="sticky top-0 left-0 z-10">
         <button id="close-btn" @click="closeModal">
