@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins" style="z-index: 10000"
+    class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins z-50"
   >
     <div
       class="relative bg-white md:max-w-3xl max-w-sm mx-auto md:mt-20 mt-10 border-4 border-sky-950 rounded-xl max-h-[40rem] overflow-y-auto"
@@ -165,11 +165,8 @@
             {{ isUpdate ? 'Update': 'Save' }} Class
           </button>
         </div>
-       
-       
        </div>
-
-
+       
         <table
           class="max-w-screen w-full border"
           v-for="(evaluateeClass, classesIndex) in classes"
@@ -227,6 +224,7 @@
         <Transition name="fade">
           <WarningModal
             v-if="showWarningModal"
+            :data="'Class'"
             @ClickDelete="proceedToDelete"
             @CancelDelete="cancelDelete"
           />

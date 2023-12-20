@@ -485,10 +485,10 @@ onBeforeMount(async () => {
 });
 onMounted(async () => {
   showDataAnimation.value = true;
-  if (!localStorage.getItem("allEvaluatees")) {
+  if (evaluateeStore.allEvaluatees.length == 0) {
     await evaluateeStore.fetchAllEvaluatees();
   }
-  if (evaluateeStore.errors.length == 0) {
+  if (evaluateeStore.allEvaluatees.length != 0) {
     evaluatees.value = evaluateeStore.filterEvaluatees(
       entity.value,
       selectDepartment.value,

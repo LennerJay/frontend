@@ -40,7 +40,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr v-else>
+                    <tr v-if="datas.length == 0 && !showLoadingAnimations">
                         <td :colspan="name != 'Year & Sections' ? '2':'3'">
                            <span class="font-bold text-5xl"> No Data</span> 
                         </td>

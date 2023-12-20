@@ -10,7 +10,7 @@ export const logout = () => api.post('api/auth/logout')
 
 export const getUser = () => api.get('/api/v1/users/user')
 
-export const getUserInfo = () => api.get('/api/v1/user-infos')
+export const getUserInfo = () => api.post('/api/v1/user-infos')
 
 export const test = () => api.get('/api/test')
 

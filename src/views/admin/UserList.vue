@@ -25,7 +25,7 @@
                 <input
                   type="text"
                   id="search"
-                  placeholder="ID Number or Student Name"
+                  placeholder="ID Number"
                   class="w-full p-2 border border-gray-300 rounded-md h-6"
                   v-model="searchBar"
                 />
@@ -63,7 +63,7 @@
                 <ul
                   class="font-medium flex flex-col md:p-0 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-gray-200 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
                 >
-                <li>
+                  <li>
                     <div class="selectTags pb-2 pl-2" v-if="isStudent">
                       <SelectYearSection
                         :sectionYear="sectionYear"
@@ -87,7 +87,7 @@
 
                   <li>
                     <div class="selectTags pl-2 pb-2">
-                      <button
+                      <button @click ="showAddUserModal= true"
                         class="bg-sky-950 hover:bg-blue-500 text-white hover:text-blue border hover:border-transparent rounded w-28"
                       >
                         Add {{ sort }}
@@ -105,7 +105,6 @@
                 id="selectPages"
                 class="rounded-2xl text-center"
               >
-                <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
@@ -115,9 +114,10 @@
           <!--End of Nav -->
           <!-- Table Area -->
           <UserListTable
-            :data="filteredUsers"
+            :datas="filteredUsers"
             :isNoData="isNoData"
             :isStudent="isStudent"
+            :showLoadingDataAnimation="showLoadingDataAnimation"
             @handleActionClick="handleActionClicked"
             class="md:h-full md:w-full"
           />
@@ -161,6 +161,32 @@
           </div>
         </div>
       </div>
+      <transition name="fade">
+        <UserInfoModal v-if="showUserInfoModal" 
+        :showData="showData"
+        :userInfo="userInfo" 
+        :showActionModal="showActionModal"
+        :showActionSpinner="showActionSpinner"
+        @close="showUserInfoModal=false"
+        @removeClick="handeRemoveUserInfo"
+        />
+      </transition>
+      <transition name="fade">
+        <DeleteResetModal
+          v-if="showDeleteResetModal"
+          :action="currentAction"
+          :userInfo="userInfo"
+          :idNumber="currentId"
+          :showData="showData"
+          @closeDeleteResetModal="closeDeleteResetModal"
+        />
+      </transition>
+      <transition name="fade">
+        <AddUserModal v-if="showAddUserModal"
+          :role="sort"
+          @close="showAddUserModal= false"
+        />
+      </transition>
       <FooterCard />
     </div>
   </div>
@@ -176,6 +202,9 @@ import UserListTable from "../../components/UserListTable.vue";
 import { useDrawerStore } from "../../stores/drawerStore";
 import { useNavarStore } from "../../stores/navarStore";
 import FooterCard from "../../components/FooterCard.vue";
+import UserInfoModal from "../../components/UserInfoModal.vue";
+import DeleteResetModal from "../../components/DeleteResetModal.vue";
+import AddUserModal from "../../components/AddUserModal.vue";
 
 
 const userStore = useUserStore();
@@ -187,9 +216,20 @@ const selectDepartment = ref("All");
 const sort = ref("student");
 const sectionYear = ref("All");
 const isNoData = ref(false);
-const isStudent = ref(false);
-const pageSize = ref("10");
+const isStudent = ref(true);
+const pageSize = ref("20");
 const currentPage = ref(1);
+const showLoadingDataAnimation = ref(false);
+const showUserInfoModal = ref(false);
+const showDeleteResetModal = ref(false);
+const userInfo = ref([]);
+const currentId = ref([]);
+const currentAction = ref(0);
+const showData = ref(false);
+const showActionSpinner= ref(false);
+const showActionModal= ref(false);
+const showAddUserModal = ref(false);
+
 
 const paginatedData = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize.value;
@@ -219,13 +259,16 @@ const gotoPage = (pageNumber) => {
 };
 
 const filteredUsers = computed(() => {
-  if (!searchBar.value) {
+  const searchTerm = searchBar.value?.trim().toLowerCase();
+
+  if (!searchTerm) {
     return paginatedData.value;
   }
-  return paginatedData.value.filter(
-    (user) =>
-      user.id_number.toString().includes(searchBar.value)
-  );
+
+  return paginatedData.value.filter((user) => {
+    const idNumber = user.id_number.toString().toLowerCase();
+    return idNumber.includes(searchTerm);
+  });
 });
 
 const handleSelectSY = (val) => {
@@ -261,43 +304,83 @@ const handleSelectedDepartment = (val) => {
   );
 };
 
-const handleActionClicked = (id, action) => {
-  console.log(id, action);
+const closeDeleteResetModal = () => {
+  users.value = userStore.users;
+  showDeleteResetModal.value = false;
 };
 
+const handleActionClicked = async (id, action) => {
+  currentId.value = id;
+  showData.value = false;
+  userInfo.value = []
+  currentAction.value = action;
+ 
+  if (action == "view") {
+    showDeleteResetModal.value = false;
+    showUserInfoModal.value = true;
+  } else {
+    showUserInfoModal.value = false;
+    showDeleteResetModal.value = true;
+  }
+
+  if (userStore.userInfo.id_number != id) {
+    await userStore.showUserDetails(id);
+  }
+  userInfo.value = userStore.userInfo;
+  showData.value = true;
+};
+
+const handeRemoveUserInfo= async(id_number)=>{
+  showActionSpinner.value = true
+  await userStore.removeUserInfo(id_number)
+  showActionSpinner.value = false
+  if(userStore.isSuccess){
+    showActionModal.value = true
+    setTimeout(()=>{
+      showActionModal.value = false
+      showUserInfoModal.value=false
+    },2000)
+  }else{
+    alert('Something went wrong')
+  }
+}
+
 onMounted(async () => {
-  await userStore.fetchAllUsers();
-  // if (userStore.errors.length == 0) {
-  //   users.value = userStore.users.filter((user) => user.role.name == "student");
-  //   isNoData.value = false;
-  //   isStudent.value = true;
-  // }
+  showLoadingDataAnimation.value = true;
+  if (userStore.users.length == 0) {
+    await userStore.fetchAllUsers();
+  }
+  showLoadingDataAnimation.value = false;
+  users.value = userStore.users;
+  if (users.value.length > 0) {
+    isNoData.value = false;
+  } else {
+    isNoData.value = true;
+  }
 });
 </script>
 
 <style scoped>
+.header h1,
+.header p {
+  text-align: center;
+}
 
-    .header h1,
-    .header p {
-      text-align: center;
-    }
+.header h1 {
+  font-size: 22px;
+  font-family: Verdana;
+  font-weight: bold;
+}
 
-    .header h1 {
-      font-size: 22px;
-      font-family: Verdana;
-      font-weight: bold;
-    }
+.header p {
+  font-size: 14px;
+  font-family: Helvetica, Georgia, "Times New Roman";
+}
 
-    .header p {
-      font-size: 14px;
-      font-family: Helvetica, Georgia, "Times New Roman";
-    }
-
-    .active {
-      color: red;
-    }
-    .visible {
-      display: block !important;
-    }
-
+.active {
+  color: red;
+}
+.visible {
+  display: block !important;
+}
 </style>

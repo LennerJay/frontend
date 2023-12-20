@@ -1,6 +1,6 @@
 <template>
   <aside class="w-0 font-Times New Roman">
-    <div class="sidebar min-h-screen fixed top-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center z-50 bg-gray-100" :class="{ 'left-0': !drawer.drawerState, 'left-[-250px]': drawer.drawerState }">
+    <div class="sidebar min-h-screen fixed top-0 lg:left-0 p-2 w-[250px] overflow-y-auto text-center z-40 bg-gray-100" :class="{ 'left-0': !drawer.drawerState, 'left-[-250px]': drawer.drawerState }">
       <div class="text-white-100 text-x1">
         <div class="p-2 mt-1 flex items-center justify-between">
           <img src="../assets/cpc_logo.png" height="90" width="90" class="animate-bounce hover:animate-spin"/>
@@ -147,8 +147,4 @@ onMounted(() => {
     /* .router-name {
       @apply text-[15px] ml-4 text-gray-200 hover:text-white;
     } */
-    aside {
-      z-index: 1000;
-    }
-
 </style>

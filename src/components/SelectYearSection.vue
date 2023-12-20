@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <label for="section-year md:pr-2">Section & Year: </label>
+    <label for="section-year" class="md:pr-2">Section & Year: </label>
     <select v-model="sY" name="section-year" id="section-year" @change="handleClick" class="focus:outline-none 
     rounded-2xl text-center overflow-y-auto">
       <option value="All">All</option>

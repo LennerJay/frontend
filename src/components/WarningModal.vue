@@ -23,7 +23,7 @@
           </svg>
           <span class="sr-only">Info</span>
         </div>
-        <div class="mt-2 mb-4 text-sm">Do you want to Delete this Class?</div>
+        <div class="mt-2 mb-4 text-sm">Do you want to Delete this {{data}}?</div>
         <div class="flex justify-end">
           <button
             @click="$emit('CancelDelete')"
@@ -58,7 +58,7 @@ const scrollToTarget = (element) => {
   });
 };
 defineEmits(["CancelDelete", "ClickDelete"]);
-
+defineProps(['data'])
 onMounted(() => {
   scrollToTarget(targetWarning.value);
 });

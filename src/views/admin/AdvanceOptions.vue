@@ -169,9 +169,7 @@ const changeOption = async (value) => {
   localStorage.setItem("currentOption", value);
   await fetchOptions();
   showLoadingAnimations.value = false;
-  if (datas.value.length == 0) {
-    isNoData.value = true;
-  }
+
 };
 
 const fetchOptions = async () => {
@@ -203,6 +201,9 @@ const fetchOptions = async () => {
       await subjectStore.fetchAllSubjects();
     }
     datas.value = subjectStore.subjects;
+  }
+  if (datas.value.length == 0) {
+    isNoData.value = true;
   }
 };
 

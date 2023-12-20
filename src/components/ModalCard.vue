@@ -2,7 +2,8 @@
   <!-- Modal -->
   <div
     @keydown.esc="handleEscKey"
-    class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-Times New Roman" style="z-index: 10000"
+    class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-Times New Roman"
+    style="z-index: 10000"
   >
     <div
       class="bg-white p-8 max-w-lg mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto"
@@ -143,7 +144,6 @@ const closeModal = () => {
 </script>
 
 <style scoped>
-
 #close-btn {
   border: none;
   display: block;

@@ -2,6 +2,7 @@
   <div class="w-full flex justify-center font-sans h-screen mt-6">
     <div class="w-full lg:w-5/6">
       <div class="bg-white shadow-md rounded my-6">
+      
         <table class="min-w-max w-full table-auto">
           <thead>
             <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
@@ -17,7 +18,7 @@
               </td>
             </tr>
           </tbody>
-          <tbody v-if="isNoData" class="text-gray-600 text-sm font-light">
+          <tbody v-if="isNoData || (datas.length == 0 && !showLoadingDataAnimation )" class="text-gray-600 text-sm font-light">
             <tr class="border-b border-gray-200 hover:bg-gray-100">
               <td class="py-3 px-6 text-center font-bold text-2xl" colspan="3">
                 <span class="font-medium">No data Found</span>
