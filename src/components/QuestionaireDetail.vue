@@ -3,7 +3,7 @@
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins" style="z-index: 10000"
   >
     <div
-      class="relative bg-white pl-5 pr-5 md:max-w-lg max-w-sm mx-auto md:mt-36 mt-12 border-4 border-sky-950 rounded-xl max-h-[45rem] overflow-y-auto"
+      class="relative bg-white pl-5 pr-5 md:max-w-lg max-w-sm mx-auto  md:mt-12 border-4 border-sky-950 rounded-xl max-h-[45rem] overflow-y-auto"
     >
 
       <transition name="slide-fade">

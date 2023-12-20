@@ -36,7 +36,7 @@
               <div class="flex items-center">
                 <span class="text-white" :class="{ invisible: isVisible }">.</span>
                 <Transition name="fade" appear>
-                  <span v-if="errors.name">{{ errors.name }}</span>
+                  <span v-if="errors.name" class="text-rose-600">{{ errors.name }}</span>
                 </Transition>
               </div>
             </div>

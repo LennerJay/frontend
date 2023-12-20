@@ -19,7 +19,7 @@ export const useSectionYearStore = defineStore('sectionYearStore',()=>{
                   isResponseSuccess = true;
             }else{
                 isSuccess.value = false;
-                isResponseSuccess = false;
+                isResponseSuccess.value = false;
             }
             errors.value = []
         }catch(e){
