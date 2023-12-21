@@ -59,18 +59,63 @@
     </div>
     <div v-else-if="showLoadingAnimations" class="w-16 h-16 border-8 border-dashed rounded-full animate-spin border-blue-600"></div>
     <div v-else class="questions min-h-[44rem] card">
+      <div class="md:block hidden">
+          <button
+          @click="handleBackButton"
+          type="button"
+          id="back"
+          value="back"
+          class="border border-red-100"
+        >
+          Back
+        </button>
+      </div>
       <button
         @click="handleBackButton"
         type="button"
-        id="back"
+        id="submit-btn"
         value="back"
-        class="border border-red-100 md:ml-32"
+        class="border border-red-100 md:hidden block mt-2"
       >
         Back
       </button>
       <div>
-        <h1 class="font-bold text-lg">Title: {{ questionaire.title }}</h1>
-        <p>description: {{ questionaire.description }}</p>
+        <div class="text-left md:mt-0 mt-4 w-full">
+          <div class="md:flex">
+            <!--this div center -->
+            <div class="text-center md:w-80 mt-2 md:ml-auto">
+              <h1 class="font-semibold text-[20px] text-white bg-sky-900">Title: {{ questionaire.title }}</h1>
+              <p class="font-medium border border-white">Description: {{ questionaire.description }}
+              </p>
+            </div>
+            <!--this div right -->
+            <div class="md:text-center text-center md:w-96 mt-2 w-full mx-auto">
+              <h2 class="font-md text-lg  md:font-normal font-semibold text-white bg-sky-900">Legend</h2>
+              <div class="flex md:flex-row space-x-3 text-gray-900 text-[16px] border border-white w-full">
+                <table class="border border-white w-full text-center">
+                  <thead class="border-b border-white">
+                    <tr>
+                      <th class="border-r border-white">1</th>
+                      <th class="border-r border-white">2</th>
+                      <th class="border-r border-white">3</th>
+                      <th class="border-r border-white">4</th>
+                      <th class="border-r border-white">5</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="border-r border-white">Low</td>
+                      <td class="border-r border-white">Moderate</td>
+                      <td class="border-r border-white">Normal</td>
+                      <td class="border-r border-white">High</td>
+                      <td class="border-r border-white">Very High</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>      
+        </div>
         <QuestionFormTable
           v-for="(criteria, index) in questionaire.criterias"
           :criteria="criteria"

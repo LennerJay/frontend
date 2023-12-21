@@ -20,7 +20,7 @@
           <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2">
             Details
           </h2>
-          <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2">
+          <div class="grid gap-2 lg:grid-cols-2 sm-grid-cols-2 border-y-2 text-sm" id="detailed">
             <span
               ><i class="bi bi-person-fill mr-1"></i>Name: {{ evaluateeInfo.name }}</span
             >
@@ -28,7 +28,7 @@
               ><i class="bi bi-calendar-check-fill mr-1"></i>Shift :
               {{ evaluateeInfo.job_type == 0 ? "Part time" : "Full Time" }}</span
             >
-            <span>Personnel Type: {{ evaluateeInfo.entity_name }}</span>
+            <span>Personnel Type: <span class="capitalize">{{ evaluateeInfo.entity_name }}</span></span>
             <span v-if="isInstructor"
               ><i class="bi bi-bank2 mr-1"></i>Department :
               <span v-for="department in evaluateeInfo.instructorsDepartments">{{
@@ -41,13 +41,13 @@
         <!-- Modal Body -->
         <div v-if="isInstructor" class="mb-4">
           <table
-            class="max-w-screen w-full border"
+            class="max-w-screen w-full border my-4"
             v-for="(evaluateeClass, classesIndex) in evaluateeClasses"
             :key="classesIndex"
           >
-            <caption>
+            <caption class="bg-sky-900 text-white text-[16px] font-bold font-poppins">
               {{
-                evaluateeClass.department
+                evaluateeClass.department.toUpperCase()
               }}
             </caption>
             <thead>
@@ -63,18 +63,18 @@
               v-for="(klasses, classIndex) in evaluateeClass.classes"
               :key="classIndex"
             >
-              <tr v-for="(klass, klassKey) in klasses">
-                <td v-if="klassKey === 0" :rowspan="klasses.length">
+              <tr v-for="(klass, klassKey) in klasses" class="border border-b mx-auto">
+                <td v-if="klassKey === 0" :rowspan="klasses.length" class="border border-r capitalize">
                   {{ klass.subject }}
                 </td>
-                <td>{{ klass.section_year }}</td>
-                <td>{{ klass.day }}</td>
-                <td>{{ klass.time }}</td>
+                <td class="border border-r">{{ klass.section_year }}</td>
+                <td class="border border-r">{{ klass.day }}</td>
+                <td class="border border-r">{{ klass.time }}</td>
               </tr>
             </tbody>
           </table>
 
-          <div class="flex justify-end mt-5">
+          <div class="flex justify-end mt-5" v-if="isAdmin">
             <button
               @click="closeModal"
               type="button"
@@ -121,9 +121,12 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useEvaluateeStore } from "../stores/evaluatee";
+import { useAuthStore } from "../stores/auth";
 
+const authStore = useAuthStore();
+const isAdmin = ref(false)
 const props = defineProps([
   "isInstructor",
   "evaluateeInfo",
@@ -141,9 +144,18 @@ const handleEscKey = (e) => {
 const closeModal = () => {
   emits("close-modal");
 };
+
+onMounted(() => {
+  if(authStore.isAdminStaff){
+    isAdmin.value = true;
+  }
+});
 </script>
 
 <style scoped>
+#detailed {
+  font-weight: 550;
+}
 #close-btn {
   border: none;
   display: block;

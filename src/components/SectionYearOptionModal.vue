@@ -9,7 +9,7 @@
           <div class="absolute w-11/12 top-3 left-5 z-20" v-if="showResponseError" >
           <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-3 rounded relative" role="alert">
             <strong class="font-bold mr-5">Warning</strong>
-            <span class="block sm:inline">Year & Section already exist</span>
+            <span class="block sm:inline text-rose-600">Year & Section already exist</span>
             <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="showResponseError = false" >
               <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
             </span>
@@ -45,29 +45,29 @@
           <div class="flex items-center ">
             <span class="flex-grow min-w-[90px] invisible">.</span>
             <transition-group name="fade">
-              <span class="w-full pl-3" v-if="isError"> Please enter a year and section</span>
-              <span class="w-full pl-3" v-if="isInvalid"> Invalid Input </span>
+              <span class="w-full pl-3 text-rose-600" v-if="isError"> Please enter a year and section</span>
+              <span class="w-full pl-3 text-rose-600" v-if="isInvalid"> Invalid Input </span>
             </transition-group>
           </div>
       </div>
       <div v-else class="flex flex-col">
-       <h1>Year : {{ data.year }}</h1>
-        <table>
-          <thead>
-              <th>Sections</th>
+       <h1 class="font-semibold">Year : {{ data.year }}</h1>
+        <table class="text-center mt-2">
+          <thead class="border border-gray-400">
+              <th class="border-r border-gray-400">Sections</th>
               <th>Actions</th>
           </thead>
-          <tbody>
-            <tr v-for="section in data.sections">
-                <td>{{ section }}</td>
-                <td><button @click="deleteSection(section)">Delete</button></td>
+          <tbody class="border border-gray-400">
+            <tr v-for="section in data.sections" class="border-b border-gray-400">
+                <td class="border-r border-gray-400">{{ section }}</td>
+                <td><button @click="deleteSection(section)"><i class="bi bi-trash text-gray-500"></i></button></td>
             </tr>
           </tbody>
         </table>
       </div>
         <div class="flex justify-end space-x-4 mt-4 items-center">
           <Transition name="bounce" appear>
-            <span v-show="noChangeError" class="font-bold mr-5">Nothing's changed</span>
+            <span v-show="noChangeError" class="font-bold mr-5 text-rose-600">Nothing's changed</span>
           </Transition>
 
           <button
