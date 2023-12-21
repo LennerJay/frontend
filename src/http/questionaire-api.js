@@ -18,3 +18,7 @@ export const updateStatusQuestionaire = (questionaireId)=> api.patch(resource +`
 export const deleteQuestionaire = (questionaireId)=> api.delete(resource +`/${questionaireId}`)
 
 export const AddQuestionaire = (datas) =>api.post(resource,datas)
+
+export const getCriteriasWithQuestions = (id) => api.get(resource + `/${id}/with-criterias`)
+
+export const removeCriteria = (id,data)=>api.post(resource + `/${id}/remove-criterias`,data)

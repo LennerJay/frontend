@@ -24,8 +24,9 @@ api.interceptors.response.use((response) => {
     return response;
 }, (error) => {
     if(error.response.status == 401){
-        localStorage.removeItem('jwt_token')
+        localStorage.clear();
         window.location.href = '/login';
+
     }
     // console.log(error)
     return Promise.reject(error);

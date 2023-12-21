@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import {AddQuestionaire, deleteQuestionaire,updateStatusQuestionaire,allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents ,updateQuestionaire} from "../http/questionaire-api";
+import {removeCriteria,AddQuestionaire, deleteQuestionaire,updateStatusQuestionaire,allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents ,updateQuestionaire, getCriteriasWithQuestions} from "../http/questionaire-api";
 import { csrfCookie } from "../http/auth-api"
 
 import { ref, watch } from "vue";
@@ -12,6 +12,7 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
     const maxRespondents= ref([]);
     const isSuccess = ref(false);
     const isUpdateSuccess = ref(false);
+    const criteriasWithQuestions = ref([]);
 
     const fetchQuestionaire = async ()=>{
         try{
@@ -206,7 +207,40 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         return q
     }
 
+    const fetchQuestionaireWithCriterias = async(id)=>{
+        try {
+            const {data} = await getCriteriasWithQuestions(id)
+            if(data.success){
+                isSuccess.value = true
+                criteriasWithQuestions.value = data.data.criterias
+            }
+            errors.value = []
+        } catch (error) {
+            errors.value = error
+        }
+    }
+
+    const detachCriteria = async(qId,id)=>{
+        await csrfCookie()
+        try {
+            const {data} = await removeCriteria(qId,{criteria_id:id})
+            console.log(data)
+            if(data.success){
+                isSuccess.value = true
+                criteriasWithQuestions.value = criteriasWithQuestions.value.filter(criteria => criteria.id !=id)
+            }else{
+                isSuccess.value = true
+            }
+            errors.value = []
+        } catch (error) {
+            errors.value = error
+        }
+    }
+
     return {
+        detachCriteria,
+        criteriasWithQuestions,
+        fetchQuestionaireWithCriterias,
         groupbByEntity,
         questionaires,
         fetchQuestionaire,

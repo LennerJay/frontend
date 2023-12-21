@@ -16,23 +16,35 @@
         </div>
       </div>
       <!-- End of navbar-container -->
-      <div class="mt-5 flex justify-end">
-        <button @click="showAddQuestionaire = true" id="add-btn">Add Questinaire</button>
+      <div class="mt-5 flex justify-end gap-7">
+        <button @click="showDisplay('questionaires')" id="add-btn">
+          Show Questinaire
+        </button>
+        <button @click="showDisplay('criterias')" id="add-btn">Show Criterias</button>
       </div>
-      <div>
-        <SelectEntity
-          :entities="entities"
-          :entity="entity"
-          @handleSelect="handleSelectEntity"
+      <transition-group name="fade">
+        <div key="selectTag" class="flex gap-6 items-center" v-if="showQuestionaires">
+          <SelectEntity
+            :entities="entities"
+            :entity="entity"
+            @handleSelect="handleSelectEntity"
+          />
+          <button @click="showAddQuestionaire = true" id="add-btn">
+            Add Questinaire
+          </button>
+        </div>
+        <QuestionaireTable
+          key="questionaire"
+          v-if="showQuestionaires"
+          :isNoData="isNoData"
+          :datas="questionaires"
+          :showLoadingDataAnimation="showLoadingDataAnimation"
+          @handleAction="selectQuestionaire"
+          class="w-full overflow-x-scroll"
         />
-      </div>
-      <QuestionaireTable
-        :isNoData="isNoData"
-        :datas="questionaires"
-        :showLoadingDataAnimation="showLoadingDataAnimation"
-        @handleAction="selectQuestionaire"
-        class="w-full overflow-x-scroll"
-      />
+        <CriteriaCards v-if="showCriterias" />
+      </transition-group>
+
       <transition name="fade">
         <QuestionaireDetail
           v-if="showDetails"
@@ -61,6 +73,11 @@
           v-if="showQuestionsModal"
           :questionaireInfo="selectedQuestionaire"
           :showData="showQuestionsData"
+          :criterias="criterias"
+          :noData="noData"
+          :showActionSpinner="showActionSpinner"
+          :showActionModal="showActionModal"
+          @removeCriteria="removeCriteria"
           @close="closeQuestionsModal"
         />
       </transition>
@@ -74,7 +91,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useEntityStore } from "../../stores/entity";
-import { useDrawerStore } from '../../stores/drawerStore';
+import { useDrawerStore } from "../../stores/drawerStore";
 import { useQuestionaireStore } from "../../stores/questionaire";
 import QuestionaireTable from "../../components/QuestionaireTable.vue";
 import QuestionaireDetail from "../../components/QuestionaireDetail.vue";
@@ -83,26 +100,71 @@ import FooterCard from "../../components/FooterCard.vue";
 import AddQuestionaireModal from "../../components/AddQuestionaireModal.vue";
 import DeleteQuestionaireModalVue from "../../components/DeleteQuestionaireModal.vue";
 import QuestionsModal from "../../components/QuestionsModal.vue";
+import CriteriaCards from "../../components/CriteriaCards.vue";
 
-const showQuestionsData= ref(false)
-const showQuestionsModal = ref(false)
 const drawer = useDrawerStore();
-const showDeleteModal = ref(false);
 const questionaireStore = useQuestionaireStore();
 const entityStore = useEntityStore();
+const showActionSpinner=ref(false)
+const showActionModal=ref(false)
+const showQuestionsData = ref(false);
+const showQuestionsModal = ref(false);
+const showDeleteModal = ref(false);
 const isNoData = ref(false);
 const showLoadingDataAnimation = ref(false);
 const showAddQuestionaire = ref(false);
 const questionaires = ref([]);
 const showDetails = ref(false);
 const selectedQuestionaire = ref();
+const criterias = ref([]);
 const entities = ref([]);
 const entity = ref("All");
 const qIndex = ref(false); // questionaire Index to know which is being used
+const noData = ref(false);
+const showQuestionaires = ref(false);
+const showCriterias = ref(false);
 
-const closeQuestionsModal = ()=>{
-  showQuestionsModal.value = false
+
+const removeCriteria = async(id)=>{
+  showActionSpinner.value = true
+  await questionaireStore.detachCriteria(selectedQuestionaire.value.id,id)
+  showActionSpinner.value = false
+  if(questionaireStore.isSuccess){
+    showActionModal.value = true
+    setTimeout(()=>{
+      showActionModal.value = false
+      showQuestionsModal.value = false
+    },1500)
+  }else{
+    alert("Something went wrong")
+  }
 }
+
+const showDisplay = async (val) => {
+  if (val == "questionaires") {
+    showQuestionaires.value = true;
+    showCriterias.value = false;
+    if (questionaireStore.questionaires == 0) {
+      showLoadingDataAnimation.value = true;
+      await questionaireStore.fetchQuestionaire();
+      showLoadingDataAnimation.value = false;
+      if (!questionaireStore.isSuccess) {
+        isNoData.value = true;
+      } else {
+        questionaires.value = questionaireStore.groupbByEntity();
+        isNoData.value = false;
+      }
+    }
+  } else {
+    showQuestionaires.value = false;
+    showCriterias.value = true;
+  }
+  localStorage.setItem("currentShow", val);
+};
+
+const closeQuestionsModal = () => {
+  showQuestionsModal.value = false;
+};
 
 const closeQuestionaireDetail = () => {
   questionaires.value = questionaireStore.filterQuestionaires(entity.value);
@@ -124,7 +186,7 @@ const handleSelectEntity = (val) => {
   questionaires.value = questionaireStore.filterQuestionaires(val);
 };
 
-const selectQuestionaire = (id, action,index) => {
+const selectQuestionaire = async (id, action, index) => {
   qIndex.value = index;
   selectedQuestionaire.value = questionaireStore.questionaires.find(
     (questionaire) => questionaire.id === id
@@ -134,45 +196,72 @@ const selectQuestionaire = (id, action,index) => {
   }
   if (action == "delete") {
     showDeleteModal.value = true;
+    z;
   }
-  if(action == "questions"){
+  if (action == "questions") {
+    showQuestionsData.value = false;
+    console.log(id);
     showQuestionsModal.value = true;
+    await questionaireStore.fetchQuestionaireWithCriterias(id);
+    if (questionaireStore.isSuccess) {
+      criterias.value = questionaireStore.criteriasWithQuestions;
+      if (criterias.value) {
+        noData.value = false;
+        showQuestionsData.value = true;
+      } else {
+        showQuestionsData.value = false;
+        noData.value = true;
+      }
+    } else {
+      showQuestionsData.value = false;
+    }
   }
-
 };
 
 onMounted(async () => {
-  showLoadingDataAnimation.value = true;
   if (!localStorage.getItem("entities")) {
     await entityStore.fetchAllEntity();
   }
   entities.value = entityStore.entities;
-  await questionaireStore.fetchQuestionaire();
-  showLoadingDataAnimation.value = false;
-  if (!questionaireStore.isSuccess) {
-    isNoData.value = true;
-  } else {
-    questionaires.value = questionaireStore.groupbByEntity();
-    isNoData.value = false;
-    console.log(questionaires.value)
+  if (localStorage.getItem("currentShow")) {
+    showDisplay(localStorage.getItem("currentShow"))
   }
-  // const keySelector = (value) => value.entity_name
-  // const datas = questionaireStore.questionaires.reduce(function (accumulator, current) {
-  //   const key = keySelector(current);
-  //   (accumulator[key] = accumulator[key] || []).push(current);
-  //   return accumulator;
-  // }, {});
-  // for(const val in datas){
-  //   questionaires.value .push({
-  //       entity: val,
-  //       datas: datas[val]
-  //     })
-  // }
-  // console.log(questionaires.value)
+  showLoadingDataAnimation.value = true;
+    await questionaireStore.fetchQuestionaire();
+    showLoadingDataAnimation.value = false;
+    if (!questionaireStore.isSuccess) {
+      isNoData.value = true;
+    } else {
+      questionaires.value = questionaireStore.groupbByEntity();
+      isNoData.value = false;
+    }
 });
 </script>
 
 <style scoped>
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-left-enter {
+  transform: translateX(100%);
+}
+
+.slide-left-leave-to {
+  transform: translateX(-100%);
+}
+
+.slide-right-enter {
+  transform: translateX(-100%);
+}
+
+.slide-right-leave-to {
+  transform: translateX(100%);
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;
