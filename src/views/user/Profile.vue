@@ -22,15 +22,15 @@
             <div
               class="card-container mt-8 grid gap-4 lg:grid-cols-2 sm-grid-cols-1 p-5 m-10"
             >
-              <div
-                class="profile-pic border-2 border-sky-950 w-[300px] rounded-2xl shadow-inner shadow-sky-950"
-              >
-                <img
-                  class="object-cover cursor-pointer ml-[50px] mt-4 flex flex-col border-4 mb-2 border-sky-900 dark:border-sky-700 rounded-full shadow-[5px_5px_0_0_rgba(0,0,0,1)] shadow-sky-800/100 dark:shadow-sky-900/100 bg-sky-50 dark:bg-sky-900 text-sky-800 dark:text-sky-800 h-[200px] w-[200px]"
-                  src="../../assets/pic2.jpg"
-                  alt="Student Profile"
-                />
+            <div class="flex items-center justify-center">
+              <div class="profile-pic border-2 border-sky-950 w-[300px] rounded-full card shadow-inner shadow-sky-950">
+                  <img
+                      class="object-cover cursor-pointer mt-4 flex flex-col mx-auto border-4 mb-2 border-sky-900 dark:border-sky-700 rounded-full shadow-[5px_5px_0_0_rgba(0,0,0,1)] shadow-sky-800/100 dark:shadow-sky-900/100 bg-sky-50 dark:bg-sky-900 text-sky-800 dark:text-sky-800 h-[200px] w-[200px]"
+                      src="../../assets/pic2.jpg"
+                      alt="Student Profile"
+                  />
               </div>
+          </div>
               <div class="second-col">
                 <h1
                   class="text-2xl text-sky-950 font-bold mt-2 border-2 border-sky-950 rounded-lg bg-white shadow-inner shadow-sky-950"

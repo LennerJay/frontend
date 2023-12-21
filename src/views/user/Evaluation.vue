@@ -83,19 +83,35 @@
         <div class="text-left md:mt-0 mt-4 w-full">
           <div class="md:flex">
             <!--this div center -->
-            <div class="text-center md:w-80 mt-2 md:ml-auto border border-white">
-              <h1 class="font-bold text-lg">Title: {{ questionaire.title }}</h1>
-              <p>Description: {{ questionaire.description }}</p>
+            <div class="text-center md:w-80 mt-2 md:ml-auto">
+              <h1 class="font-semibold text-[20px] text-white bg-sky-900">Title: {{ questionaire.title }}</h1>
+              <p class="font-medium border border-white">Description: {{ questionaire.description }}
+              </p>
             </div>
             <!--this div right -->
-            <div class="md:text-center text-center md:w-96 mt-2 w-full border border-white mx-auto">
-              <h2 class="font-md text-lg  md:font-normal font-semibold">Legend</h2>
-              <div class="flex md:flex-row space-x-3 text-gray-800">
-                <p>1: Low</p>
-                <p>2: Moderate</p>
-                <p>3: Normal</p>
-                <p>4: High</p>
-                <p>5: Very High</p>
+            <div class="md:text-center text-center md:w-96 mt-2 w-full mx-auto">
+              <h2 class="font-md text-lg  md:font-normal font-semibold text-white bg-sky-900">Legend</h2>
+              <div class="flex md:flex-row space-x-3 text-gray-900 text-[16px] border border-white w-full">
+                <table class="border border-white w-full text-center">
+                  <thead class="border-b border-white">
+                    <tr>
+                      <th class="border-r border-white">1</th>
+                      <th class="border-r border-white">2</th>
+                      <th class="border-r border-white">3</th>
+                      <th class="border-r border-white">4</th>
+                      <th class="border-r border-white">5</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="border-r border-white">Low</td>
+                      <td class="border-r border-white">Moderate</td>
+                      <td class="border-r border-white">Normal</td>
+                      <td class="border-r border-white">High</td>
+                      <td class="border-r border-white">Very High</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>      
