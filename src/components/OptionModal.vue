@@ -54,7 +54,7 @@
         <div class="flex items-center ">
           <span class="flex-grow min-w-[90px] invisible">.</span>
           <transition name="fade">
-            <span class="w-full pl-3" v-if="isError"> Please enter a name</span>
+            <span class="w-full pl-3 text-rose-600" v-if="isError"> Please enter a name</span>
           </transition>
         </div>
       </div>
@@ -64,7 +64,7 @@
       <!-- Modal footer -->
       <div class="flex justify-end space-x-4 mt-4 items-center">
         <Transition name="bounce" appear>
-          <span v-show="showError" class="font-bold mr-5">Nothing's changed</span>
+          <span v-show="showError" class="font-bold mr-5 text-rose-600">Nothing's changed</span>
         </Transition>
 
         <button

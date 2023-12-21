@@ -5,37 +5,59 @@
           <i class="bi bi-x-lg"></i>
             <span></span>
         </button>
-        <div class="m-4"> {{evaluateeName }}</div>
-        <div v-if="showDetail">
-          <div>
-            <div>Title:{{ questionaire.title }}</div>
-            <div>Description: {{ questionaire.description }}</div>
-            <div>Semester: {{ questionaire.semester }}</div>
-            <div>School Year:{{ questionaire.school_year }}</div>
+        <div class="bg-sky-900 text-white text-lg w-full"> {{evaluateeName }}</div>
+          <div v-if="showDetail">
+            <div class="flex flex-col w-full border border-gray-400 mb-4">
+              <div class="grid gap-2 grid-cols-2 w-full border-b border-gray-400">
+                <div class="text-left border-r border-gray-400">
+                  <div class="label">
+                    <p>Title: <br class="md:hidden block"> {{ questionaire.title }}</p>
+                  </div>
+                </div>
+                <div class="text-left">
+                  <div class="label">
+                    <p>Description: <br class="md:hidden block"> {{ questionaire.description }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="grid gap-2 grid-cols-2 w-full border-gray-400">
+                <div class="text-left border-r border-gray-400">
+                  <div class="label ">
+                    <p>Semester: <br class="md:hidden block"> {{ questionaire.semester }}</p>
+                  </div>
+                </div>
+                <div class="text-left">
+                  <div class="label">
+                    <p>School Year: <br class="md:hidden block"> {{ questionaire.school_year }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <table v-for="summary in ratingSummary" class="border border-gray-400 my-4">
+                <caption class="bg-sky-900 text-white text-center font-medium capitalize text-md">
+                  {{summary.criteria}}
+                </caption>
+                <thead class="border-b border-gray-400">
+                  <tr>
+                      <th class="border-r border-gray-400">Question</th>
+                      <th>Rated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="infoSummary in summary.summary" class="border-b border-gray-400">
+                    <td class="text-left border-r border-gray-400">
+                      {{ infoSummary.question }}
+                    </td>
+                    <td>{{ infoSummary.rating }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div>
-            <table v-for="summary in ratingSummary">
-              <caption>{{summary.criteria}}</caption>
-              <thead>
-                <tr>
-                    <th>Question</th>
-                    <th>Rated</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="infoSummary in summary.summary">
-                  <td>
-                    {{ infoSummary.question }}
-                  </td>
-                  <td>{{ infoSummary.rating }}</td>
-                </tr>
-              </tbody>
-            </table>
+          <div v-else-if="props.noData">
+            No data Found
           </div>
-        </div>
-        <div v-else-if="props.noData">
-          No data Found
-        </div>
         <div v-else class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex">
           <div class="loader">
             <svg viewBox="0 0 80 80">

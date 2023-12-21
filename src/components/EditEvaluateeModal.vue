@@ -13,7 +13,7 @@
       <div class="flex items-center mb-4">
         <span :class="{ invisible: isVisible }">.</span>
         <Transition name="bounce" appear>
-          <span v-show="showError">Nothing's changed</span>
+          <span v-show="showError" class="text-rose-600">Nothing's changed</span>
         </Transition>
       </div>
       <div class="mb-4 mt-4 flex flex-col">
@@ -39,7 +39,7 @@
             <div class="flex items-center">
               <span class="text-white" :class="{ invisible: isVisible }">.</span>
               <Transition name="fade" appear>
-                <span v-if="errors.name">{{ errors.name }}</span>
+                <span v-if="errors.name" class="text-rose-600">{{ errors.name }}</span>
               </Transition>
             </div>
 

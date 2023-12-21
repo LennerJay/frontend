@@ -56,7 +56,7 @@
                 >.</span
               >
               <Transition name="fade" appear>
-                <span v-if="errors.department">{{ errors.department }}</span>
+                <span v-if="errors.department" class="text-rose-600">{{ errors.department }}</span>
               </Transition>
             </div>
           </div>
@@ -81,7 +81,7 @@
               <div class="flex items-center">
                 <span class="text-white" :class="{ invisible: isSubjectVisible }">.</span>
                 <Transition name="fade" appear>
-                  <span v-if="errors.subject">{{ errors.subject }}</span>
+                  <span v-if="errors.subject" class="text-rose-600">{{ errors.subject }}</span>
                 </Transition>
               </div>
             </div>
@@ -102,7 +102,7 @@
               <div class="flex items-center">
                 <span class="text-white" :class="{ invisible: isSYVisible }">.</span>
                 <Transition name="fade" appear>
-                  <span v-if="errors.sy">{{ errors.sy }}</span>
+                  <span v-if="errors.sy" class="text-rose-600">{{ errors.sy }}</span>
                 </Transition>
               </div>
             </div>
@@ -126,7 +126,7 @@
             <div class="flex items-center">
               <span class="text-white" :class="{ invisible: isTimeVisible }">.</span>
               <Transition name="fade" appear>
-                <span v-if="errors.time">{{ errors.time }}</span>
+                <span v-if="errors.time" class="text-rose-600">{{ errors.time }}</span>
               </Transition>
             </div>
           </div>
@@ -145,7 +145,7 @@
             <div class="flex items-center">
               <span class="text-white" :class="{ invisible: isDayVisible }">.</span>
               <Transition name="fade" appear>
-                <span v-if="errors.day">{{ errors.day }}</span>
+                <span v-if="errors.day" class="text-rose-600">{{ errors.day }}</span>
               </Transition>
             </div>
           </div>
@@ -168,13 +168,13 @@
        </div>
        
         <table
-          class="max-w-screen w-full border"
+          class="max-w-screen w-full border my-4"
           v-for="(evaluateeClass, classesIndex) in classes"
           :key="classesIndex"
         >
-          <caption>
+          <caption class="bg-sky-900 text-white text-[20px] font-poppins">
             {{
-              evaluateeClass.department
+              evaluateeClass.department.toUpperCase()
             }}
           </caption>
           <thead>
@@ -191,16 +191,20 @@
             v-for="(klasses, classIndex) in evaluateeClass.classes"
             :key="classIndex"
           >
-            <tr v-for="(klass, klassKey) in klasses">
-              <td v-if="klassKey === 0" :rowspan="klasses.length">
+            <tr v-for="(klass, klassKey) in klasses" class="border border-b mx-auto">
+              <td v-if="klassKey === 0" :rowspan="klasses.length" class="border border-r">
                 {{ klass.subject }}
               </td>
-              <td>{{ klass.section_year }}</td>
-              <td>{{ klass.day }}</td>
-              <td>{{ klass.time }}</td>
-              <td>
-                <button @click="handleEdit(klass)">Edit</button>
-                <button @click="handleDelete(klass.id)">Delete</button>
+              <td class="border border-r">{{ klass.section_year }}</td>
+              <td class="border border-r">{{ klass.day }}</td>
+              <td class="border border-r">{{ klass.time }}</td>
+              <td class="space-x-2">
+                <button @click="handleEdit(klass)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button @click="handleDelete(klass.id)">
+                  <i class="bi bi-trash"></i>
+                </button>
               </td>
             </tr>
           </tbody>

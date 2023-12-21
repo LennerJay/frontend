@@ -7,7 +7,9 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Times New Roman", "sans-serif"],
-        "poppins": ['Poppins', 'sans-serif']
+        "poppins": ['Poppins', 'sans-serif'],
+        "firasans": ['Fira Sans'],
+        "roboto": ['Roboto Mono']
       },
       keyframes: {
         marquee: {

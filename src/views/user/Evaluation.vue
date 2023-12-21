@@ -59,18 +59,47 @@
     </div>
     <div v-else-if="showLoadingAnimations" class="w-16 h-16 border-8 border-dashed rounded-full animate-spin border-blue-600"></div>
     <div v-else class="questions min-h-[44rem] card">
+      <div class="md:block hidden">
+          <button
+          @click="handleBackButton"
+          type="button"
+          id="back"
+          value="back"
+          class="border border-red-100"
+        >
+          Back
+        </button>
+      </div>
       <button
         @click="handleBackButton"
         type="button"
-        id="back"
+        id="submit-btn"
         value="back"
-        class="border border-red-100 md:ml-32"
+        class="border border-red-100 md:hidden block mt-2"
       >
         Back
       </button>
       <div>
-        <h1 class="font-bold text-lg">Title: {{ questionaire.title }}</h1>
-        <p>description: {{ questionaire.description }}</p>
+        <div class="text-left md:mt-0 mt-4 w-full">
+          <div class="md:flex">
+            <!--this div center -->
+            <div class="text-center md:w-80 mt-2 md:ml-auto border border-white">
+              <h1 class="font-bold text-lg">Title: {{ questionaire.title }}</h1>
+              <p>Description: {{ questionaire.description }}</p>
+            </div>
+            <!--this div right -->
+            <div class="md:text-center text-center md:w-96 mt-2 w-full border border-white mx-auto">
+              <h2 class="font-md text-lg  md:font-normal font-semibold">Legend</h2>
+              <div class="flex md:flex-row space-x-3 text-gray-800">
+                <p>1: Low</p>
+                <p>2: Moderate</p>
+                <p>3: Normal</p>
+                <p>4: High</p>
+                <p>5: Very High</p>
+              </div>
+            </div>
+          </div>      
+        </div>
         <QuestionFormTable
           v-for="(criteria, index) in questionaire.criterias"
           :criteria="criteria"
