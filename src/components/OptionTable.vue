@@ -45,7 +45,6 @@
                            <span class="font-bold text-5xl"> No Data</span> 
                         </td>
                     </tr>
-
                 </tbody>
             </table>
         </div><!-- End of dept-content -->

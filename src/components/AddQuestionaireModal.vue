@@ -3,7 +3,7 @@
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins z-50"
   >
     <div
-      class="relative bg-white pl-5 pr-5 md:max-w-2xl max-w-sm mx-auto md:mt-40 mt-12 border-4 border-sky-950 rounded-xl max-h-[42rem] overflow-y-auto"
+      class="relative bg-white pl-5 pr-5 md:max-w-2xl max-w-sm mx-auto md:mt-24 mt-10 border-4 border-sky-950 rounded-xl max-h-[36rem] overflow-y-auto"
     >
       <div class="container w-full mt-6">
         <div class="flex justify-between items-center">
@@ -46,7 +46,7 @@
           <div class="flex items-center gap-5">
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <transition name="fade">
-              <span class="w-full pl-3" v-if="errors.entity">{{ errors.entity }}</span>
+              <span class="w-full pl-3 text-red-600" v-if="errors.entity">{{ errors.entity }}</span>
             </transition>
           </div>
         </div>
@@ -72,7 +72,7 @@
             <!-- <span class="text-white invisible" >.</span> -->
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <transition name="fade">
-              <span class="w-full pl-3" v-if="errors.title">{{ errors.title }}</span>
+              <span class="w-full pl-3 text-red-600" v-if="errors.title">{{ errors.title }}</span>
             </transition>
           </div>
         </div>
@@ -97,7 +97,7 @@
             <div class="flex items-center gap-5">
               <span class="flex-grow min-w-[120px] invisible">.</span>
               <transition name="fade">
-                <span class="w-full pl-3"  v-if="errors.description">{{ errors.description }}</span>
+                <span class="w-full pl-3 text-red-600"  v-if="errors.description">{{ errors.description }}</span>
               </transition>
             </div>
         </div>
@@ -121,7 +121,7 @@
           <div class="flex items-center gap-5">
               <span class="flex-grow min-w-[120px] invisible">.</span>
               <transition name="fade">
-                <span class="w-full pl-3" v-if="errors.semester">{{ errors.semester }}</span>
+                <span class="w-full pl-3 text-red-600" v-if="errors.semester">{{ errors.semester }}</span>
               </transition>
           </div>
         </div>
@@ -145,7 +145,7 @@
           <div class="flex items-center gap-5">
               <span class="flex-grow min-w-[120px] invisible">.</span>
               <transition name="fade">
-                <span class="w-full pl-3" v-if="errors.schoolYear">{{ errors.schoolYear }}</span>
+                <span class="w-full pl-3 text-red-600" v-if="errors.schoolYear">{{ errors.schoolYear }}</span>
               </transition>
           </div>
         </div>
@@ -170,7 +170,7 @@
           <div class="flex items-center gap-5">
               <span class="flex-grow min-w-[120px] invisible">.</span>
               <transition name="fade">
-                <span class="w-full pl-3" v-if="errors.maxRespondents">{{ errors.maxRespondents }}</span>
+                <span class="w-full pl-3 text-red-600" v-if="errors.maxRespondents">{{ errors.maxRespondents }}</span>
               </transition>
           </div>
         </div>
