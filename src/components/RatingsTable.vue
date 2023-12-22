@@ -115,13 +115,13 @@
               <td @click="showQuestionRating(question.id, 5)" class="cursor-pointer">
                 {{ question.O }}
               </td>
-              <td>{{ question.ratings_avg_rating }}</td>
+              <td>{{ parseFloat(question.ratings_avg_rating) }}</td>
               <td>{{ checkQd(question.ratings_avg_rating) }}</td>
             </tr>
             <tr>
               <td colspan="6" class="text-center font-bold">Average Weighted Mean</td>
-              <td class="text-center font-bold"></td>
-              <td class="text-center font-bold">terst</td>
+              <td class="text-center font-bold">{{ findAWM(criteria.id) }}</td>
+              <td class="text-center font-bold">{{ checkQd(findAWM(criteria.id)) }}</td>
             </tr>
           </tbody>
         </table>
@@ -135,8 +135,10 @@
           <span>Note: n = 50</span>
         </div>
         <div class="w-full flex flex-col font-semibold text-lg font-poppins mt-16">
-          <span class="text-right pb-2 md:mr-80">Overall Mean: 123</span>
-          <span class="text-right md:mr-96">Overall Performance: 123</span>
+          <span class="text-right pb-2 md:mr-80">Overall Mean: {{ overAllMean }}</span>
+          <span class="text-right md:mr-96"
+            >Overall Performance: {{ checkQd(overAllMean) }}</span
+          >
         </div>
         <div class="w-full font-poppins mt-20 pl-2">
           <div class="flex flex-col py-4">
@@ -174,7 +176,13 @@ import { ref } from "vue";
 import { useRatingStore } from "../stores/rating";
 import RatingHistory from "./RatingHistory.vue";
 
-const props = defineProps(["questionaire", "evaluatee"]);
+const props = defineProps([
+  "questionaire",
+  "evaluatee",
+  "overAllMean",
+  "totalAvgPerCriteria",
+]);
+const emits = defineEmits(["back"]);
 const showRatingHistory = ref(false);
 const ratingStore = useRatingStore();
 const showData = ref(false);
@@ -188,7 +196,14 @@ const showQuestionRating = async (qId, rating) => {
   showData.value = true;
 };
 
-const checkQd = (mean) => {
+const findAWM = (id) => {
+  const res = props.totalAvgPerCriteria.find((e) => e.criteria_id == id);
+  return res.totalAvgPerCriteria;
+};
+
+const checkQd = (val) => {
+  const mean = parseFloat(val);
+
   if (mean >= 1 && mean < 1.81) {
     return "IN";
   } else if (mean >= 1.81 && mean < 2.61) {
@@ -201,8 +216,6 @@ const checkQd = (mean) => {
     return "O";
   }
 };
-
-const emits = defineEmits(["back"]);
 </script>
 
 <style scoped>

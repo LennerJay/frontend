@@ -39,7 +39,6 @@ export const useRatingStore = defineStore('ratingStore',()=>{
     
         try {
             const {data} = await getOutComeRatings({evaluatee_id:id,entity_id:e_id})
-            console.log(data)
             if(data.success){
                 isSuccess.value = true
                 ratingResult.value = data.data

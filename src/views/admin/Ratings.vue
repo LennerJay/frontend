@@ -54,6 +54,8 @@
           <RatingsTable
             :evaluatee="selectedEvaluate"
             :questionaire="questionaire"
+            :overAllMean="overAllMean"
+            :totalAvgPerCriteria="totalAvgPerCriteria"
             @back="handleBackBtn"
           />
         </div>
@@ -114,6 +116,8 @@ const departments = ref([]);
 const entities = ref([]);
 const selectedEvaluate = ref([]);
 const questionaire = ref([]);
+const totalAvgPerCriteria = ref([]);
+const overAllMean = ref(0);
 
 const selectedEvaluatee = async (evaluatee_id, val, data, status) => {
   if (!status) {
@@ -125,7 +129,25 @@ const selectedEvaluatee = async (evaluatee_id, val, data, status) => {
   showLoadingAnimation.value = true;
   await ratingStore.fetchOutcomeRatings(evaluatee_id, data.entity_id);
   questionaire.value = ratingStore.ratingResult;
-  console.log(questionaire.value);
+  const { criterias } = ratingStore.ratingResult;
+  let overAllmean = 0;
+
+  for (const criteria of criterias) {
+    let totalRatings = 0;
+    for (const question of criteria.questions) {
+      totalRatings += parseFloat(question.ratings_avg_rating);
+    }
+    let total = totalRatings / criteria.questions.length;
+    overAllmean += total;
+    totalAvgPerCriteria.value.push({
+      criteria_id: criteria.id,
+      totalAvgPerCriteria: total.toFixed(2),
+    });
+  }
+  overAllMean.value = (overAllmean / criterias.length).toFixed(2);
+  console.log(totalAvgPerCriteria.value);
+  console.log(overAllMean.value);
+
   showLoadingAnimation.value = false;
   showRatings.value = true;
 };
