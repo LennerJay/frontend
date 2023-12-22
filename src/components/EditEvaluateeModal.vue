@@ -32,7 +32,7 @@
               @input="handleInput"
               id="edit-fullName"
               v-model="name"
-              class="border rounded w-full py-2 px-3 md:h-10"
+              class="border rounded w-full py-2 px-3 md:h-10 capitalize"
               type="text"
               placeholder="Enter Full name"
             />
@@ -66,7 +66,7 @@
                 <select
                   v-model="personelType"
                   @change="handleChange"
-                  class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10"
+                  class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10 capitalize"
                   id="edit-personal-type"
                 >
                   <option v-for="entity in entities" :value="entity.id">

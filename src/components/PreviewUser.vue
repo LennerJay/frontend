@@ -3,31 +3,32 @@
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins z-50"
   >
     <div
-      class="relative p-5 bg-white md:max-w-lg max-w-sm mx-auto md:mt-20 border-4 border-sky-950 rounded-xl max-h-[50rem] min-h-[30rem] overflow-y-auto"
+      class="relative p-5 bg-white md:max-w-lg max-w-sm mx-auto md:mt-20 md:min-h-[28rem] border-4 border-sky-950 rounded-xl overflow-y-auto"
     >
-    <div>
-        <h1>Department : {{ department.name }} </h1>
-        <h1>Year & Sections: {{ sectionYear.year_section }}</h1>
-    </div>
-    <div>
-        <table>
-            <thead>
-                <th>Id Numbers</th>
-            </thead>
-            <tbody>
-                <tr v-for="idNumber in idNumbers">
-                    <td>{{ idNumber }}</td>
-                </tr>
-            </tbody>
+      <div class="flex flex-col w-full text-lg mt-32">
+        <table class="border border-black">
+          <thead class="bg-sky-900 text-white text-center">
+            <th>ID Number</th>
+            <th>Department</th>
+            <th>Year & Section</th>
+          </thead>
+          <tbody class="text-center">
+            <tr>
+              <td class="border-r border-black" v-for="idNumber in idNumbers">{{ idNumber }}</td>
+              <td class="uppercase border-r border-black">{{ department.name }}</td>
+              <td>{{ sectionYear.year_section }}</td>
+            </tr>
+          </tbody>
         </table>
-    
+      </div>
+    <div>
     </div>
-    <div class="flex justify-end mt-4 items-center gap-5">
+      <div class="flex justify-end mt-40 items-center gap-5">
         <button
           @click="emits('closePreview')"
           class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
-          back
+          Back
         </button>
         <button
           @click="handleSave"

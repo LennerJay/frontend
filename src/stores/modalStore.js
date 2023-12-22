@@ -9,6 +9,8 @@ export const userModalStore = defineStore('modalStore', () => {
     const modalAdd = ref(false);
     const modalEdit = ref(false);
     const modalDelete = ref(false);
+    const studentEditModal = ref(false);
+    const resetPasswordModal = ref(false);
 
     const openModal = async(evaluatee) => {
         modalState.value = !modalState.value;
@@ -40,6 +42,14 @@ export const userModalStore = defineStore('modalStore', () => {
       // console.log('delete Clicked');
     }
 
+    const showStudentEditModal = () => {
+      studentEditModal.value = !studentEditModal.value;
+    }
+
+    const showResetPasswordModal = () => {
+      resetPasswordModal.value = !resetPasswordModal.value;
+    }
+
     return {
             fetchEvaluateeInfo,
             modalState, 
@@ -50,6 +60,10 @@ export const userModalStore = defineStore('modalStore', () => {
             modalDelete, 
             showCreateModal, 
             showEditModal, 
-            showDeleteModal 
+            showDeleteModal,
+            studentEditModal,
+            showStudentEditModal,
+            resetPasswordModal,
+            showResetPasswordModal
             };
 });

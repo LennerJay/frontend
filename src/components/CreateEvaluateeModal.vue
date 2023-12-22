@@ -12,7 +12,7 @@
       </button>
       <!-- Modal header -->
       <div class="mb-4 flex flex-col">
-        <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2">
+        <h2 class="text-2xl font-semibold text-center bg-sky-950 text-white mb-2 capitalize">
           Create {{ entityName == "All" ? "instructor" : entityName }}
         </h2>
       </div>
@@ -28,7 +28,7 @@
               <input
                 v-model="name"
                 @input="handleInput"
-                class="border rounded w-full py-2 px-3 md:h-10"
+                class="border rounded w-full py-2 px-3 md:h-10 capitalize"
                 id="fullname"
                 type="text"
                 placeholder="Enter Full name"
@@ -63,7 +63,7 @@
                 <select
                   v-model="personelType"
                   @change="handleChange"
-                  class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10"
+                  class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 h-10 capitalize"
                   id="personal-type"
                 >
                   <option v-for="entity in entities" :value="entity.id">

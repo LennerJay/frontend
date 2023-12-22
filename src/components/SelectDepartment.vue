@@ -9,7 +9,7 @@
       v-model="selectDepartment"
       @change="handleTag"
       id="departments"
-      class="focus:outline-none rounded-2xl text-black text-center"
+      class="focus:outline-none rounded-2xl text-black text-center capitalize"
     >
       <option value="All">All</option>
       <option

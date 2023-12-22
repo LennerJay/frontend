@@ -100,7 +100,7 @@
               rows="3"
               id="questionaire-description"
               :disabled="isEnable"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full capitalize bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
           </div>
           <div class="flex items-center gap-5">

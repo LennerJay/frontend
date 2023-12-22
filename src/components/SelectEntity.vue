@@ -10,7 +10,7 @@
       name="entity"
       id="entity"
       @change="$emit('handleSelect', entity)"
-      class="focus:outline-none md:w-44 h-6 text-center border text-black border-gray-300 rounded-md"
+      class="focus:outline-none md:w-44 h-6 text-center border text-black border-gray-300 rounded-md capitalize"
     >
       <option value="All">All</option>
       <option
