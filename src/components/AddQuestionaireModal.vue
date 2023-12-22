@@ -31,7 +31,7 @@
               v-model="entity"
               name="adding-entity"
               id="adding-entity"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-poppins capitalize font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             >
               <option value="" disabled>Select</option>
               <option
@@ -46,7 +46,7 @@
           <div class="flex items-center gap-5">
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <transition name="fade">
-              <span class="w-full pl-3 text-red-600" v-if="errors.entity">{{ errors.entity }}</span>
+              <span class="w-full pl-3 text-rose-600" v-if="errors.entity">{{ errors.entity }}</span>
             </transition>
           </div>
         </div>
@@ -64,7 +64,7 @@
             @input="titleInput"
             v-model="title"
             id="title"
-            class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            class="w-full h-full bg-transparent text-blue-gray-700 font-poppins capitalize font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
           />
          
          </div>
@@ -72,7 +72,7 @@
             <!-- <span class="text-white invisible" >.</span> -->
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <transition name="fade">
-              <span class="w-full pl-3 text-red-600" v-if="errors.title">{{ errors.title }}</span>
+              <span class="w-full pl-3 text-rose-600" v-if="errors.title">{{ errors.title }}</span>
             </transition>
           </div>
         </div>
@@ -90,14 +90,14 @@
             @input="descriptionInput"
             v-model="description"
             id="description"
-            class=" w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            class=" w-full h-full bg-transparent text-blue-gray-700 font-poppins capitalize font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border  text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
           />
             
             </div>
             <div class="flex items-center gap-5">
               <span class="flex-grow min-w-[120px] invisible">.</span>
               <transition name="fade">
-                <span class="w-full pl-3 text-red-600"  v-if="errors.description">{{ errors.description }}</span>
+                <span class="w-full pl-3 text-rose-600"  v-if="errors.description">{{ errors.description }}</span>
               </transition>
             </div>
         </div>
@@ -115,13 +115,13 @@
               @input="semesterInput"
               v-model="semester"
               id="semester"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-poppins capitalize font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
           </div>
           <div class="flex items-center gap-5">
               <span class="flex-grow min-w-[120px] invisible">.</span>
               <transition name="fade">
-                <span class="w-full pl-3 text-red-600" v-if="errors.semester">{{ errors.semester }}</span>
+                <span class="w-full pl-3 text-rose-600" v-if="errors.semester">{{ errors.semester }}</span>
               </transition>
           </div>
         </div>
@@ -139,13 +139,13 @@
             @input="schoolYearInput"
             v-model="schoolYear"
             id="school-year"
-            class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            class="w-full h-full bg-transparent text-blue-gray-700 font-poppins capitalize font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
           />
           </div>
           <div class="flex items-center gap-5">
               <span class="flex-grow min-w-[120px] invisible">.</span>
               <transition name="fade">
-                <span class="w-full pl-3 text-red-600" v-if="errors.schoolYear">{{ errors.schoolYear }}</span>
+                <span class="w-full pl-3 text-rose-600" v-if="errors.schoolYear">{{ errors.schoolYear }}</span>
               </transition>
           </div>
         </div>
@@ -164,13 +164,13 @@
             v-model="maxRespondents"
             id="max-respondents"
             type="number"
-            class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            class="w-full h-full bg-transparent text-blue-gray-700 font-poppins capitalize font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
           />
           </div>
           <div class="flex items-center gap-5">
               <span class="flex-grow min-w-[120px] invisible">.</span>
               <transition name="fade">
-                <span class="w-full pl-3 text-red-600" v-if="errors.maxRespondents">{{ errors.maxRespondents }}</span>
+                <span class="w-full pl-3 text-rose-600" v-if="errors.maxRespondents">{{ errors.maxRespondents }}</span>
               </transition>
           </div>
         </div>

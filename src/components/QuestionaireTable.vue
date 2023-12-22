@@ -1,11 +1,10 @@
 <template>
-  <div class="w-full flex justify-center font-sans h-screen mt-6">
-    <div class="w-full lg:w-5/6">
+  <div class="w-full flex justify-center font-poppins h-screen">
+    <div class="w-full">
       <div class="bg-white shadow-md rounded my-6">
-      
-        <table class="min-w-max w-full table-auto">
+        <table class="min-w-max w-full table-auto bg-white">
           <thead>
-            <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <tr class="bg-sky-950 text-white uppercase text-sm leading-normal">
               <th class="py-3 px-6 text-left">Title</th>
               <th class="py-3 px-6 text-center"> Status</th>
               <th class="py-3 px-6 text-center">Actions</th>
@@ -25,13 +24,13 @@
               </td>
             </tr>
           </tbody>
-          <tbody v-else v-for="(evaluatees,evaluateeIndex) in datas" :key="evaluatees + evaluateeIndex" class="text-gray-600 text-sm font-light" >
+          <tbody v-else v-for="(evaluatees,evaluateeIndex) in datas" :key="evaluatees + evaluateeIndex" class="text-gray-600  text-sm font-light">
             <tr v-for="(questionaire,index) in evaluatees.datas" :key="questionaire.id"  class="border-b border-gray-200 hover:bg-gray-100">
-              <td class="py-3 px-6 text-center">
-                <span class="font-medium">{{ questionaire.title }} </span>
+              <td class="py-3 px-6 text-left">
+                <span class="font-medium capitalize">{{ questionaire.title }} </span>
               </td>
-              <td class="py-3 px-6 text-center">
-                <span>
+              <td class="py-3 px-6 text-center ">
+                <span :class="{ 'text-green-500': questionaire.status, 'text-gray-600': !questionaire.status }">
                   {{ questionaire.status && index == 0 ? "Currently Used" : questionaire.status ? "Used":"Unused" }}
                 </span>
               </td>

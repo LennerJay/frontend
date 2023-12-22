@@ -30,7 +30,7 @@
         </div>
 
         <div class="flex flex-col">
-          <div class="flex items-center mb-5 gap-5">
+          <div class="flex items-center mb-5 gap-2">
             <label
               class="text-left block text-gray-500 font-bold mb-1 md:mb-0 pr-4 flex-grow min-w-[120px]"
               for="questionaire-entity"
@@ -43,7 +43,7 @@
               name="questionaire-entity"
               id="questionaire-entity"
               :disabled="isEnable"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full capitalize bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             >
               <option
                 v-for="(entity, entityIndex) in entities"
@@ -57,7 +57,7 @@
           <div class="flex items-center">
             <span class="text-white invisible">.</span>
             <Transition name="fade" appear>
-              <span v-if="errors.entityId">{{ errors.entityId }}</span>
+              <span v-if="errors.entityId" class="text-rose-600">{{ errors.entityId }}</span>
             </Transition>
           </div>
         </div>
@@ -75,13 +75,13 @@
               id="title"
               v-model="title"
               :disabled="isEnable"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
           </div>
           <div class="flex items-center gap-5">
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <Transition name="fade" appear>
-              <span class="w-full" v-if="errors.title">{{ errors.title }}</span>
+              <span class="w-full text-rose-600" v-if="errors.title">{{ errors.title }}</span>
             </Transition>
           </div>
         </div>
@@ -100,13 +100,13 @@
               rows="3"
               id="questionaire-description"
               :disabled="isEnable"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
           </div>
           <div class="flex items-center gap-5">
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <transition name="fade">
-              <span class="w-full" v-if="errors.description">{{
+              <span class="w-full text-rose-600" v-if="errors.description">{{
                 errors.description
               }}</span>
             </transition>
@@ -126,13 +126,13 @@
               v-model="semester"
               id="semester"
               :disabled="isEnable"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
           </div>
           <div class="flex items-center gap-5">
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <transition name="fade">
-              <span class="w-full" v-if="errors.semester">{{ errors.semester }}</span>
+              <span class="w-full text-rose-600" v-if="errors.semester">{{ errors.semester }}</span>
             </transition>
           </div>
         </div>
@@ -150,13 +150,13 @@
               v-model="schoolYear"
               id="school-year"
               :disabled="isEnable"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
           </div>
           <div class="flex items-center gap-5">
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <transition name="fade">
-              <span class="w-full" v-if="errors.schoolYear">{{ errors.schoolYear }}</span>
+              <span class="w-full text-rose-600" v-if="errors.schoolYear">{{ errors.schoolYear }}</span>
             </transition>
           </div>
         </div>
@@ -174,13 +174,13 @@
               v-model="maxRespondents"
               id="max-respondents"
               :disabled="isEnable"
-              class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+              class="w-full h-full bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             />
           </div>
           <div class="flex items-center gap-5">
             <span class="flex-grow min-w-[120px] invisible">.</span>
             <transition name="fade">
-              <span class="w-full" v-if="errors.maxRespondents">{{
+              <span class="w-full text-rose-600" v-if="errors.maxRespondents">{{
                 errors.maxRespondents
               }}</span>
             </transition>
@@ -197,7 +197,7 @@
           <input
             id="questionaire-status"
             disabled
-            class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            class="w-full h-full bg-transparent text-blue-gray-700 font-poppins  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             :value="selectedQuestionaire.status == 1 && qIndex == 0 ?  'Currently Used' : selectedQuestionaire.status == 1 ? 'Used':'Unused'"
           />
         </div>
@@ -205,7 +205,7 @@
 
       <div class="flex justify-end mt-5 mb-5 gap-6 items-center">
         <transition name="bounce" appear>
-          <p v-if="isInvalid">Nothing's Change</p>
+          <p v-if="isInvalid" class="text-rose-600">Nothing's Change</p>
         </transition>
         <button v-if="!status" class="border border-black p-1" id="back-button" @click="updateStatus">
             Use 
