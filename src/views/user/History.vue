@@ -29,7 +29,7 @@
       <div v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20 pt-20">
         <LoadingAnimation />
       </div>
-      <div v-if="isNoData">
+      <div v-if="isNoData" class="py-20 capitalize text-lg">
         <h1>You have not rated yet</h1>
       </div>
     </div>

@@ -10,11 +10,11 @@
           <i class="bi bi-x-lg"></i>
           <span></span>
         </button>
-        <div>Add Student</div>
+        <div class="text-[25px]">Add Student</div>
       </div>
       <div class="flex justify-center mt-5 ">
         <div class="mr-2">
-          <label class="block text-gray-700 text-sm font-bold pb-1" for="user-department"
+          <label class="block text-gray-700 text-lg font-bold pb-1" for="user-department"
             >Department
           </label>
           <select
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="">
-          <label class="flex text-gray-700 text-sm font-bold mb-2" for="user-year-section"
+          <label class="flex text-gray-700 text-lg font-bold mb-2" for="user-year-section"
             >Year & Section</label
           >
           <input
@@ -63,7 +63,7 @@
             class="text-left block text-gray-500 font-bold mb-1 md:mb-0 pr-4 flex-grow min-w-[90px]"
             for="option-name"
           >
-            Id Number
+            ID Number
           </label>
           <input
             @input="handleIdNumberInput"
@@ -88,13 +88,21 @@
           </transition>
         </div>
       </div>
-      <div>
-        <h1>Department : {{ selectedDepartment.name }}</h1>
-        <h1>Year & Section: {{ selectedSectionYear.year_section }}</h1>
-        <div>
-          <h1>Id Numbers:</h1>
-          <span>{{ selectedIdnumbers.join(", ") }}</span>
-        </div>
+      <div class="flex flex-col w-full text-lg">
+        <table class="border border-black">
+          <thead class="bg-sky-900 text-white text-center">
+            <th>ID Number</th>
+            <th>Department</th>
+            <th>Year & Section</th>
+          </thead>
+          <tbody class="text-center">
+            <tr>
+              <td class="border-r border-black">{{ selectedIdnumbers.join(", ") }}</td>
+              <td class="uppercase border-r border-black">{{ selectedDepartment.name }}</td>
+              <td>{{ selectedSectionYear.year_section }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="flex justify-end mt-4 items-center gap-5">
         <button

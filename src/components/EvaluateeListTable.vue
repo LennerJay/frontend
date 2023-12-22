@@ -27,7 +27,7 @@
                 class="bg-white py-3 px-6 text-left whitespace-nowrap items-center"
                 colspan="3"
               >
-                <span class="text-5xl flex justify-center items-center space-x-2"
+                <span class="text-5xl flex justify-center items-center space-x-2 text-center"
                   >No data Found</span
                 >
               </td>

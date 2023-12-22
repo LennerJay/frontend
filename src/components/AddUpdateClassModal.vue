@@ -70,7 +70,7 @@
               <select
                 @click="handleClickSubject"
                 v-model="subject"
-                class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 pr-2"
+                class="cursor-pointer border rounded text-gray-700 w-full py-2 px-3 pr-2 uppercase"
                 id="klass-subject"
               >
                 <option hidden value="">SELECT</option>
@@ -118,7 +118,7 @@
             <input
               @input="handleInputTime"
               v-model="time"
-              class="border rounded w-full h-9 px-3"
+              class="border rounded w-full h-9 px-3 uppercase"
               id="klass-time"
               type="text"
               placeholder="Eg. 1:00-2:30 PM"
@@ -137,7 +137,7 @@
             <input
               @input="handleInputDay"
               v-model="day"
-              class="border rounded w-full h-9 px-3"
+              class="border rounded w-full h-9 px-3 uppercase"
               id="klass-day"
               type="text"
               placeholder="Eg. MWF, TTH, SAT"
@@ -192,12 +192,12 @@
             :key="classIndex"
           >
             <tr v-for="(klass, klassKey) in klasses" class="border border-b mx-auto">
-              <td v-if="klassKey === 0" :rowspan="klasses.length" class="border border-r">
+              <td v-if="klassKey === 0" :rowspan="klasses.length" class="border border-r uppercase">
                 {{ klass.subject }}
               </td>
-              <td class="border border-r">{{ klass.section_year }}</td>
-              <td class="border border-r">{{ klass.day }}</td>
-              <td class="border border-r">{{ klass.time }}</td>
+              <td class="border border-r uppercase">{{ klass.section_year }}</td>
+              <td class="border border-r uppercase">{{ klass.day }}</td>
+              <td class="border border-r uppercase">{{ klass.time }}</td>
               <td class="space-x-2">
                 <button @click="handleEdit(klass)">
                   <i class="bi bi-pencil"></i>

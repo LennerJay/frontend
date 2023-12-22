@@ -17,7 +17,7 @@
           <input
             type="text"
             id="search"
-            class="w-50 h-6 p-2 border border-gray-300 rounded-md text-black"
+            class="w-50 h-6 p-2 border border-gray-300 rounded-md text-black capitalize"
             v-model="searchBar"
           />
         </div>
