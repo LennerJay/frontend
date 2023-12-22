@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
     const isLoggedIn = ref(false)
     const token = ref([]);
     const userInfo = ref([]);
+    const isSuccess = ref(false)
 
   if(localStorage.getItem('jwt_token')){
       isLoggedIn.value = true;
@@ -78,7 +79,13 @@ export const useAuthStore = defineStore('authStore', ()=>{
       try{
 
         const {data} = await getUserInfo(user);
-        userInfo.value = data.data
+        if(data.success){
+          isSuccess.value = true;
+          userInfo.value = data.data
+        }else{
+          isSuccess.value = false;
+        }
+
         errors.value = []
       } catch($e){
         userInfo.value = []
@@ -134,6 +141,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
       fetchUser,
       handleLogin,
       handleLogout,
-      filterSchedule
+      filterSchedule,
+      isSuccess,
     }
 });

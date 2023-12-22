@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex items-center transparent rounded-xl border-2 font-Times New Roman border-sky-900 cursor-pointer hover:-translate-y-1 hover:scale-90 card-box"
-    @click="handleClick(evaluatee.id)"
+    @click="handleClick(evaluatee.id, evaluatee.users_done_rating == 100)"
   >
     <div class="flex items-center">
       <div class="flex-shrink-0">
@@ -41,7 +41,13 @@
           <div v-else>No Questionaire Available</div>
         </div>
         <div v-else-if="evaluatee.date_rated">Rated on : {{ evaluatee.date_rated }}</div>
-        <div v-if="route.path == '/ratings'" >{{evaluatee.users_done_rating == 100 ? 'Finished Rated': 'Not yet finished rated'  }}</div>
+        <div v-if="route.path == '/ratings'">
+          {{
+            evaluatee.users_done_rating == 100
+              ? "Finished Rated"
+              : "Not yet finished rated"
+          }}
+        </div>
       </div>
     </div>
     <div class="card-effect"></div>
@@ -71,19 +77,24 @@ const getMaxRespondents = (entity_name) => {
   return res[entity_name];
 };
 
-const handleClick = (evaluatee_id) => {
-  if(route.path != '/evaluation'){
-    emit("selectedEvaluatee", evaluatee_id,props.evaluatee.name,props.evaluatee);
-  }else{
-    if(props.evaluatee.users_done_rating != getMaxRespondents(props.evaluatee.entity_name)){
+const handleClick = (evaluatee_id, status) => {
+  if (route.path != "/evaluation") {
+    emit(
+      "selectedEvaluatee",
+      evaluatee_id,
+      props.evaluatee.name,
+      props.evaluatee,
+      status
+    );
+  } else {
+    if (
+      props.evaluatee.users_done_rating != getMaxRespondents(props.evaluatee.entity_name)
+    ) {
       emit("selectedEvaluatee", evaluatee_id);
-    }else{
-      alert('limit reached')
+    } else {
+      alert("limit reached");
     }
   }
-
-
-
 };
 </script>
 
