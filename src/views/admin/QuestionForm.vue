@@ -1,6 +1,8 @@
 <template>
   <div class="flex">
-    <div class="md:ml-[250px] ml-0 font-poppins px-0 dashboard-main-header h-full w-full bg-gray-200">
+    <div
+      class="md:ml-[250px] ml-0 font-poppins px-0 dashboard-main-header h-full w-full bg-gray-200"
+    >
       <div class="navbar-container">
         <div class="navbar-content">
           <header id="main-header">
@@ -16,11 +18,13 @@
         </div>
       </div>
       <!-- End of navbar-container -->
-      <div class="mt-5 flex md:justify-end justify-center gap-7 mr-2 md:mb-0 mb-4 ">
+      <div class="mt-5 flex md:justify-end justify-center gap-7 mr-2 md:mb-0 mb-4">
         <button @click="showDisplay('questionaires')" id="add-btn" class="rounded">
           Show Questinaire
         </button>
-        <button @click="showDisplay('criterias')" id="add-btn" class="rounded">Show Criterias</button>
+        <button @click="showDisplay('criterias')" id="add-btn" class="rounded">
+          Show Criterias
+        </button>
       </div>
       <div key="selectTag" class="flex gap-6 items-center ml-2" v-if="showQuestionaires">
         <SelectEntity
@@ -44,7 +48,13 @@
         />
         <CriteriaCards v-if="showCriterias" />
       </transition-group>
-
+      <transition name="fade">
+        <AttachQuestionModal
+          v-if="showAttachModal"
+          :questionaire="selectedQuestionaire"
+          @close="showAttachModal = false"
+        />
+      </transition>
       <transition name="fade">
         <QuestionaireDetail
           v-if="showDetails"
@@ -79,9 +89,10 @@
           :showActionModal="showActionModal"
           @removeCriteria="removeCriteria"
           @close="closeQuestionsModal"
+          @AttachQuestion="AttachQuestion"
         />
       </transition>
-      <FooterCard/>
+      <FooterCard />
     </div>
     <!-- End of content -->
   </div>
@@ -101,12 +112,15 @@ import AddQuestionaireModal from "../../components/AddQuestionaireModal.vue";
 import DeleteQuestionaireModalVue from "../../components/DeleteQuestionaireModal.vue";
 import QuestionsModal from "../../components/QuestionsModal.vue";
 import CriteriaCards from "../../components/CriteriaCards.vue";
+import AttachQuestionModal from "../../components/AttachQuestion.vue";
 
 const drawer = useDrawerStore();
 const questionaireStore = useQuestionaireStore();
 const entityStore = useEntityStore();
-const showActionSpinner=ref(false)
-const showActionModal=ref(false)
+
+const showAttachModal = ref(false);
+const showActionSpinner = ref(false);
+const showActionModal = ref(false);
 const showQuestionsData = ref(false);
 const showQuestionsModal = ref(false);
 const showDeleteModal = ref(false);
@@ -124,21 +138,25 @@ const noData = ref(false);
 const showQuestionaires = ref(false);
 const showCriterias = ref(false);
 
+const AttachQuestion = () => {
+  closeQuestionsModal();
+  showAttachModal.value = true;
+};
 
-const removeCriteria = async(id)=>{
-  showActionSpinner.value = true
-  await questionaireStore.detachCriteria(selectedQuestionaire.value.id,id)
-  showActionSpinner.value = false
-  if(questionaireStore.isSuccess){
-    showActionModal.value = true
-    setTimeout(()=>{
-      showActionModal.value = false
-      showQuestionsModal.value = false
-    },1500)
-  }else{
-    alert("Something went wrong")
+const removeCriteria = async (id) => {
+  showActionSpinner.value = true;
+  await questionaireStore.detachCriteria(selectedQuestionaire.value.id, id);
+  showActionSpinner.value = false;
+  if (questionaireStore.isSuccess) {
+    showActionModal.value = true;
+    setTimeout(() => {
+      showActionModal.value = false;
+      closeQuestionsModal();
+    }, 1500);
+  } else {
+    alert("Something went wrong");
   }
-}
+};
 
 const showDisplay = async (val) => {
   if (val == "questionaires") {
@@ -163,6 +181,8 @@ const showDisplay = async (val) => {
 };
 
 const closeQuestionsModal = () => {
+  showQuestionsData.value = false;
+  noData.value = false;
   showQuestionsModal.value = false;
 };
 
@@ -188,6 +208,7 @@ const handleSelectEntity = (val) => {
 
 const selectQuestionaire = async (id, action, index) => {
   qIndex.value = index;
+
   selectedQuestionaire.value = questionaireStore.questionaires.find(
     (questionaire) => questionaire.id === id
   );
@@ -199,13 +220,11 @@ const selectQuestionaire = async (id, action, index) => {
     z;
   }
   if (action == "questions") {
-    showQuestionsData.value = false;
-    console.log(id);
     showQuestionsModal.value = true;
     await questionaireStore.fetchQuestionaireWithCriterias(id);
     if (questionaireStore.isSuccess) {
       criterias.value = questionaireStore.criteriasWithQuestions;
-      if (criterias.value) {
+      if (criterias.value.length != 0) {
         noData.value = false;
         showQuestionsData.value = true;
       } else {
@@ -224,17 +243,19 @@ onMounted(async () => {
   }
   entities.value = entityStore.entities;
   if (localStorage.getItem("currentShow")) {
-    showDisplay(localStorage.getItem("currentShow"))
+    showDisplay(localStorage.getItem("currentShow"));
+  } else {
+    showQuestionaires.value = true;
   }
   showLoadingDataAnimation.value = true;
-    await questionaireStore.fetchQuestionaire();
-    showLoadingDataAnimation.value = false;
-    if (!questionaireStore.isSuccess) {
-      isNoData.value = true;
-    } else {
-      questionaires.value = questionaireStore.groupbByEntity();
-      isNoData.value = false;
-    }
+  await questionaireStore.fetchQuestionaire();
+  showLoadingDataAnimation.value = false;
+  if (!questionaireStore.isSuccess) {
+    isNoData.value = true;
+  } else {
+    questionaires.value = questionaireStore.groupbByEntity();
+    isNoData.value = false;
+  }
 });
 </script>
 

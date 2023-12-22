@@ -22,3 +22,5 @@ export const AddQuestionaire = (datas) =>api.post(resource,datas)
 export const getCriteriasWithQuestions = (id) => api.get(resource + `/${id}/with-criterias`)
 
 export const removeCriteria = (id,data)=>api.post(resource + `/${id}/remove-criterias`,data)
+
+export const attachCriteria = (id,data)=>api.post(resource + `/${id}/attach-criterias`,data)

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import {removeCriteria,AddQuestionaire, deleteQuestionaire,updateStatusQuestionaire,allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents ,updateQuestionaire, getCriteriasWithQuestions} from "../http/questionaire-api";
+import {attachCriteria,removeCriteria,AddQuestionaire, deleteQuestionaire,updateStatusQuestionaire,allQuestionaires,getLatestQuestionaire,getQuestionaireForEvaluatee,getMaxRespondents ,updateQuestionaire, getCriteriasWithQuestions} from "../http/questionaire-api";
 import { csrfCookie } from "../http/auth-api"
 
 import { ref, watch } from "vue";
@@ -237,7 +237,25 @@ export const useQuestionaireStore = defineStore('questionaireStore',()=>{
         }
     }
 
+    const attachCriterias = async (qId,values)=>{
+        await csrfCookie()
+        try {
+            const {data} = await attachCriteria(qId,{criteria_ids:values})
+            console.log(data)
+            if(data.success){
+                isSuccess.value = true
+                criteriasWithQuestions.value.unshift()
+            }else{
+                isSuccess.value = true
+            }
+            errors.value = []
+        } catch (error) {
+            errors.value = error
+        }
+    }
+
     return {
+        attachCriterias,
         detachCriteria,
         criteriasWithQuestions,
         fetchQuestionaireWithCriterias,

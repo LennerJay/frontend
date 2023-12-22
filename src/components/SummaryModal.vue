@@ -1,102 +1,126 @@
 <template>
-    <div class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman" style="z-index: 10000">
-      <div class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto">
-        <button @click="closeModal">
+  <div
+    class="fixed inset-0 bg-sky-950 bg-opacity-5 items-center justify-center font-Times New Roman"
+    style="z-index: 10000"
+  >
+    <div
+      class="bg-white p-8 max-w-md mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[26rem] overflow-y-auto"
+    >
+      <div class="relative">
+        <button class="fixed left-2" @click="closeModal">
           <i class="bi bi-x-lg"></i>
-            <span></span>
+          <span></span>
         </button>
-        <div class="bg-sky-900 text-white text-lg w-full"> {{evaluateeName }}</div>
-          <div v-if="showDetail">
-            <div class="flex flex-col w-full border border-gray-400 mb-4">
-              <div class="grid gap-2 grid-cols-2 w-full border-b border-gray-400">
-                <div class="text-left border-r border-gray-400">
-                  <div class="label">
-                    <p>Title: <br class="md:hidden block"> {{ questionaire.title }}</p>
-                  </div>
-                </div>
-                <div class="text-left">
-                  <div class="label">
-                    <p>Description: <br class="md:hidden block"> {{ questionaire.description }}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="grid gap-2 grid-cols-2 w-full border-gray-400">
-                <div class="text-left border-r border-gray-400">
-                  <div class="label ">
-                    <p>Semester: <br class="md:hidden block"> {{ questionaire.semester }}</p>
-                  </div>
-                </div>
-                <div class="text-left">
-                  <div class="label">
-                    <p>School Year: <br class="md:hidden block"> {{ questionaire.school_year }}</p>
-                  </div>
-                </div>
+      </div>
+
+      <div class="bg-sky-900 text-white text-lg w-full">{{ evaluateeName }}</div>
+      <div v-if="showDetail">
+        <div class="flex flex-col w-full border border-gray-400 mb-4">
+          <div class="grid gap-2 grid-cols-2 w-full border-b border-gray-400">
+            <div class="text-left border-r border-gray-400">
+              <div class="label">
+                <p>
+                  Title: <br class="md:hidden block" />
+                  {{ questionaire.title }}
+                </p>
               </div>
             </div>
-            <div>
-              <table v-for="summary in ratingSummary" class="border border-gray-400 my-4">
-                <caption class="bg-sky-900 text-white text-center font-medium capitalize text-md">
-                  {{summary.criteria}}
-                </caption>
-                <thead class="border-b border-gray-400">
-                  <tr>
-                      <th class="border-r border-gray-400">Question</th>
-                      <th>Rated</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="infoSummary in summary.summary" class="border-b border-gray-400">
-                    <td class="text-left border-r border-gray-400">
-                      {{ infoSummary.question }}
-                    </td>
-                    <td>{{ infoSummary.rating }}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="text-left">
+              <div class="label">
+                <p>
+                  Description: <br class="md:hidden block" />
+                  {{ questionaire.description }}
+                </p>
+              </div>
             </div>
           </div>
-          <div v-else-if="props.noData">
-            No data Found
-          </div>
-        <div v-else class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex">
-          <div class="loader">
-            <svg viewBox="0 0 80 80">
-              <circle id="test" cx="40" cy="40" r="32"></circle>
-            </svg>
-          </div>
-    
-          <div class="loader triangle">
-            <svg viewBox="0 0 86 80">
-              <polygon points="43 8 79 72 7 72"></polygon>
-            </svg>
-          </div>
-    
-          <div class="loader">
-            <svg viewBox="0 0 80 80">
-              <rect x="8" y="8" width="64" height="64"></rect>
-            </svg>
+          <div class="grid gap-2 grid-cols-2 w-full border-gray-400">
+            <div class="text-left border-r border-gray-400">
+              <div class="label">
+                <p>
+                  Semester: <br class="md:hidden block" />
+                  {{ questionaire.semester }}
+                </p>
+              </div>
+            </div>
+            <div class="text-left">
+              <div class="label">
+                <p>
+                  School Year: <br class="md:hidden block" />
+                  {{ questionaire.school_year }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
+        <div>
+          <table v-for="summary in ratingSummary" class="border border-gray-400 my-4">
+            <caption
+              class="bg-sky-900 text-white text-center font-medium capitalize text-md"
+            >
+              {{
+                summary.criteria
+              }}
+            </caption>
+            <thead class="border-b border-gray-400">
+              <tr>
+                <th class="border-r border-gray-400">Question</th>
+                <th>Rated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="infoSummary in summary.summary" class="border-b border-gray-400">
+                <td class="text-left border-r border-gray-400">
+                  {{ infoSummary.question }}
+                </td>
+                <td>{{ infoSummary.rating }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    
+      <div v-else-if="props.noData">No data Found</div>
+      <div
+        v-else
+        class="bg-white p-[10px] pl-5 pr-32 max-w-md mx-auto mt-48 max-h-[26rem] flex"
+      >
+        <div class="loader">
+          <svg viewBox="0 0 80 80">
+            <circle id="test" cx="40" cy="40" r="32"></circle>
+          </svg>
+        </div>
+
+        <div class="loader triangle">
+          <svg viewBox="0 0 86 80">
+            <polygon points="43 8 79 72 7 72"></polygon>
+          </svg>
+        </div>
+
+        <div class="loader">
+          <svg viewBox="0 0 80 80">
+            <rect x="8" y="8" width="64" height="64"></rect>
+          </svg>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
-  <script setup>
-    const props = defineProps([
-                    'questionaire',
-                    'ratingSummary',
-                    'evaluateeName',
-                    'showDetail',
-                    'noData',
-                  ]);
-    const emits = defineEmits(['close-modal'])
-    
-    const closeModal = () => {
-      emits('close-modal');
-    };
-  // console.log(props.ratingSummary)
-  </script>
-    
+<script setup>
+const props = defineProps([
+  "questionaire",
+  "ratingSummary",
+  "evaluateeName",
+  "showDetail",
+  "noData",
+]);
+const emits = defineEmits(["close-modal"]);
+
+const closeModal = () => {
+  emits("close-modal");
+};
+// console.log(props.ratingSummary)
+</script>
+
 <style scoped>
 .loader {
   --path: #2f3545;
@@ -110,7 +134,7 @@
 }
 
 .loader:before {
-  content: '';
+  content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -129,7 +153,9 @@
   height: 100%;
 }
 
-.loader svg rect, .loader svg polygon, .loader svg circle {
+.loader svg rect,
+.loader svg polygon,
+.loader svg circle {
   fill: none;
   stroke: var(--path);
   stroke-width: 10px;
@@ -252,7 +278,6 @@
   margin: 0 16px;
 }
 
-  
 button {
   border: none;
   display: block;
