@@ -55,7 +55,6 @@
             :evaluatee="selectedEvaluate"
             :questionaire="questionaire"
             @back="handleBackBtn"
-            
           />
         </div>
       </transition>
@@ -83,122 +82,126 @@
 </template>
 
 <script setup>
-  import { useDepartmentStore } from "../../stores/department";
-  import { useEntityStore } from "../../stores/entity";
-  import { useEvaluateeStore } from "../../stores/evaluatee";
-  import { onBeforeMount, onMounted, ref, computed } from "vue";
-  import { useDrawerStore } from "../../stores/drawerStore";
-  import { useRatingStore } from "../../stores/rating";
-  import ProfileCard from "@/components/ProfileCard.vue";
-  import SelectDepartment from "../../components/SelectDepartment.vue";
-  import SelectJobType from "../../components/SelectJobType.vue";
-  import SelectEntity from "../../components/SelectEntity.vue";
-  import FooterCard from "@/components/FooterCard.vue";
-  import RatingsTable from "../../components/RatingsTable.vue";
-  import LoadingAnimation from "../../components/LoadingAnimation.vue";
+import { useDepartmentStore } from "../../stores/department";
+import { useEntityStore } from "../../stores/entity";
+import { useEvaluateeStore } from "../../stores/evaluatee";
+import { onBeforeMount, onMounted, ref, computed } from "vue";
+import { useDrawerStore } from "../../stores/drawerStore";
+import { useRatingStore } from "../../stores/rating";
+import ProfileCard from "@/components/ProfileCard.vue";
+import SelectDepartment from "../../components/SelectDepartment.vue";
+import SelectJobType from "../../components/SelectJobType.vue";
+import SelectEntity from "../../components/SelectEntity.vue";
+import FooterCard from "@/components/FooterCard.vue";
+import RatingsTable from "../../components/RatingsTable.vue";
+import LoadingAnimation from "../../components/LoadingAnimation.vue";
 
-  const drawer = useDrawerStore();
-  const ratingStore = useRatingStore();
-  const departmentStore = useDepartmentStore();
-  const evaluateeStore = useEvaluateeStore();
+const drawer = useDrawerStore();
+const ratingStore = useRatingStore();
+const departmentStore = useDepartmentStore();
+const evaluateeStore = useEvaluateeStore();
 
-  const showLoadingAnimation = ref(false);
-  const showRatings = ref(false);
-  const entityStore = useEntityStore();
-  const evaluatees = ref([]);
-  const showEvaluatee = ref(false);
-  const selectTypeJob = ref("All");
-  const selectDepartment = ref("All");
-  const searchBar = ref("");
-  const entity = ref("All");
-  const departments = ref([]);
-  const entities = ref([]);
-  const selectedEvaluate = ref([]);
-  const questionaire = ref([]);
+const showLoadingAnimation = ref(false);
+const showRatings = ref(false);
+const entityStore = useEntityStore();
+const evaluatees = ref([]);
+const showEvaluatee = ref(false);
+const selectTypeJob = ref("All");
+const selectDepartment = ref("All");
+const searchBar = ref("");
+const entity = ref("All");
+const departments = ref([]);
+const entities = ref([]);
+const selectedEvaluate = ref([]);
+const questionaire = ref([]);
 
-  const selectedEvaluatee = async (evaluatee_id, val, data) => {
-    selectedEvaluate.value = data;
-    showEvaluatee.value = false;
-    showLoadingAnimation.value = true;
-    await ratingStore.fetchOutcomeRatings(evaluatee_id, data.entity_id);
-    questionaire.value = ratingStore.ratingResult;
-    console.log(questionaire.value);
-    showLoadingAnimation.value = false;
-    showRatings.value = true;
-  };
+const selectedEvaluatee = async (evaluatee_id, val, data, status) => {
+  if (!status) {
+    alert("Not Finished Rated");
+    return;
+  }
+  selectedEvaluate.value = data;
+  showEvaluatee.value = false;
+  showLoadingAnimation.value = true;
+  await ratingStore.fetchOutcomeRatings(evaluatee_id, data.entity_id);
+  questionaire.value = ratingStore.ratingResult;
+  console.log(questionaire.value);
+  showLoadingAnimation.value = false;
+  showRatings.value = true;
+};
 
-  const handleBackBtn = () => {
-    showRatings.value = false;
+const handleBackBtn = () => {
+  showRatings.value = false;
+  showEvaluatee.value = true;
+};
+
+const handleSelectEntity = (val) => {
+  if (val != "instructor") {
+    selectDepartment.value = "All";
+  }
+  entity.value = val;
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluation"
+  );
+};
+
+const handleSelectedDepartment = (departmentName) => {
+  selectDepartment.value = departmentName;
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluation"
+  );
+};
+
+const handleJobTypeSelected = (val) => {
+  selectTypeJob.value = val;
+
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluation"
+  );
+};
+
+const filteredEvaluatees = computed(() => {
+  if (!searchBar.value) {
+    return evaluatees.value;
+  }
+
+  return evaluatees.value.filter((data) =>
+    data.name.toLowerCase().includes(searchBar.value.toLowerCase())
+  );
+});
+
+onBeforeMount(async () => {
+  showLoadingAnimation.value = true;
+  if (!localStorage.getItem("entities")) {
+    await entityStore.fetchAllEntity();
+  }
+  entities.value = entityStore.entities;
+  if (!localStorage.getItem("departments")) {
+    await departmentStore.getDepartments();
+  }
+  departments.value = departmentStore.departments;
+  if (!localStorage.getItem("allEvaluatees")) {
+    await evaluateeStore.fetchAllEvaluatees();
     showEvaluatee.value = true;
-  };
-
-  const handleSelectEntity = (val) => {
-    if (val != "instructor") {
-      selectDepartment.value = "All";
-    }
-    entity.value = val;
-    evaluatees.value = evaluateeStore.filterEvaluatees(
-      entity.value,
-      selectDepartment.value,
-      selectTypeJob.value,
-      "evaluation"
-    );
-  };
-
-  const handleSelectedDepartment = (departmentName) => {
-    selectDepartment.value = departmentName;
-    evaluatees.value = evaluateeStore.filterEvaluatees(
-      entity.value,
-      selectDepartment.value,
-      selectTypeJob.value,
-      "evaluation"
-    );
-  };
-
-  const handleJobTypeSelected = (val) => {
-    selectTypeJob.value = val;
-
-    evaluatees.value = evaluateeStore.filterEvaluatees(
-      entity.value,
-      selectDepartment.value,
-      selectTypeJob.value,
-      "evaluation"
-    );
-  };
-
-  const filteredEvaluatees = computed(() => {
-    if (!searchBar.value) {
-      return evaluatees.value;
-    }
-
-    return evaluatees.value.filter((data) =>
-      data.name.toLowerCase().includes(searchBar.value.toLowerCase())
-    );
-  });
-
-  onBeforeMount(async () => {
-    showLoadingAnimation.value = true;
-    if (!localStorage.getItem("entities")) {
-      await entityStore.fetchAllEntity();
-    }
-    entities.value = entityStore.entities;
-    if (!localStorage.getItem("departments")) {
-      await departmentStore.getDepartments();
-    }
-    departments.value = departmentStore.departments;
-    if (!localStorage.getItem("allEvaluatees")) {
-      await evaluateeStore.fetchAllEvaluatees();
-      showEvaluatee.value = true;
-    }
-    evaluatees.value = evaluateeStore.filterEvaluatees(
-      entity.value,
-      selectDepartment.value,
-      selectTypeJob.value,
-      "evaluatees"
-    );
-    showEvaluatee.value = true;
-    showLoadingAnimation.value = false;
-  });
+  }
+  evaluatees.value = evaluateeStore.filterEvaluatees(
+    entity.value,
+    selectDepartment.value,
+    selectTypeJob.value,
+    "evaluatees"
+  );
+  showEvaluatee.value = true;
+  showLoadingAnimation.value = false;
+});
 </script>
 
 <style scoped>

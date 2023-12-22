@@ -114,7 +114,6 @@ const handleSavebtn = async () => {
   } else {
     isError.value = false;
   }
-
   showActionSpinner.value = true;
   await questionaireStore.attachCriterias(props.questionaire.id, criteriaIds.value);
   showActionSpinner.value = false;
