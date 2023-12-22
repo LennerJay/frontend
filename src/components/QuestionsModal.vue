@@ -43,7 +43,7 @@
           </table>
         </div>
       </div>
-      <div v-else-if="noData">No Questions</div>
+      <div v-else-if="noData" class="text-center mb-10 text-lg">No Questions</div>
       <div
         v-else
         class="bg-white p-[10px] pl-5 pr-32 max-w-lg mx-auto mt-40 max-h-[26rem] flex"

@@ -34,7 +34,7 @@
               border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[40rem]   overflow-y-auto"
               >
              <td class="py-3 px-6 text-center font-bold text-4xl " :colspan="isStudent ? '5':'3'">
-                <span class="font-medium">No data Found</span>
+                <span class="font-medium text-center text-lg">No data Found</span>
               </td>
             </tr>
             <tr

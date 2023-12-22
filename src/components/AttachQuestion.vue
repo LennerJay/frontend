@@ -4,31 +4,33 @@
     style="z-index: 10000"
   >
     <div
-      class="relative bg-white md:max-w-[40rem] max-w-full mx-auto mt-24 border-4 border-sky-950 rounded-xl max-h-[40rem] overflow-y-auto"
+      class="relative bg-white md:max-w-[40rem] mx-auto mt-24 border-4 border-sky-950 rounded-xl max-h-[40rem] overflow-y-auto"
     >
       <div v-if="showCriterias">
         <div v-if="noData">
-          <span> No Criterias found</span>
+          <span class="text-center text-lg"> No Criterias found</span>
         </div>
-        <div v-else>
-          <h1>Choose Criteria</h1>
-          <div
-            v-for="criteria in criterias"
-            class="flex items-center ps-4 border border-gray-200 rounded dark:border-gray-700"
-          >
-            <input
-              v-model="criteriaIds"
-              :id="'bordered-checkbox-' + criteria.id"
-              type="checkbox"
-              :value="criteria.id"
-              name="bordered-checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              :for="'bordered-checkbox-' + criteria.id"
-              class="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >{{ criteria.description }}</label
+        <div v-else class="w-full flex flex-col">
+          <h1 class="font-bold text-xl text-center py-4 border-b-2 border-black w-full">Choose Criteria</h1>
+          <div class="grid grid-cols-3 gap-2 w-full mt-2">
+            <div
+              v-for="criteria in criterias"
+              class="flex items-center ps-4 border border-black rounded dark:border-gray-700"
             >
+              <input
+                v-model="criteriaIds"
+                :id="'bordered-checkbox-' + criteria.id"
+                type="checkbox"
+                :value="criteria.id"
+                name="bordered-checkbox"
+                class="w-8 h-8 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label
+                :for="'bordered-checkbox-' + criteria.id"
+                class="w-full text-xl py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >{{ criteria.description }}</label
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -54,7 +56,7 @@
           </svg>
         </div>
       </div>
-      <div class="flex justify-end mr-5 mb-5 gap-5">
+      <div class="flex justify-end mr-5 mb-5 gap-5 mt-10">
         <p v-if="isError">Please select at least one criteria.</p>
         <button
           @click="emits('close')"

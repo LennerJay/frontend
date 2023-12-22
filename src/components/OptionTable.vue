@@ -13,7 +13,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody class="uppercase">
+                <tbody class="uppercase text-center">
                     <tr v-if="showLoadingAnimations">
                         <td :colspan="name != 'Year & Sections' ? '2':'3'">
                             <div
