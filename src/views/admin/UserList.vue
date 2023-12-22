@@ -87,7 +87,8 @@
 
                   <li>
                     <div class="selectTags pl-2 pb-2">
-                      <button @click ="showAddUserModal= true"
+                      <button
+                        @click="showAddUserModal = true"
                         class="bg-sky-950 hover:bg-blue-500 text-white hover:text-blue border hover:border-transparent rounded w-28"
                       >
                         Add {{ sort }}
@@ -162,13 +163,14 @@
         </div>
       </div>
       <transition name="fade">
-        <UserInfoModal v-if="showUserInfoModal" 
-        :showData="showData"
-        :userInfo="userInfo" 
-        :showActionModal="showActionModal"
-        :showActionSpinner="showActionSpinner"
-        @close="showUserInfoModal=false"
-        @removeClick="handeRemoveUserInfo"
+        <UserInfoModal
+          v-if="showUserInfoModal"
+          :showData="showData"
+          :userInfo="userInfo"
+          :showActionModal="showActionModal"
+          :showActionSpinner="showActionSpinner"
+          @close="showUserInfoModal = false"
+          @removeClick="handeRemoveUserInfo"
         />
       </transition>
       <transition name="fade">
@@ -182,10 +184,7 @@
         />
       </transition>
       <transition name="fade">
-        <AddUserModal v-if="showAddUserModal"
-          :role="sort"
-          @close="showAddUserModal= false"
-        />
+        <AddUserModal v-if="showAddUserModal" :role="sort" @close="closeAddUser" />
       </transition>
       <FooterCard />
     </div>
@@ -206,7 +205,6 @@ import UserInfoModal from "../../components/UserInfoModal.vue";
 import DeleteResetModal from "../../components/DeleteResetModal.vue";
 import AddUserModal from "../../components/AddUserModal.vue";
 
-
 const userStore = useUserStore();
 const drawer = useDrawerStore();
 const navStore = useNavarStore();
@@ -226,10 +224,14 @@ const userInfo = ref([]);
 const currentId = ref([]);
 const currentAction = ref(0);
 const showData = ref(false);
-const showActionSpinner= ref(false);
-const showActionModal= ref(false);
+const showActionSpinner = ref(false);
+const showActionModal = ref(false);
 const showAddUserModal = ref(false);
 
+const closeAddUser = () => {
+  users.value = userStore.users;
+  showAddUserModal.value = false;
+};
 
 const paginatedData = computed(() => {
   const startIndex = (currentPage.value - 1) * pageSize.value;
@@ -312,9 +314,9 @@ const closeDeleteResetModal = () => {
 const handleActionClicked = async (id, action) => {
   currentId.value = id;
   showData.value = false;
-  userInfo.value = []
+  userInfo.value = [];
   currentAction.value = action;
- 
+
   if (action == "view") {
     showDeleteResetModal.value = false;
     showUserInfoModal.value = true;
@@ -330,20 +332,20 @@ const handleActionClicked = async (id, action) => {
   showData.value = true;
 };
 
-const handeRemoveUserInfo= async(id_number)=>{
-  showActionSpinner.value = true
-  await userStore.removeUserInfo(id_number)
-  showActionSpinner.value = false
-  if(userStore.isSuccess){
-    showActionModal.value = true
-    setTimeout(()=>{
-      showActionModal.value = false
-      showUserInfoModal.value=false
-    },2000)
-  }else{
-    alert('Something went wrong')
+const handeRemoveUserInfo = async (id_number) => {
+  showActionSpinner.value = true;
+  await userStore.removeUserInfo(id_number);
+  showActionSpinner.value = false;
+  if (userStore.isSuccess) {
+    showActionModal.value = true;
+    setTimeout(() => {
+      showActionModal.value = false;
+      showUserInfoModal.value = false;
+    }, 2000);
+  } else {
+    alert("Something went wrong");
   }
-}
+};
 
 onMounted(async () => {
   showLoadingDataAnimation.value = true;

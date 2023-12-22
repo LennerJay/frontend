@@ -55,13 +55,25 @@
                   Subjects
                 </button>
               </li>
+              <li>
+                <button
+                  @click="changeOption('Announcements')"
+                  type="button"
+                  id="subject"
+                  name="subject"
+                >
+                  Announcement
+                </button>
+              </li>
             </ul>
           </div>
         </div>
       </div>
-      <button @click="showOptionModal('Add')" class="bg-sky-900 text-white rounded-full py-2 px-4 font-poppins text-[13px]
-        hover:bg-white hover:text-black transition md:ml-[120px] ml-32">
-          Add {{ currentOption }}
+      <button
+        @click="showOptionModal('Add')"
+        class="bg-sky-900 text-white rounded-full py-2 px-4 font-poppins text-[13px] hover:bg-white hover:text-black transition md:ml-[120px] ml-32"
+      >
+        Add {{ currentOption }}
       </button>
       <!-- End of header-container -->
 
@@ -80,11 +92,10 @@
           :option="currentOption"
           @closeButton="closeOptionModal"
         />
-  
-      </transition >
+      </transition>
       <transition name="fade">
-        <SectionYearOptionModal 
-        v-if="showSectionYearModal"
+        <SectionYearOptionModal
+          v-if="showSectionYearModal"
           :action="action"
           :data="currentData"
           @close="closeSectionYearModal"
@@ -99,17 +110,18 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useSubjectStore } from "../../stores/subject";;
+import { useSubjectStore } from "../../stores/subject";
 import { useSectionYearStore } from "../../stores/sectionYear";
 import { useDepartmentStore } from "../../stores/department";
 import { useEntityStore } from "../../stores/entity";
+import { useDrawerStore } from "../../stores/drawerStore";
+import { useAnnouncementStore } from "../../stores/announcement";
 import OptionModal from "../../components/OptionModal.vue";
 import OptionTable from "../../components/OptionTable.vue";
 import SectionYearOptionModal from "../../components/SectionYearOptionModal.vue";
 import FooterCard from "../../components/FooterCard.vue";
-import { useDrawerStore } from "../../stores/drawerStore";
 
-
+const announcementStore = useAnnouncementStore();
 const drawer = useDrawerStore();
 const sectionYear = useSectionYearStore();
 const subjectStore = useSubjectStore();
@@ -124,43 +136,55 @@ const currentData = ref([]);
 const showOption = ref(false);
 const showSectionYearModal = ref(false);
 
-const showOptionModal = (val,data) => {
-  if(currentOption.value == 'Year & Sections'){
-    showSectionYearModal.value = true
+const showOptionModal = (val, data) => {
+  if (currentOption.value == "Year & Sections") {
+    showSectionYearModal.value = true;
     showOption.value = false;
-  }else{
+  } else {
     showOption.value = true;
-    showSectionYearModal.value = false
+    showSectionYearModal.value = false;
   }
   action.value = val;
-  currentData.value= data
+  currentData.value = data;
 };
-const closeSectionYearModal = ()=>{
-  showSectionYearModal.value = false
-  refreshData()
-}
-const closeOptionModal = ()=>{
-  showOption.value = false
- 
-  refreshData()
-}
+const closeSectionYearModal = () => {
+  if (datas.value.length != 0) {
+    isNoData.value = false;
+  } else {
+    isNoData.value = true;
+  }
+  refreshData();
+  showSectionYearModal.value = false;
+};
+const closeOptionModal = () => {
+  if (datas.value.length != 0) {
+    isNoData.value = false;
+  } else {
+    isNoData.value = true;
+  }
+  refreshData();
+  showOption.value = false;
+};
 
-const refreshData = ()=>{
-  if(currentOption.value == 'Departments'){
-    datas.value = departmentStore.departments
+const refreshData = () => {
+  if (currentOption.value == "Departments") {
+    datas.value = departmentStore.departments;
   }
-  if(currentOption.value == 'Year & Sections'){
-    datas.value = sectionYear.filterSectionYear()
+  if (currentOption.value == "Year & Sections") {
+    datas.value = sectionYear.filterSectionYear();
   }
-  if(currentOption.value == 'Evaluatee Type'){
+  if (currentOption.value == "Evaluatee Type") {
     datas.value = entityStore.entities.map((item) => {
-                        return { id: item.id, name: item.entity_name };
-                      });
+      return { id: item.id, name: item.entity_name };
+    });
   }
-  if(currentOption.value == 'Subjects'){
-    datas.value = subjectStore.subjects
+  if (currentOption.value == "Subjects") {
+    datas.value = subjectStore.subjects;
   }
-}
+  if (currentOption.value == "Announcements") {
+    datas.value = announcementStore.announcements;
+  }
+};
 
 const changeOption = async (value) => {
   isNoData.value = false;
@@ -169,7 +193,6 @@ const changeOption = async (value) => {
   localStorage.setItem("currentOption", value);
   await fetchOptions();
   showLoadingAnimations.value = false;
-
 };
 
 const fetchOptions = async () => {
@@ -193,7 +216,7 @@ const fetchOptions = async () => {
     if (sectionYear.sectionYears.length == 0) {
       await sectionYear.fetchAllSectionYears();
     }
-    datas.value = sectionYear.filterSectionYear()
+    datas.value = sectionYear.filterSectionYear();
   }
 
   if (currentOption.value == "Subjects") {
@@ -202,6 +225,14 @@ const fetchOptions = async () => {
     }
     datas.value = subjectStore.subjects;
   }
+
+  if (currentOption.value == "Announcements") {
+    if (announcementStore.announcements == 0) {
+      await announcementStore.getAllAnnouncements();
+    }
+    datas.value = announcementStore.announcements;
+  }
+
   if (datas.value.length == 0) {
     isNoData.value = true;
   }
@@ -213,97 +244,96 @@ onMounted(async () => {
     currentOption.value = localStorage.getItem("currentOption");
   }
   await fetchOptions();
-  showLoadingAnimations.value = false
-  // console.log(datas.value.length)
+  showLoadingAnimations.value = false;
   if (datas.value.length == 0) {
     isNoData.value = true;
-  } 
+  }
 });
 </script>
 
 <style scoped>
-    /* Code Blocks Here */
+/* Code Blocks Here */
 
-    .main-container {
-      overflow-y: scroll;
-    }
+.main-container {
+  overflow-y: scroll;
+}
 
-    .header-container {
-      width: 100%;
-      margin: auto auto 40px auto;
-      position: sticky;
-      top: 0;
-    }
+.header-container {
+  width: 100%;
+  margin: auto auto 40px auto;
+  position: sticky;
+  top: 0;
+}
 
-    .header-container #main-header {
-      background-color: #0c4a6e;
-      padding: 15px 0 15px 0;
-      color: #ffffff;
-      text-align: center;
-    }
+.header-container #main-header {
+  background-color: #0c4a6e;
+  padding: 15px 0 15px 0;
+  color: #ffffff;
+  text-align: center;
+}
 
-    #main-header h1 {
-      font-size: 22px;
-      font-family: Verdana;
-      font-weight: bold;
-    }
+#main-header h1 {
+  font-size: 22px;
+  font-family: Verdana;
+  font-weight: bold;
+}
 
-    #main-header p {
-      font-size: 14px;
-      font-family: Helvetica, Georgia, "Times New Roman";
-    }
+#main-header p {
+  font-size: 14px;
+  font-family: Helvetica, Georgia, "Times New Roman";
+}
 
-    .header-container .objects {
-      background-color: #e6e6e6;
-      width: 100%;
-      margin: auto;
-    }
+.header-container .objects {
+  background-color: #e6e6e6;
+  width: 100%;
+  margin: auto;
+}
 
-    .objects .object-content {
-      color: #000000;
-    }
+.objects .object-content {
+  color: #000000;
+}
 
-    .objects .object-content ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
+.objects .object-content ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 
-    .objects .object-content ul li {
-      display: inline;
-    }
+.objects .object-content ul li {
+  display: inline;
+}
 
-    .objects .object-content ul li button {
-      display: block;
-      background-color: #0c4a6e;
-      color: #ffffff;
-      padding: 10px 18px;
-      border: none;
-      outline: none;
-      font-family: Helvetica;
-      border-radius: 35px;
-      font-size: 13.5px;
-    }
+.objects .object-content ul li button {
+  display: block;
+  background-color: #0c4a6e;
+  color: #ffffff;
+  padding: 10px 18px;
+  border: none;
+  outline: none;
+  font-family: Helvetica;
+  border-radius: 35px;
+  font-size: 13.5px;
+}
 
-    .objects .object-content ul li button:hover {
-      background-color: #ffffff;
-      color: #000000;
-      cursor: pointer;
-      transition: all 0.3s ease 0s;
-    }
+.objects .object-content ul li button:hover {
+  background-color: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+}
 
-    @media screen and (max-width: 768px) {
-      .objects .object-content ul {
-        flex-direction: column;
-        margin-bottom: 5px;
-      }
+@media screen and (max-width: 768px) {
+  .objects .object-content ul {
+    flex-direction: column;
+    margin-bottom: 5px;
+  }
 
-      .objects .object-content ul li {
-        margin-bottom: 5px;
-      }
-    }
+  .objects .object-content ul li {
+    margin-bottom: 5px;
+  }
+}
 </style>

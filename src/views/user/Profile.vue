@@ -21,7 +21,10 @@
             <div v-if="isNodata" class="py-20">
               <h2 class="capitalize text-lg">Please update you profile</h2>
               <div class="mt-4">
-                <button class="rounded bg-sky-900 text-white w-24 h-10 py-2 hover:bg-sky-700" @click="modalStore.showStudentEditModal">
+                <button
+                  class="rounded bg-sky-900 text-white w-24 h-10 py-2 hover:bg-sky-700"
+                  @click="showEditProfile = true"
+                >
                   Click Here!
                 </button>
               </div>
@@ -62,7 +65,9 @@
                         isRegular(user.section_years) ? "Regular" : "Irregular"
                       }}</span> -->
                     </h3>
-                    <ul class="flex flex-row mt-2 items-center justify-center border-b border-white">
+                    <ul
+                      class="flex flex-row mt-2 items-center justify-center border-b border-white"
+                    >
                       <li class="mx-2 text-white hover:text-sky-300 font-medium">
                         <a href="" target="_blank" aria-label="mobile_number">
                           <i class="fas fa-mobile-alt marker:mr-2 h-6 pr-2"></i
@@ -77,7 +82,10 @@
                       </li>
                     </ul>
                     <div class="mt-4">
-                      <button class="rounded bg-sky-900 text-white w-40 h-10 hover:bg-sky-700" @click="modalStore.showResetPasswordModal">
+                      <button
+                        class="rounded bg-sky-900 text-white w-40 h-10 hover:bg-sky-700"
+                        @click="modalStore.showResetPasswordModal"
+                      >
                         Change Password
                       </button>
                     </div>
@@ -132,8 +140,12 @@
                       <td class="td border-r border-gray-400 capitalize">
                         {{ klass.subject }}
                       </td>
-                      <td class="td border-r border-gray-400 uppercase">{{ klass.day }}</td>
-                      <td class="td border-r border-gray-400 uppercase">{{ klass.time }}</td>
+                      <td class="td border-r border-gray-400 uppercase">
+                        {{ klass.day }}
+                      </td>
+                      <td class="td border-r border-gray-400 uppercase">
+                        {{ klass.time }}
+                      </td>
                       <td class="td border-r border-gray-400 capitalize">
                         {{ klass.evaluatee_name }}
                       </td>
@@ -148,8 +160,13 @@
           </div>
         </div>
       </div>
-      <EditProfileModal/>
-      <ResetPasswordModal/>
+      <transition name="fade">
+        <EditProfileModal v-if="showEditProfile" @closeBtn="handleCloseProfileBtn" />
+      </transition>
+     
+      <transition name="fade">
+        <ResetPasswordModal />
+      </transition>
       <FooterCard />
     </div>
   </div>
@@ -163,8 +180,10 @@ import { useDrawerStore } from "../../stores/drawerStore";
 import { useEvaluateeStore } from "../../stores/evaluatee";
 import LoadingAnimation from "../../components/LoadingAnimation.vue";
 import EditProfileModal from "../../components/EditProfileModal.vue";
-import { userModalStore } from "../../stores/modalStore"
+import { userModalStore } from "../../stores/modalStore";
 import ResetPasswordModal from "../../components/ResetPasswordModal.vue";
+
+const showEditProfile = ref(false);
 
 const evaluateeStore = useEvaluateeStore();
 const modalStore = userModalStore();
@@ -174,6 +193,10 @@ const user = ref({});
 const showProfile = ref(false);
 const userClasses = ref([]);
 const isNodata = ref(true);
+
+const handleCloseProfileBtn = () => {
+  showEditProfile.value = false;
+};
 
 const isRegular = (sectionYears) => {
   return sectionYears.length == 1 ? true : false;

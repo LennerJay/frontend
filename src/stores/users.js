@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getAllUsers, deleteUser ,fetchUserInfo,resetPassword,storeUserInfo,deleteUserInfo, addUsers} from "../http/users-api";
+import {changePassword, getAllUsers, deleteUser ,fetchUserInfo,resetPassword,storeUserInfo,deleteUserInfo, addUsers} from "../http/users-api";
 import { csrfCookie } from "../http/auth-api";
 
 export const useUserStore = defineStore('userStore', ()=>{
@@ -110,7 +110,6 @@ export const useUserStore = defineStore('userStore', ()=>{
         await csrfCookie()
         try {
             const {data} = await resetPassword(id)
-            console.log(data)
             if(data.success){
                 isSuccess.value = true
             }else{
@@ -127,10 +126,11 @@ export const useUserStore = defineStore('userStore', ()=>{
         await csrfCookie()
         try {
             const {data} = await addUsers(val)
-            console.log(data)
             if(data.success){
                 isSuccess.value = true
-               
+                users.value = [...users.value,...data.data]
+                console.log(data.data)
+                console.log(users.value)
             }else{
                 isSuccess.value = false
             }
@@ -142,7 +142,23 @@ export const useUserStore = defineStore('userStore', ()=>{
     }
 
 
+    const changePass = async()=>{
+        await csrfCookie()
+        try {
+            const {data} = await changePassword()
+            if(data.success){
+                isSuccess.value = true
+            }else{
+                isSuccess.value = false
+            }
+            errors.value = []
+        } catch (error) {
+            errors.value = error
+        }
+    }
+
     return{
+        changePass,
         saveUsers,
         createUpdateUserInfo,
         removeUserInfo,

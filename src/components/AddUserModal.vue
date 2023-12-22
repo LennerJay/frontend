@@ -10,17 +10,17 @@
           <i class="bi bi-x-lg"></i>
           <span></span>
         </button>
-        <div class="text-[25px]">Add Student</div>
       </div>
-      <div class="flex justify-center mt-5 ">
-        <div class="mr-2">
+      <div class="text-[25px] text-left font-semibold">Add Student</div>
+      <div class="flex items-center justify-center mt-5 space-x-4">
+        <div class="w-full">
           <label class="block text-gray-700 text-lg font-bold pb-1" for="user-department"
             >Department
           </label>
           <select
             v-model="department"
             @change="handleClickDepartment"
-            class="cursor-pointer border rounded-[7px] text-gray-700 w-full font-sans font-normal  px-3 mt-1 h-[43px]"
+            class="cursor-pointer border rounded-[7px] text-gray-700 w-full font-sans font-normal px-3 mt-1 h-[43px]"
             id="user-department"
             :disabled="isEnable"
           >
@@ -32,19 +32,21 @@
           <div class="flex items-center">
             <span class="text-white invisible">.</span>
             <Transition name="fade" appear>
-              <span v-if="errors.department" class="text-rose-600">{{ errors.department }}</span>
+              <span v-if="errors.department" class="text-rose-600">{{
+                errors.department
+              }}</span>
             </Transition>
           </div>
         </div>
-        <div class="">
+        <div class="w-full">
           <label class="flex text-gray-700 text-lg font-bold mb-2" for="user-year-section"
             >Year & Section</label
           >
           <input
-          :disabled="isEnable"
+            :disabled="isEnable"
             v-model="sectionYear"
             @input="handleInputSectionYear"
-            class="bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            class="bg-transparent text-blue-gray-700 font-sans font-normal outline w-full outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
             id="user-year-section"
             type="text"
             placeholder="Eg. 1-C 2-C"
@@ -58,7 +60,7 @@
         </div>
       </div>
       <div class="flex flex-col">
-        <div class="flex items-center mb-2 mt-2">
+        <div class="flex items-center mb-2">
           <label
             class="text-left block text-gray-500 font-bold mb-1 md:mb-0 pr-4 flex-grow min-w-[90px]"
             for="option-name"
@@ -69,6 +71,7 @@
             @input="handleIdNumberInput"
             v-model="idNumber"
             type="number"
+            placeholder="Eg. 123456"
             id="option-name"
             class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
           />
@@ -98,7 +101,9 @@
           <tbody class="text-center">
             <tr>
               <td class="border-r border-black">{{ selectedIdnumbers.join(", ") }}</td>
-              <td class="uppercase border-r border-black">{{ selectedDepartment.name }}</td>
+              <td class="uppercase border-r border-black">
+                {{ selectedDepartment.name }}
+              </td>
               <td>{{ selectedSectionYear.year_section }}</td>
             </tr>
           </tbody>
@@ -116,21 +121,21 @@
           @click="handlePreviewClick"
           class="bg-sky-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:bg-sky-900"
         >
-          Preview  
+          Preview
         </button>
       </div>
 
       <transition name="fade">
-        <PreviewUser v-if="showPreview"
-            :department='selectedDepartment'
-            :sectionYear='selectedSectionYear'
-            :idNumbers='selectedIdnumbers'
-            :role_id='roleId'
-        @closePreview="showPreview = false"
-        @success="emits('close')"
+        <PreviewUser
+          v-if="showPreview"
+          :department="selectedDepartment"
+          :sectionYear="selectedSectionYear"
+          :idNumbers="selectedIdnumbers"
+          :role_id="roleId"
+          @closePreview="showPreview = false"
+          @success="emits('close')"
         />
       </transition>
-
     </div>
   </div>
 </template>
@@ -142,17 +147,17 @@ import { useDepartmentStore } from "../stores/department";
 import { useSectionYearStore } from "../stores/sectionYear";
 import PreviewUser from "./PreviewUser.vue";
 
-const roleStore = useRoleStore()
+const roleStore = useRoleStore();
 const departmetStore = useDepartmentStore();
 const SectionYearStore = useSectionYearStore();
 
 const emits = defineEmits(["close"]);
-const props = defineProps(['role'])
+const props = defineProps(["role"]);
 
 const departments = ref([]);
 const sectionYears = ref([]);
 
-const showPreview = ref(false)
+const showPreview = ref(false);
 const department = ref("");
 const sectionYear = ref("");
 const idNumber = ref("");
@@ -160,81 +165,78 @@ const selectedDepartment = ref("");
 const selectedSectionYear = ref("");
 const selectedIdnumbers = ref([]);
 const errors = ref({});
-const roleId = ref()
+const roleId = ref();
 const isEnable = ref(false);
 
 const closeModal = () => {
-    console.log(selectedIdnumbers.value.length)
-    if(idNumber.value !='' || selectedIdnumbers.value.length != 0 ){
-        if(confirm("Datas will not be saved, Are you sure you want to close?") == true){
-            emits("close");
-        }
-    }else{
-        emits("close");
+  console.log(selectedIdnumbers.value.length);
+  if (idNumber.value != "" || selectedIdnumbers.value.length != 0) {
+    if (confirm("Datas will not be saved, Are you sure you want to close?") == true) {
+      emits("close");
     }
-    // if(idNumber.value =='' ){
+  } else {
+    emits("close");
+  }
+  // if(idNumber.value =='' ){
 
-    // }
-
+  // }
 };
 
 const handleAddAction = () => {
-    if(validateInputs()){
-        return;
-    }
-    const findSectionYear = sectionYears.value.find(
-      (item) => item.year_section === sectionYear.value
-    );
-    if (!findSectionYear ) {
-      errors.value.sy = "Section not Registered";
-      return;
-    }
-   if(!isEnable.value){
-    selectedDepartment.value = departments.value.find(d => d.id == department.value)
-    selectedSectionYear.value = findSectionYear
-    isEnable.value = true
-   }
-    if(!selectedIdnumbers.value.includes(idNumber.value)){
-        selectedIdnumbers.value.unshift(idNumber.value)
-        idNumber.value = ''
-    }else{
-        errors.value.idNumber = "Id Number already exists"
-    }
+  if (validateInputs()) {
+    return;
+  }
+  const findSectionYear = sectionYears.value.find(
+    (item) => item.year_section === sectionYear.value
+  );
+  if (!findSectionYear) {
+    errors.value.sy = "Section not Registered";
+    return;
+  }
+  if (!isEnable.value) {
+    selectedDepartment.value = departments.value.find((d) => d.id == department.value);
+    selectedSectionYear.value = findSectionYear;
+    isEnable.value = true;
+  }
+  if (!selectedIdnumbers.value.includes(idNumber.value)) {
+    selectedIdnumbers.value.unshift(idNumber.value);
+    idNumber.value = "";
+  } else {
+    errors.value.idNumber = "Id Number already exists";
+  }
 };
-const validateInputs = ()=>{
-    let isError = false;
-    if(idNumber.value == ''){
-        errors.value.idNumber =  ' Please enter an Id Number'
-        isError = true;
-    }
-    if(!validateInput()){
-        errors.value.sy = "Invalid"
-        isError = true;
-    }
-    if(sectionYear.value == '' ){
-        errors.value.sy = "Please enter a section & year"
-        isError = true;
-    }
-    if (department.value == "" ) {
-        errors.value.department = " Please select a department";
-        isError = true;
-    }
+const validateInputs = () => {
+  let isError = false;
+  if (idNumber.value == "") {
+    errors.value.idNumber = " Please enter an Id Number";
+    isError = true;
+  }
+  if (!validateInput()) {
+    errors.value.sy = "Invalid";
+    isError = true;
+  }
+  if (sectionYear.value == "") {
+    errors.value.sy = "Please enter a section & year";
+    isError = true;
+  }
+  if (department.value == "") {
+    errors.value.department = " Please select a department";
+    isError = true;
+  }
 
-    return isError
-}
-
+  return isError;
+};
 
 const handlePreviewClick = () => {
-     roleId.value = roleStore.roles.find( role => role.name == props.role).id
+  roleId.value = roleStore.roles.find((role) => role.name == props.role).id;
 
-     showPreview.value = true
-
+  showPreview.value = true;
 };
 
 const handleInputSectionYear = () => {
-    errors.value.sy = ""
+  errors.value.sy = "";
   if (!validateInput()) {
-    errors.value.sy = "Invalid"
+    errors.value.sy = "Invalid";
   }
 };
 
@@ -242,8 +244,7 @@ const handleClickDepartment = () => {
   errors.value.department = "";
 };
 const handleIdNumberInput = () => {
-    errors.value.idNumber = ''
-
+  errors.value.idNumber = "";
 };
 
 const validateInput = () => {
@@ -266,7 +267,6 @@ const capitalizeLast = () => {
   sectionYear.value = capitalizedInput.value;
 };
 
-
 onMounted(async () => {
   if (departmetStore.departments.length == 0) {
     await departmetStore.getDepartments();
@@ -280,10 +280,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        display: none;
-    }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
 .loader {
   left: 72px;
 }

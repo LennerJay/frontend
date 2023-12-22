@@ -107,7 +107,7 @@ const handleDelete = async () => {
   actionModalData.value = "Deleted";
   actionSpinnerData.value = "Deleting";
   showActionSpinner.value = true;
-  await userStore.removeUser(props.userInfo.id_number);
+  await userStore.removeUser(props.idNumber);
   showActionSpinner.value = false;
   if (userStore.isSuccess) {
     showActionModal.value = true;
@@ -124,7 +124,7 @@ const handleReset = async () => {
   actionModalData.value = "Updated";
   actionSpinnerData.value = "Updating";
   showActionSpinner.value = true;
-  await userStore.updatePassword(props.userInfo.id_number);
+  await userStore.updatePassword(props.idNumber);
   showActionSpinner.value = false;
   if (userStore.isSuccess) {
     showActionModal.value = true;

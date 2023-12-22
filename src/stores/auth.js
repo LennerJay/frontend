@@ -1,6 +1,6 @@
 import { defineStore ,getActivePinia  } from 'pinia';
 import { computed, ref,watch } from 'vue';
-import {  csrfCookie, login, logout, getUser,getUserInfo ,test,testCreateApi} from '../http/auth-api';
+import { storeUserInfo, csrfCookie, login, logout, getUser,getUserInfo} from '../http/auth-api';
 
 
 export const useAuthStore = defineStore('authStore', ()=>{
@@ -38,9 +38,7 @@ export const useAuthStore = defineStore('authStore', ()=>{
         user.value = []
       }
     }
-    
-
-
+  
 
     const handleLogin = async (credentials) => {
         await csrfCookie();
@@ -94,16 +92,6 @@ export const useAuthStore = defineStore('authStore', ()=>{
 
     }
 
-    const testApi = async () => {
-      const {data}  = await test();
-      return data;  
-    }
-
-    const testCreate = async(val)=>{
-      const res = await testCreateApi(val);
-      console.log(res);
-    }
-
     const filterSchedule = () => {
       const keySelector1 =  (klass) => klass.department
       const keySelector2 =  (klass) => klass.section_year
@@ -129,9 +117,28 @@ export const useAuthStore = defineStore('authStore', ()=>{
         return studentClasses;
   }
 
+  const saveUserInfo = async(val)=>{
+      try {
+        const {data} = await storeUserInfo(val);
+        if(data.success){
+          isSuccess.value = true;
+          userInfo.value = data.data
+        }else{
+          isSuccess.value = false;
+        }
+
+        errors.value = []
+      } catch (error) {
+        errors.value = error
+      }
+  }
+
+  const changePassword = async()=>{
+
+  }
     return{
-      testCreate,
-      testApi,
+      changePassword,
+      saveUserInfo,
       fetchUserInfo,
       userInfo,
       user, 

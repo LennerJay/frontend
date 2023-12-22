@@ -6,6 +6,8 @@ const resource = apiPath +  "/users"
 
 export const getAllUsers = () => api.get(resource)
 
+export const changePassword = (data)=> api.post(resource + "/change-password",data)
+
 export const addUsers = (data) => api.post(resource,data)
 
 export const deleteUser = (id) => api.delete(resource + `/${id}`)

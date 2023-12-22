@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center font-poppins h-screen">
-    <div class="w-full  max-h-[550px] md:h-full overflow-y-scroll">
+    <div class="w-full max-h-[550px] md:h-full overflow-y-scroll">
       <div class="transparent shadow-md rounded">
         <table class="w-full table-auto">
           <thead>
@@ -14,33 +14,38 @@
               <th class="py-3 px-6 text-left">Rated</th>
               <th class="py-3 px-6 text-center">Action</th>
             </tr>
-            <tr v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20 text-center text-white bg-sky-950">
+            <tr
+              v-else
+              class="pl-10 pr-[120px] max-h-[26rem] ml-20 text-center text-white bg-sky-950"
+            >
               <th class="py-3 px-6 text-left">FullName</th>
               <th class="py-3 px-6 text-left">Type</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody class="text-gray-600 text-sm font-light">
-            <tr v-if="showLoadingDataAnimation"
-            class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700
-              border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
-             >
-              <td :colspan="isStudent ? '5':'3'">
-                <LoadingDataAnimationVue/>
+            <tr
+              v-if="showLoadingDataAnimation"
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700 border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
+            >
+              <td :colspan="isStudent ? '5' : '3'">
+                <LoadingDataAnimationVue />
               </td>
             </tr>
-            <tr v-if="isNoData || datas.length == 0 && !showLoadingDataAnimation"
-            class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700
-              border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[40rem]   overflow-y-auto"
+            <tr
+              v-if="isNoData || (datas.length == 0 && !showLoadingDataAnimation)"
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700 border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[40rem] overflow-y-auto"
+            >
+              <td
+                class="py-3 px-6 text-center font-bold text-4xl"
+                :colspan="isStudent ? '5' : '3'"
               >
-             <td class="py-3 px-6 text-center font-bold text-4xl " :colspan="isStudent ? '5':'3'">
                 <span class="font-medium text-center text-lg">No data Found</span>
               </td>
             </tr>
             <tr
               v-if="isStudent"
-              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700
-              border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700 border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
               v-for="student in datas"
             >
               <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -50,36 +55,45 @@
               </td>
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
-                  <span :class="{ 'text-rose-800': student.year_section.length > 1, 'text-black': student.year_section.length <= 1 }" class="font-medium">{{ student.year_section.length > 1?'Irregular':'Regular' }}</span>
+                  <span class="font-medium">{{
+                    student.year_section.length > 1 ? "Irregular" : "Regular"
+                  }}</span>
                 </div>
               </td>
               <td class="py-3 px-6 text-left whitespace-nowrap flex">
-                <div class=" items-center" >
+                <div class="items-center">
                   <span class="font-medium">{{ student.year_section.join(", ") }}</span>
                 </div>
               </td>
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
-                  <span :class="{ 'text-green-500': student.evaluatees_count !== 0, 'text-black': student.evaluatees_count === 0 }" class="font-medium">{{ student.evaluatees_count != 0 ?'Done':'Not Yet' }}</span>
+                  <span
+                    :class="{
+                      'text-green-500': student.evaluatees_count !== 0,
+                      'text-black': student.evaluatees_count === 0,
+                    }"
+                    class="font-medium"
+                    >{{ student.evaluatees_count != 0 ? "Done" : "Not Yet" }}</span
+                  >
                 </div>
               </td>
               <td class="py-3 px-6 text-center">
                 <div class="flex item-center justify-center text-bold space-x-2">
-                <button @click="handleActionClick(student.id_number,'view')">
-                  <i class="bi bi-eye"></i>
-                </button>
-                <button @click="handleActionClick(student.id_number,'reset')">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button @click="handleActionClick(student.id_number,'delete')">
-                  <i class="bi bi-trash"></i>
-                </button>
+                  <button @click="handleActionClick(student.id_number, 'view')">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button @click="handleActionClick(student.id_number, 'reset')">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button @click="handleActionClick(student.id_number, 'delete')">
+                    <i class="bi bi-trash"></i>
+                  </button>
                 </div>
               </td>
             </tr>
-            <tr v-else
-            class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700
-              border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
+            <tr
+              v-else
+              class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 dark:border-gray-700 border-b border-gray-200 hover:bg-gray-100 cursor-pointer max-h-[26rem] overflow-y-auto"
             >
               <td>asdasd</td>
               <td>asdasd</td>
@@ -97,17 +111,16 @@
 </template>
 
 <script setup>
-import {ref } from "vue"
-import LoadingDataAnimationVue from './LoadingDataAnimation.vue';
+import { ref } from "vue";
+import LoadingDataAnimationVue from "./LoadingDataAnimation.vue";
 
 const emit = defineEmits(["selectedValueTag", "handleActionClick"]);
 const props = defineProps({
   datas: Object,
   isNoData: Boolean,
   isStudent: Boolean,
-  showLoadingDataAnimation:Boolean
+  showLoadingDataAnimation: Boolean,
 });
-
 
 const handleActionClick = (id, action) => {
   emit("handleActionClick", id, action);
@@ -115,7 +128,6 @@ const handleActionClick = (id, action) => {
 </script>
 
 <style scoped>
-
 .overflow-y-auto::-webkit-scrollbar {
   display: none;
   width: 0px;
