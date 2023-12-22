@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <div class="md:ml-[250px] ml-0 font-poppins px-0 dashboard-main-header w-full">
+    <div class="md:ml-[250px] ml-0 font-poppins px-0 dashboard-main-header h-full w-full bg-gray-200">
       <div class="navbar-container">
         <div class="navbar-content">
           <header id="main-header">
@@ -16,23 +16,23 @@
         </div>
       </div>
       <!-- End of navbar-container -->
-      <div class="mt-5 flex justify-end gap-7">
-        <button @click="showDisplay('questionaires')" id="add-btn">
+      <div class="mt-5 flex md:justify-end justify-center gap-7 mr-2 md:mb-0 mb-4 ">
+        <button @click="showDisplay('questionaires')" id="add-btn" class="rounded">
           Show Questinaire
         </button>
-        <button @click="showDisplay('criterias')" id="add-btn">Show Criterias</button>
+        <button @click="showDisplay('criterias')" id="add-btn" class="rounded">Show Criterias</button>
+      </div>
+      <div key="selectTag" class="flex gap-6 items-center ml-2" v-if="showQuestionaires">
+        <SelectEntity
+          :entities="entities"
+          :entity="entity"
+          @handleSelect="handleSelectEntity"
+        />
+        <button @click="showAddQuestionaire = true" id="add-btn" class="rounded">
+          Add Questinaire
+        </button>
       </div>
       <transition-group name="fade">
-        <div key="selectTag" class="flex gap-6 items-center" v-if="showQuestionaires">
-          <SelectEntity
-            :entities="entities"
-            :entity="entity"
-            @handleSelect="handleSelectEntity"
-          />
-          <button @click="showAddQuestionaire = true" id="add-btn">
-            Add Questinaire
-          </button>
-        </div>
         <QuestionaireTable
           key="questionaire"
           v-if="showQuestionaires"
@@ -81,7 +81,7 @@
           @close="closeQuestionsModal"
         />
       </transition>
-      <FooterCard />
+      <FooterCard/>
     </div>
     <!-- End of content -->
   </div>

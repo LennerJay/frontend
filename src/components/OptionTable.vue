@@ -1,5 +1,5 @@
 <template>
-    <div class="dept-container">
+    <div class="dept-container font-poppins">
         <div class="dept-content">
             <table id="main-table">
                 <thead>
@@ -13,7 +13,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="uppercase">
                     <tr v-if="showLoadingAnimations">
                         <td :colspan="name != 'Year & Sections' ? '2':'3'">
                             <div

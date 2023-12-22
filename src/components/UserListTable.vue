@@ -9,9 +9,9 @@
               class="bg-sky-950 text-white uppercase text-sm leading-normal"
             >
               <th class="py-3 px-6 text-left">ID Number</th>
-              <th class="py-3 px-6 text-center">Status</th>
+              <th class="py-3 px-6 text-left">Status</th>
               <th class="py-3 px-6 text-left">Year & Section</th>
-              <th class="py-3 px-6 text-center">Rated</th>
+              <th class="py-3 px-6 text-left">Rated</th>
               <th class="py-3 px-6 text-center">Action</th>
             </tr>
             <tr v-else class="pl-10 pr-[120px] max-h-[26rem] ml-20 text-center text-white bg-sky-950">
@@ -50,7 +50,7 @@
               </td>
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
-                  <span class="font-medium">{{ student.year_section.length > 1?'Irregular':'Regular' }}</span>
+                  <span :class="{ 'text-rose-800': student.year_section.length > 1, 'text-black': student.year_section.length <= 1 }" class="font-medium">{{ student.year_section.length > 1?'Irregular':'Regular' }}</span>
                 </div>
               </td>
               <td class="py-3 px-6 text-left whitespace-nowrap flex">
@@ -60,7 +60,7 @@
               </td>
               <td class="py-3 px-6 text-left whitespace-nowrap">
                 <div class="flex items-center">
-                  <span class="font-medium">{{ student.evaluatees_count != 0 ?'Done':'Not Yet' }}</span>
+                  <span :class="{ 'text-green-500': student.evaluatees_count !== 0, 'text-black': student.evaluatees_count === 0 }" class="font-medium">{{ student.evaluatees_count != 0 ?'Done':'Not Yet' }}</span>
                 </div>
               </td>
               <td class="py-3 px-6 text-center">

@@ -10,9 +10,9 @@
           <div class="absolute w-11/12 top-3 left-5 z-20" v-if="showResponseError" >
           <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-3 rounded relative" role="alert">
             <strong class="font-bold mr-5">Warning</strong>
-            <span class="block sm:inline">Name already exist</span>
+            <span class="block sm:inline text-rose-600">Name already exist</span>
             <span class="absolute top-0 bottom-0 right-0 px-4 py-3" @click="showResponseError = false" >
-              <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+              <svg class="fill-current h-6 w-6 text-rose-600" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
             </span>
           </div>
         </div>
@@ -48,13 +48,13 @@
             @input="nameInput"
             v-model="name"
             id="option-name"
-            class="w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
+            class="w-full h-full bg-transparent text-blue-gray-700 font-poppins capitalize font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-blue-500"
           />
         </div>
         <div class="flex items-center ">
           <span class="flex-grow min-w-[90px] invisible">.</span>
           <transition name="fade">
-            <span class="w-full pl-3" v-if="isError"> Please enter a name</span>
+            <span class="w-full pl-3 text-rose-600" v-if="isError"> Please enter a name</span>
           </transition>
         </div>
       </div>
@@ -64,7 +64,7 @@
       <!-- Modal footer -->
       <div class="flex justify-end space-x-4 mt-4 items-center">
         <Transition name="bounce" appear>
-          <span v-show="showError" class="font-bold mr-5">Nothing's changed</span>
+          <span v-show="showError" class="font-bold mr-5 text-rose-600">Nothing's changed</span>
         </Transition>
 
         <button

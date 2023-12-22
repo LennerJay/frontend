@@ -4,7 +4,7 @@
     style="z-index: 10000"
   >
     <div
-      class="relative bg-white md:max-w-3xl max-w-sm mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[40rem] min-h-[20rem] overflow-y-auto"
+      class="relative bg-white md:max-w-3xl max-w-sm mx-auto md:mt-32 mt-24 border-4 border-sky-950 rounded-xl max-h-[40rem] min-h-[20rem] overflow-y-auto"
     >
       <div class="flex justify-between items-center mt-4">
         <div class="invisible">.</div>
@@ -16,37 +16,39 @@
         </div>
       </div>
       <div v-if="showData" class="h-full">
-        <div class="mx-5">
-          <table>
+        <div class="mx-5 mb-4">
+          <table class="w-full">
             <thead>
               <th></th>
               <th>Action</th>
             </thead>
-            <tbody>
-              <tr>
-                <td>
+            <tbody class="border border-black py-4">
+              <tr class=" bg-sky-900 text-white">
+                <td class="text-center py-2 font-bold te-">
                   {{ propsCriteria.description }}
                 </td>
-                <td>
-                  <button @click="editCriteria">Edit</button>
-                  <button @click="showWarningClick('Criteria')">Delete</button>
+                <td class="space-x-2 text-center">
+                  <button @click="editCriteria">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button @click="showWarningClick('Criteria')">
+                    <i class="bi bi-trash"></i>
+                  </button>
                 </td>
               </tr>
               <tr v-if="questions.length == 0">
                 <td class="pl-5">No Questions</td>
               </tr>
-              <tr v-else v-for="question in questions" :key="question.id">
-  
-                <td class="pl-5">
-                  {{ question.id }}
+              <tr v-else v-for="(question, index) in questions" :key="question.id" class="text-left border-b border-black">
+                <td class="py-2 pl-1">
+                  {{ index + 1 }}. {{ question.question }}
                 </td>
-                <td class="pl-5">
-                  {{ question.question }}
-                </td>
-                <td class="flex">
-                  <button @click="editQuestion(question)">Edit</button>
+                <td class="space-x-2 text-center">
+                  <button @click="editQuestion(question)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
                   <button @click="showWarningClick('Question', question.id)">
-                    Delete
+                    <i class="bi bi-trash"></i>
                   </button>
                 </td>
               </tr>
