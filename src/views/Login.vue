@@ -8,7 +8,7 @@
         </div>
         <form @submit.prevent="handleSubmit" id="main-form" method="POST" enctype="multipart/form-data" autocomplete="off">
           <p v-if="errors.id_number && errors.id_number[0]" class="stud-id-error text-red-500 text-xs italic">{{ errors.id_number && errors.id_number[0] }}</p>
-          <input type="number" v-model="form.id_number" :class="{ 'is-invalid': errors.id_number && errors.id_number[0] }" id="id_number" name="student_id" placeholder="Student ID"/>
+          <input type="number" v-model="form.id_number" :class="{ 'is-invalid': errors.id_number && errors.id_number[0] }" id="id_number" name="student_id" placeholder="ID Number"/>
           <p v-if="errors.password && errors.password[0]" class="password-error text-red-500 text-xs italic">Please input a password.</p>
           <div id="password-container">
             <div id="actual-password">
