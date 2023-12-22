@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-white">
-    <button @click="emits('back')" class="bg-sky-900 text-white w-20 rounded my-2 mx-2 h-8 hover:bg-sky-600 font-poppins">Back</button>
-  </div>
   <div class="ratings-container bg-white">
+    <div>
+      <button @click="emits('back')" class="bg-sky-900 text-white w-20 rounded my-2 mx-2 h-8 hover:bg-sky-600 font-poppins">Back</button>
+    </div>
     <div class="flex flex-col items-center justify-center text-center font-sans">
       <div class="flex items-center justify-center flex-grow w-full">
         <img src="../assets/ched_logo.png" class="h-24 w-24 md:mr-10">
@@ -79,13 +79,40 @@
               <td>{{ checkQd(question.ratings_avg_rating) }}</td>
             </tr>
             <tr>
-              <td colspan="6"><span>Average Weighted Mean</span></td>
-              <td></td>
-              <td>terst</td>
+              <td colspan="6" class="text-center font-bold">Average Weighted Mean</td>
+              <td class="text-center font-bold"></td>
+              <td class="text-center font-bold">terst</td>
             </tr>
           </tbody>
         </table>
         <!-- End of main-table -->
+        <div class="w-full font-poppins" style="font-style: italic">
+          <span>Legend: 4.21-5.0 - Outstading; 3.41-4.20 - Very Satisfactory; 2.61-3.40 - Satisfactory; 1.81-2.60 - Fair; 
+            1.00-1.80 - Needs Improvement; QD - Qualitative Description
+          </span><br>
+          <span>Note: n = 50</span>
+        </div>
+        <div class="w-full flex flex-col font-semibold text-lg font-poppins mt-16">
+          <span class="text-right pb-2 md:mr-80">Overall Mean: 123</span>
+          <span class="text-right md:mr-96">Overall Performance: 123</span>
+        </div>
+        <div class="w-full font-poppins mt-20 pl-2">
+          <div class="flex flex-col py-4">
+            <span class="text-[18px]">Preared by:</span>
+            <span class="pl-10 text-[18px]">JORDAN H. YAGONG, MA.Ed</span>
+            <span class="pl-20 text-[18px]">Research Coordinator</span>
+          </div>
+          <div class="flex flex-col py-4">
+            <span class="text-[18px]">Noted by:</span>
+            <span class="pl-10 text-[18px]">JENYLEN T. CABISO, Dev.Ed.D</span>
+            <span class="pl-20 text-[18px]">CTE Chairperson</span>
+          </div>
+          <div class="flex flex-col py-4">
+            <span class="text-[18px]">Approved by:</span>
+            <span class="pl-10 text-[18px]">FATIMA RICHELL F. EVIOTA, Dev.Ed.D</span>
+            <span class="pl-24 text-[18px]">College President</span>
+          </div>
+        </div>
       </div>
       <RatingHistory
         v-if="showRatingHistory"
@@ -140,7 +167,7 @@ const emits = defineEmits(["back"]);
 /* Code Blocks Here */
 .ratings-container {
   width: 100%;
-  margin: auto auto 150px auto;
+  margin: auto auto auto auto;
 }
 
 .ratings-container .ratings-content {

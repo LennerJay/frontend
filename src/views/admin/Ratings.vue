@@ -48,13 +48,14 @@
       </div>
     </div>
     <!-- end of nav section -->
-    <div class="min-h-screen card border-2 ">
+    <div class="card border-2">
       <transition name="fade">
-        <div v-if="showRatings">
+        <div v-if="showRatings" class="bg-white">
           <RatingsTable
             :evaluatee="selectedEvaluate"
             :questionaire="questionaire"
             @back="handleBackBtn"
+            
           />
         </div>
       </transition>
@@ -71,7 +72,7 @@
           @selectedEvaluatee="selectedEvaluatee"
         />
       </div>
-      <div v-if="showLoadingAnimation" class="pl-10 pr-[120px] max-h-[26rem] ml-20">
+      <div v-if="showLoadingAnimation" class="pl-10 pr-[120px] max-h-[26rem] ml-20 mb-52">
         <LoadingAnimation />
       </div>
     </div>
