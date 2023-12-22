@@ -1,10 +1,11 @@
 <template>
   <div
-    class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins" style="z-index: 10000"
+    class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins"
+    style="z-index: 10000"
   >
     <div
-      class="relative bg-white md:max-w-3xl max-w-sm mx-auto mt-48 border-4 border-sky-950 rounded-xl max-h-[40rem] overflow-y-auto"
-    >
+      class="relative bg-white md:max-w-[40rem] max-w-full mx-auto mt-24 border-4 border-sky-950 rounded-xl max-h-[40rem] overflow-y-auto"
+      >
       <div class="flex justify-between items-center mt-4">
         <div class="invisible">.</div>
         <div class="mr-3">
@@ -14,23 +15,23 @@
           </button>
         </div>
       </div>
-      <div v-if="showData">
-        <div>
-          <table v-for="criteria in criterias">
-          <thead>
-            <th class="flex justify-between">
-            <span> {{ criteria.description }}</span>
-            <button @click="removeClick(criteria.id)">Remove</button>
-            </th>
-          </thead>
-          <tbody>
-            <tr v-for="question in criteria.questions">
-              <td>
-                {{ question.question }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div v-if="showData" class="flex flex-col justify-center items-center text-center mx-6">
+        <div class="mx-6 mb-4 w-full">
+          <table v-for="(criteria, index) in criterias" class="border border-black  mx-auto w-full my-8">
+            <thead class="">
+              <th class="flex justify-between border-b border-black py-2">
+                <span class="ml-2">{{ String.fromCharCode(65 + index) }}. {{ criteria.description }}</span>
+                <button @click="removeClick(criteria.id)" class="mr-2">Remove</button>
+              </th>
+            </thead>
+            <tbody>
+              <tr v-for="(question, index) in criteria.questions" class="text-left border-b border-black">
+                <td class="py-2">
+                  {{ index + 1 }}. {{ question.question }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div v-else-if="noData">
@@ -63,8 +64,6 @@
             Close
           </button>
       </div>
-
-      
     </div>
     <transition-group name="fade">
         <ActionSpinnerAnimation key=1 v-if="showActionSpinner" data="Removing"/>
@@ -82,7 +81,6 @@ import WarningModal from "./WarningModal.vue";
 
 const showWarning = ref(false)
 const criteriaId = ref(0)
-
 
 const emits = defineEmits(["close","removeCriteria"]);
 const props = defineProps(["criterias", "showData","criterias","noData", "showActionSpinner","showActionModal"]);

@@ -1,25 +1,26 @@
 <template>
-  <div class="h-full ml-5 mt-5">
-    <div v-if="showLoadingAnimation" class="pl-10 pr-[120px] max-h-[26rem] ml-20">
+  <div class="w-full h-full">
+    <div class="mb-5 ml-2 mt-auto"> 
+      <button @click="showModal('Add')" id="add-btn" class="rounded">Add Criterias</button>
+    </div>
+    <div v-if="showLoadingAnimation" class="pl-10 pr-[120px] max-h-full ml-20 mb-80">
       <LoadingAnimation />
     </div>
-    <div v-if="showData && !showLoadingAnimation ">
-      <div class="mb-5"> 
-        <button @click="showModal('Add')" id="add-btn">Add Criterias</button>
-      </div>
-      <div class="flex " v-for="criteria in criterias">
+    
+    <div v-if="showData && !showLoadingAnimation" class="grid md:grid-cols-4 grid-cols-2 w-full h-full">  
+      <div class="flex flex-col w-full " v-for="criteria in criterias">
         <div 
-          class="m-2 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+          class="m-2 max:w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
         >
           <h5
-            class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+            class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white font-poppins capitalize"
           >
             {{ criteria.description }}
           </h5>
 
           <p
             @click="clickQuestions(criteria.id)"
-            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center cursor-pointer text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Questions
             <svg
@@ -38,8 +39,9 @@
               />
             </svg>
           </p>
-
-          <p class="mt-2">{{ criteria.status ? 'Currently Used':'Unused' }}</p>
+          <p :class="{ 'text-green-600': criteria.status, 'text-gray-600': !criteria.status }" class="mt-2 text-[15px] text-right">
+            {{ criteria.status ? 'Currently Used':'Unused' }}
+          </p>
         </div>
       </div>
     </div>
