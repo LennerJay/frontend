@@ -84,7 +84,7 @@
                     <div class="mt-4">
                       <button
                         class="rounded bg-sky-900 text-white w-40 h-10 hover:bg-sky-700"
-                        @click="modalStore.showResetPasswordModal"
+                        @click="showChangePassModal = true"
                       >
                         Change Password
                       </button>
@@ -163,9 +163,13 @@
       <transition name="fade">
         <EditProfileModal v-if="showEditProfile" @closeBtn="handleCloseProfileBtn" />
       </transition>
-     
+
       <transition name="fade">
-        <ResetPasswordModal />
+        <ResetPasswordModal
+          v-if="showChangePassModal"
+          :user="user"
+          @close="showChangePassModal = false"
+        />
       </transition>
       <FooterCard />
     </div>
@@ -184,7 +188,7 @@ import { userModalStore } from "../../stores/modalStore";
 import ResetPasswordModal from "../../components/ResetPasswordModal.vue";
 
 const showEditProfile = ref(false);
-
+const showChangePassModal = ref(false);
 const evaluateeStore = useEvaluateeStore();
 const modalStore = userModalStore();
 const drawer = useDrawerStore();
@@ -194,7 +198,20 @@ const showProfile = ref(false);
 const userClasses = ref([]);
 const isNodata = ref(true);
 
-const handleCloseProfileBtn = () => {
+const handleCloseProfileBtn = async (status) => {
+  if (status) {
+    showProfile.value = false;
+    await userStore.fetchUserInfo();
+    showProfile.value = true;
+    if (userStore.isSuccess) {
+      user.value = userStore.userInfo;
+      userClasses.value = userStore.filterSchedule();
+      isNodata.value = false;
+    } else {
+      isNodata.value = true;
+    }
+    showProfile.value = true;
+  }
   showEditProfile.value = false;
 };
 

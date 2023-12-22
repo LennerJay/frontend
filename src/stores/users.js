@@ -128,9 +128,7 @@ export const useUserStore = defineStore('userStore', ()=>{
             const {data} = await addUsers(val)
             if(data.success){
                 isSuccess.value = true
-                users.value = [...users.value,...data.data]
-                console.log(data.data)
-                console.log(users.value)
+                users.value = [...data.data,...users.value]
             }else{
                 isSuccess.value = false
             }
@@ -142,10 +140,13 @@ export const useUserStore = defineStore('userStore', ()=>{
     }
 
 
-    const changePass = async()=>{
+    const changePass = async(id,pass)=>{
         await csrfCookie()
         try {
-            const {data} = await changePassword()
+            const {data} = await changePassword({
+                id_number: id,
+                password:pass
+            })
             if(data.success){
                 isSuccess.value = true
             }else{
