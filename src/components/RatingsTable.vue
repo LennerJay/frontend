@@ -1,52 +1,60 @@
 <template>
-  <button @click="emits('back')">Back</button>
-  <div class="ratings-container">
-    <div>
-      <span>Republic of the Philippines</span>
-      <span>Province of Cebu</span>
-      <span>Cordova Public College</span>
-      <span>{{ questionaire.title }}</span>
-      <span>{{ questionaire.description }}</span>
+  <div class="bg-white">
+    <button @click="emits('back')" class="bg-sky-900 text-white w-20 rounded my-2 mx-2 h-8 hover:bg-sky-600 font-poppins">Back</button>
+  </div>
+  <div class="ratings-container bg-white">
+    <div class="flex flex-col items-center justify-center text-center font-sans">
+      <div class="flex items-center justify-center flex-grow w-full">
+        <img src="../assets/ched_logo.png" class="h-24 w-24 md:mr-10">
+        <div class="flex flex-col items-center">
+          <span class="font-medium text-[20px]">Republic of the Philippines</span>
+          <span class="font-medium text-[20px]">Province of Cebu</span>
+          <span class="font-medium text-[20px]">Municipality of Cordova</span>
+          <span class="font-bold text-[28px]">Cordova Public College</span>
+          <span class="font-bold text-[28px]">{{ questionaire.title }}</span>
+          <span class="font-bold text-[24px] capitalize">{{ questionaire.description }}</span>
+        </div>
+        <img src="../assets/cpc_logo.png" class="h-24 w-24 md:ml-10">
+      </div>
     </div>
-    <div>
-      <p>Name of Faculty: {{ evaluatee.name }}</p>
-      <p>Department : {{ evaluatee.departments.join(", ") }}</p>
-      <p>Rating Period:{{ questionaire.semester }} A. Y {{ questionaire.school_year }}</p>
+    <div class="md:pl-8 font-poppins text-left w-full mb-4 mt-2">
+      <p><span class="font-bold mr-2">Name of Faculty :</span><span class="border-b border-black">{{ evaluatee.name }}</span></p>
+      <p><span class="font-bold mr-2">Department <span style="margin-left: 34px">:</span></span><span class="border-b border-black capitalize">{{ evaluatee.departments.join(", ") }}</span></p>
+      <p><span class="font-bold mr-2">Rating Period <span style="margin-left: 19px">:</span></span><span class="border-b border-black capitalize">{{ questionaire.semester }} A. Y {{ questionaire.school_year }}</span></p>
     </div>
-    <div>
+    <div class="flex flex-col md:pl-8 font-poppins mb-4">
       <div>
-        <span>5</span>
-        <span> Outstanding (O)</span>
-        <span
-          >The performance always exceeds the job requirements. The instructor is an
-          exceptional role model.</span
-        >
+        <span class="font-bold mr-6" style="font-style: italic">5</span>
+        <span class="font-bold mx-4" style="font-style: italic"> Outstanding (O)</span>
+        <span class="md:ml-14">
+          The performance always exceeds the job requirements. The instructor is an
+          exceptional role model.
+        </span>
       </div>
       <div>
-        <span>4</span>
-        <span>Very Satisfactory (VS)</span>
-        <span>The performance meets and often exceeds the job requirements.</span>
+        <span class="font-bold mr-6" style="font-style: italic">4</span>
+        <span class="font-bold mx-4" style="font-style: italic">Very Satisfactory (VS)</span>
+        <span class="md:ml-[17px]">The performance meets and often exceeds the job requirements.</span>
       </div>
       <div>
-        <span>3</span>
-        <span>Satisfactory (S)</span>
-        <span>The performance meets job requirements</span>
+        <span class="font-bold mr-6" style="font-style: italic">3</span>
+        <span class="font-bold mx-4" style="font-style: italic">Satisfactory (S)</span>
+        <span class="md:ml-[65px]">The performance meets job requirements</span>
       </div>
       <div>
-        <span>2</span>
-        <span>Fair (F)</span>
-        <span>The performance needs some development to meet the job requirements.</span>
+        <span class="font-bold mr-6" style="font-style: italic">2</span>
+        <span class="font-bold mx-4" style="font-style: italic">Fair (F)</span>
+        <span class="md:ml-[127px]">The performance needs some development to meet the job requirements.</span>
       </div>
       <div>
-        <span>1</span>
-        <span>Needs Improvement (NI)</span>
-        <span>The instructor fails to meet job performance.</span>
+        <span class="font-bold mr-6" style="font-style: italic">1</span>
+        <span class="font-bold mx-3" style="font-style: italic">Needs Improvement (NI)</span>
+        <span class="md:ml-[5px]">The instructor fails to meet job performance.</span>
       </div>
     </div>
     <div class="ratings-content">
       <div class="table-container">
-        <table class="main-table" v-for="criteria in questionaire.criterias">
-          <!--min-w-max w-full table-auto-->
+        <table class="main-table font-poppins" v-for="criteria in questionaire.criterias">
           <thead>
             <th>{{ criteria.description }}</th>
             <th>NI</th>
@@ -62,11 +70,11 @@
               <td>
                 {{ question.question }}
               </td>
-              <td @click="showQuestionRating(question.id, 1)">{{ question.NI }}</td>
-              <td @click="showQuestionRating(question.id, 2)">{{ question.F }}</td>
-              <td @click="showQuestionRating(question.id, 3)">{{ question.S }}</td>
-              <td @click="showQuestionRating(question.id, 4)">{{ question.VS }}</td>
-              <td @click="showQuestionRating(question.id, 5)">{{ question.O }}</td>
+              <td @click="showQuestionRating(question.id, 1)" class="cursor-pointer">{{ question.NI }}</td>
+              <td @click="showQuestionRating(question.id, 2)" class="cursor-pointer">{{ question.F }}</td>
+              <td @click="showQuestionRating(question.id, 3)" class="cursor-pointer">{{ question.S }}</td>
+              <td @click="showQuestionRating(question.id, 4)" class="cursor-pointer">{{ question.VS }}</td>
+              <td @click="showQuestionRating(question.id, 5)" class="cursor-pointer">{{ question.O }}</td>
               <td>{{ question.ratings_avg_rating }}</td>
               <td>{{ checkQd(question.ratings_avg_rating) }}</td>
             </tr>

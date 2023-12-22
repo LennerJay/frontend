@@ -3,32 +3,32 @@
     class="fixed inset-0 bg-gray-900 bg-opacity-60 items-center justify-center font-poppins z-50"
   >
     <div
-      class="relative bg-white pl-5 pr-5 md:max-w-lg max-w-sm mx-auto md:mt-40 mt-12 border-4 border-sky-950 rounded-xl max-h-[42rem] overflow-y-auto"
+      class="relative bg-white pl-5 pr-5 md:max-w-lg max-w-sm mx-auto md:mt-30 mt-12 border-4 border-sky-950 rounded-xl max-h-[42rem] overflow-y-auto"
     >
-      <div class="sticky top-0 left-0 z-10">
+      <div class="sticky top-0 left-0 z-10 mt-4 mr-2">
         <button id="close-btn" @click="emits('close')">
           <i class="bi bi-x-lg"></i>
           <span></span>
         </button>
       </div>
       <div v-if="showData">
-        <h1>Question: {{ values[0].question }}</h1>
-        <h1>Rating: {{ values[0].rating }}</h1>
-        <table>
-          <thead>
-            <th>Students</th>
-            <th>Year & Section</th>
-            <th>Department</th>
+        <h1 class="w-full text-left text-medium border-2 border-gray-600 font-poppins">Question: {{ values[0].question }}</h1>
+        <h1 class="py-2"><span class="font-bold">Rating :</span> {{ values[0].rating }}</h1>
+        <table class="border w-full font-poppins border-gray-400">
+          <thead class="bg-sky-900 text-white">
+            <th class="text-center">Students</th>
+            <th class="text-center">Year & Section</th>
+            <th class="text-center">Department</th>
           </thead>
           <tbody>
-            <tr v-for="data in values">
-              <td>
+            <tr v-for="data in values" class="border-b border-gray-400">
+              <td class="text-center capitalize border-r border-gray-400">
                 {{ data.fullName }}
               </td>
-              <td>
+              <td class="text-center uppercase border-r border-gray-400">
                 {{ data.departments.join(",") }}
               </td>
-              <td>
+              <td class="text-center ">
                 {{ data.year_section.join(",") }}
               </td>
             </tr>
