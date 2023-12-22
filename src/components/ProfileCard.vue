@@ -41,6 +41,7 @@
           <div v-else>No Questionaire Available</div>
         </div>
         <div v-else-if="evaluatee.date_rated">Rated on : {{ evaluatee.date_rated }}</div>
+        <div v-if="route.path == '/ratings'" >{{evaluatee.users_done_rating == 100 ? 'Finished Rated': 'Not yet finished rated'  }}</div>
       </div>
     </div>
     <div class="card-effect"></div>
@@ -72,7 +73,7 @@ const getMaxRespondents = (entity_name) => {
 
 const handleClick = (evaluatee_id) => {
   if(route.path != '/evaluation'){
-    emit("selectedEvaluatee", evaluatee_id,props.evaluatee.name);
+    emit("selectedEvaluatee", evaluatee_id,props.evaluatee.name,props.evaluatee);
   }else{
     if(props.evaluatee.users_done_rating != getMaxRespondents(props.evaluatee.entity_name)){
       emit("selectedEvaluatee", evaluatee_id);

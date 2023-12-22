@@ -33,10 +33,10 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         }
     }
 
-    const fetchAllEvaluatees = async (userId) =>{
+    const fetchAllEvaluatees = async () =>{
         await csrfCookie()
         try{
-            const { data } = await getAllEvaluatees(userId);
+            const { data } = await getAllEvaluatees();
             allEvaluatees.value = data.data
             errors.value = []
         }catch(e){
@@ -120,7 +120,6 @@ export const useEvaluateeStore = defineStore('evaluateeStore',() =>{
         await csrfCookie()
         try {
             const {data} = await evaluateeUpdate(evaluatee_id,val);
-            console.log(data)
             if(data.success){
                 isSuccess.value = data.success
                 allEvaluatees.value = allEvaluatees.value.filter(evaluatee => evaluatee.id != evaluatee_id)
